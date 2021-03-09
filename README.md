@@ -36,7 +36,7 @@
   - Save it (control/command s)
   - close the window
   - hit control c to stop the session in your terminal
-  - You should be all to do `git add --all` `git commit -m` `git push` in your branch now and then go back to master and do `git push`
+  - You should be able to do `git add --all` `git commit -m` `git push` in your branch now and then go back to master and do `git push`
 - Some tips
   - ***Communicate and Stick to Deadlines***
     - If you have questions, ask them in the group chat. If nobody cares about you, talk to Liam.(Hope this won't happen)
