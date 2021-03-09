@@ -1,1 +1,61 @@
 # S21_DB_GUI Project
+***(Feel free to add or edit anything to share your tips and help our team)***
+## Merge and Branch
+- First clone the repo to your local directory
+  - `git clone https://github.com/YongjiaXu/S21_DB_GUI.git`
+  - `cd S21_DB_GUI`
+- To create a new branch
+  - Make sure you are on the master branch: `git branch`<pre>*master <br> branch1 <br> branch2 </pre>
+  - To create a new branch: `git branch [branch name]` eg: `git branch bella_db`
+- To merge with master: ***!!! always do this before editing any code so that it avoids conflicts!!!***
+  - First you need to pull the master branch: `git checkout master` 
+  - Now you are on the master branch, pull: `git pull` This makes sure your local files are up to date.
+- After you pulled from master, and before you start to edit your code
+  - `cd backend`. do `yarn` (if you have installed it) or do `npm install` (`yarn` and `npm install` are equivalent, do either one)
+  - `cd ..`
+  - `cd frontend`. do `yarn` or `npm install`
+  - `cd ..`
+  - Now you should be in the S21_DB_GUI folder and do `docker-compose up` and go to localhost:3000, you should be able to see the website
+- Then go to your branch `git checkout [branch name]`
+  - `git merge master` 
+  - `git push`
+  - Now you are on your branch and everything should be identical to master. You can go back to the github repository link and go to your branch, you'll see a message "This branch is even with master."
+- After edit the code
+  - `git add --all`
+  - `git commit -m [message]`
+  - `git push` *if it fails and pops up a message say use git push -something blablabla; copy that one and push again
+  - Go back to master: `git checkout master`
+  - Merge with your branch: `git merge [branch name]`
+  - `git push`
+- To delete a branch
+  - `git branch -d [branch name]` (we probably don't need this throughout the semester)
+- If it tells you there's a conflict (basically means master changed something and you also changed something on your branch without merging)
+  - You can do `git mergetool`
+  - and hit enter/return on your keyboard
+  - It will then open up a window. At the right bottom corner: `Action`, you can choose options like: keep right, keep left, keep both(left first).... choose one
+  - Save it (control/command s)
+  - close the window
+  - hit control c to stop the session in your terminal
+  - You should be all to do `git add --all` `git commit -m` `git push` in your branch now and then go back to master and do `git push`
+- Some tips
+  - ***Communicate and Stick to Deadlines***
+    - If you have questions, ask them in the group chat. If nobody cares about you, talk to Liam.(Hope this won't happen)
+    - If you promise to get something done by sometime, do it and take the responsibility. But it's fine if you don't know how to solve it, ask "in time", we'll try our best to help.
+  - `git status` tells you whether you committed your change or not, but it won't tell you whether you pushed
+  - `git branch` check which branch you are on
+  - After you pulled from master, and before you start to edit your code
+    - `cd backend`. do `yarn` (if you have installed it) or do `npm install` (`yarn` and `npm install` are equivalent, do either one)
+    - `cd ..`
+    - `cd frontend`. do `yarn` or `npm install`
+    - `cd ..`
+    - Now you should be in the S21_DB_GUI folder and do `docker-compose up` and go to localhost:3000, you should be able to see the website
+    - After all the changing and merging, committing and you are tired and don't want to work on the project for a while, do `docker-compose down`
+  - Frontend people should have their browser open up on localhost:3000 while developing. 
+    - Each save will reflect on the page immediately. 
+    - Open your dev tool(F12 or right click and select Inspect Element) to see if there's any error and eliminate them. (Warnings are fine). If you do console.log('(want to print something)') somewhere in your code, you can see it from the dev tool.
+    - Postman is an interface that you could check if the API link provided by Backend people works. If not, let them know.
+  - Backend
+    - Install DBeaver
+      - Create connection
+    - Postman is a great tool to test whether the link works and changes the database
+  - You can access the website here: http://3.21.114.143:3000/. But this won't update immediately after you push, so don't expect an instant feedback on this link. I'll pull the repository from ec2 server and then we should see the change on the public website.
