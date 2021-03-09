@@ -9,7 +9,7 @@ function App () {
   const [values, setValues] = useState([])
 
   // ENTER YOUR EC2 PUBLIC IP/URL HERE
-  const ec2_url = 'http://3.21.114.143:8000/'
+  const ec2_url = '3.21.114.143'
   // CHANGE THIS TO TRUE IF HOSTING ON EC2, MAKE SURE TO ADD IP/URL ABOVE
   const ec2 = true;
   // USE localhost OR ec2_url ACCORDING TO ENVIRONMENT
