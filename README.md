@@ -37,7 +37,7 @@
   - close the window
   - hit control c to stop the session in your terminal
   - You should be able to do `git add --all`, `git commit -m` ,`git push` in your branch now and then go back to master `git checkout master` and do `git push`
-- Some tips
+## Some tips
   - ***Communicate and Stick to Deadlines***
     - If you have questions, ask them in the group chat. If nobody cares about you, talk to Liam.(Hope this won't happen)
     - If you promise to get something done by sometime, do it and take the responsibility. But it's fine if you don't know how to solve it, ask "in time", we'll try our best to help.
@@ -58,4 +58,4 @@
     - Install DBeaver
       - Create connection
     - Postman is a great tool to test whether the link works and changes the database
-  - You can access the website here: http://3.21.114.143:3000/. But this won't update immediately after you push, so don't expect an instant feedback on this link. I'll pull the repository from ec2 server and then we should see the change on the public website.
+  - You can access the website here: http://3.21.114.143:3000/. But this won't update immediately after you push, so don't expect an instant feedback on this page. I'll pull the repository from ec2 server and then we should see the changes on the public url.
