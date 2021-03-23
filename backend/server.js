@@ -42,61 +42,54 @@ app.listen(config.port, config.host, (e) => {
 
 // GET all users
 app.get('/getit/users', (req, res) => {
-  pool.query('SELECT * FROM users', function (err, rows, fields) {
+  pool.query('SELECT * FROM users', function (err, result, fields) {
     if (err) {
       logger.error("Error while getting users");
     }
     else{
-      res.status(200).json({
-        "data": rows
-      });
+      res.end(JSON.stringify(result));
     }
   });
 });
 
 // GET a specific user by username
 app.get('/getit/user', (req, res) => {
-  var username = req.query.username;
-  pool.query('SELECT * FROM users WHERE username = ?', username, function(err, rows, fields) {
+  var username = req.param('username');
+  pool.query('SELECT * FROM users WHERE username = ?', username, function(err, result, fields) {
     if (err) {
       logger.error('Error while getting user ' + username);
     }
     else{
-      console.log(username);
-      res.status(200).json({
-        "data": rows
-      });
+      res.end(JSON.stringify(result));
     }
   });
 });
 
 // GET users by type
 app.get('/getit/usertype/', (req, res) => {
-  var user_type = req.query.user_type;
-  pool.query('SELECT * FROM users WHERE user_type = ?', user_type, function(err, rows, fields) {
+  var user_type = req.param.apply('user_type');
+  pool.query('SELECT * FROM users WHERE user_type = ?', user_type, function(err, result, fields) {
     if (err) {
       logger.error('Error while getting user type ' + type);
     }
     else {
-      res.status(200).json({
-        "data": rows
-      });
+      res.end(JSON.stringify(result));
     }
   });
 });
 
 // POST a specific user
 app.post('/postit/user', (req, res) => {
-  var username = req.query.username;
-  var password = req.query.password;
-  var user_type = req.query.user_type;
+  var username = req.param.apply('username');
+  var password = req.param.apply('password');
+  var user_type = req.param.apply('user_type');
 
-  pool.query('INSERT INTO users (username, password, user_type) VALUES (?,?,?)', [username, password, user_type], function (err, rows, fields) {
+  pool.query('INSERT INTO users (username, password, user_type) VALUES (?,?,?)', [username, password, user_type], function (err, result, fields) {
     if (err) {
       logger.error("Error while inserting new user to users");
     }
     else{
-      res.status(200).send(`added to the users table!`);
+      res.end(JSON.stringify(result));
     }
   });
 });
