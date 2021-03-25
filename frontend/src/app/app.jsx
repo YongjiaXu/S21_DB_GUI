@@ -1,5 +1,5 @@
 import React from 'react';
-// import './App.css';
+import {LoginPage} from './loginPage';
 // import { ROUTES } from '../routes';
 // import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
@@ -7,14 +7,8 @@ import React from 'react';
 function App() {
   return (
     <>
-        <h1>hahahahaha</h1>
+        <LoginPage/>
 
-      {/* <Router>
-        <Switch>
-          {ROUTES.map((route, index) => <Route key={index} {...route} />)}
-          <Route exact path="/" component={}/> 
-        </Switch>
-      </Router> */}
     </>
   );
 }
