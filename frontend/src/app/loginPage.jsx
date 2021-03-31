@@ -1,5 +1,6 @@
 import React from 'react';
 import {UserRepository} from '../api/userRepository';
+import {CreateAccount} from './createAccount';
 export class LoginPage extends React.Component {
     userRepository = new UserRepository();
     state = {
@@ -8,7 +9,8 @@ export class LoginPage extends React.Component {
     }
 
     login(user, password){
-
+        this.userRepository.getUser(user)
+            .then()
     }
 
     render () {
@@ -36,6 +38,8 @@ export class LoginPage extends React.Component {
             </div>
             <br/>
             <button className="loginButton">Login</button>
+            <br/><br/>
+            <button onClick={<CreateAccount/>} className="newUser">Create New Account</button>
         {/* <table>
             <tbody>
                 {
