@@ -6,9 +6,37 @@ export class LoginPage extends React.Component {
         users : [],
         specific_user: ''
     }
+
+    login(user, password){
+
+    }
+
     render () {
         return <> 
-        <table>
+        <h1 id="login-header">Login</h1>
+        <div className="form-group">
+            <label htmlFor="name">Username:</label>
+            <br/>
+            <input type="text"
+                id="name"
+                name="name"
+                value={this.state.name}
+                onChange={event => this.setState({name: event.target.value})}
+                className="form-control" />
+        </div>
+        <div className="form-group">
+            <label htmlFor="email">Password:</label>
+            <br/>
+            <input type="text"
+                    id="email"
+                    name="email"
+                   value={this.state.email}
+                    onChange={event => this.setState({email: event.target.value})}
+                    className="form-control" />
+            </div>
+            <br/>
+            <button className="loginButton">Login</button>
+        {/* <table>
             <tbody>
                 {
                     this.state.users.map((user, i) => <tr key={i}>
@@ -20,7 +48,7 @@ export class LoginPage extends React.Component {
             </tbody>
         </table>
             <p>single user: {this.state.specific_user}</p>
-            {console.log(this.state.specific_user)}
+            {console.log(this.state.specific_user)} */}
         </>
     }
     componentDidMount() {
