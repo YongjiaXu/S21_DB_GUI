@@ -39,7 +39,7 @@ export class LoginPage extends React.Component {
             <br/>
             <button className="loginButton">Login</button>
             <br/><br/>
-            <button onClick={<CreateAccount/>} className="newUser">Create New Account</button>
+            <button className="newUser">Create New Account</button>
         {/* <table>
             <tbody>
                 {

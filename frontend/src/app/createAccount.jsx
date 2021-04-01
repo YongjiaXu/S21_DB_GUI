@@ -5,5 +5,5 @@ export class CreateAccount extends React.Component{
         return<>
         <h1>CREATE ACCOUNT</h1>
         </>
-    }
+        }
 }
