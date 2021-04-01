@@ -1,0 +1,34 @@
+Login/Create Account - Sam
+	-
+
+User Dashboard - Freddy
+	-Edit password
+	-Edit Preferences
+	-List of NPO’s
+		-Own Box with average rating
+	-Filter 
+	
+NPO Dashboard - Sydney
+	-See and edit Profile Information
+		- Description/images/logo/location/password
+	-See Reviews/ratings
+		-Be able to flag reviews (button to flag)
+
+NPO Profile Page – Sydney
+	-See All information
+		-Description/images/logo/location
+	-See Average Rating
+	-See Reviews
+	-Make a Review/Rating
+
+Admin Dashboard - Jake
+	-Edit Password
+	-List of Flagged Reviews
+		-Delete/Unflag reviews
+	-List of NPOs needing approval
+		-Approve or not
+	-BAN User/NPO
+	
+
+
+
