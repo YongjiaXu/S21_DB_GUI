@@ -40,6 +40,11 @@ app.listen(config.port, config.host, (e) => {
 });
 
 
+// -------------------------------------------------------------------
+// --------------------------- API routes ----------------------------
+// -------------------------------------------------------------------
+
+// users table related 
 // GET all users
 app.get('/getit/users', (req, res) => {
   pool.query('SELECT * FROM users', function (err, result, fields) {
@@ -66,9 +71,23 @@ app.get('/getit/user', (req, res) => {
 });
 
 // GET users by type
-app.get('/getit/usertype/', (req, res) => {
-  var user_type = req.param.apply('user_type');
+app.get('/getit/usertype', (req, res) => {
+  var user_type = req.param('user_type');
   pool.query('SELECT * FROM users WHERE user_type = ?', user_type, function(err, result, fields) {
+    if (err) {
+      logger.error('Error while getting user type ' + type);
+    }
+    else {
+      res.end(JSON.stringify(result));
+    }
+  });
+});
+
+// UPDATE user password
+app.put('/putit/userpwd', (req, res) => {
+  var username = req.param('username');
+  var newpwd = req.param('newpwd');
+  pool.query('update users set password = ? where username = ?', [newpwd, username], function(err, result, fields) {
     if (err) {
       logger.error('Error while getting user type ' + type);
     }
@@ -80,9 +99,9 @@ app.get('/getit/usertype/', (req, res) => {
 
 // POST a specific user
 app.post('/postit/user', (req, res) => {
-  var username = req.param.apply('username');
-  var password = req.param.apply('password');
-  var user_type = req.param.apply('user_type');
+  var username = req.param('username');
+  var password = req.param('password');
+  var user_type = req.param('user_type');
 
   pool.query('INSERT INTO users (username, password, user_type) VALUES (?,?,?)', [username, password, user_type], function (err, result, fields) {
     if (err) {
@@ -93,6 +112,46 @@ app.post('/postit/user', (req, res) => {
     }
   });
 });
+
+// DELETE a user
+app.delete('/deleteit/user', (req, res) => {
+  var username = req.param('username');
+  pool.query('delete from users where username = ? ', username, function (err, result, fields) {
+    if (err) {
+      logger.error("Error while inserting new user to users");
+    }
+    else{
+      res.end(JSON.stringify(result));
+    }
+  });
+});
+
+// npos table related
+app.post('/postit/npo', (req, res) => {
+  var username = req.param('username');
+  var title = req.param('title');
+  var location = req.param('location');
+  var logoURL = req.param('logoURL');
+  var image1URL = req.param('image1URL');
+  var image2URL = req.param('image2URL');
+  var image3URL = req.param('image3URL');
+  var image4URL = req.param('image4URL');
+  var image5URL = req.param('image5URL');
+  var description = req.param('description');
+
+  pool.query('insert into npos values ((select userID from users where username = ?), ?, ?, ?, ?, ?, ?, ?, ?, ?)', 
+              [username, title, location, logoURL, image1URL, image2URL, image3URL, image4URL, image5URL, description], 
+              function (err, result, fields) {
+
+    if (err) {
+      logger.error("Error while inserting new user to users");
+    }
+    else{
+      res.end(JSON.stringify(result));
+    }
+  });
+});
+
 
 ///Peter
 // GET all npos
