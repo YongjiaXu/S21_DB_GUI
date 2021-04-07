@@ -93,3 +93,71 @@ app.post('/postit/user', (req, res) => {
     }
   });
 });
+
+///Peter
+// GET all npos
+app.get('/npos', (req,res) => {
+  pool.query('select * from npos', function (err, result, fields) {
+    if (err) {
+      logger.error("Error while getting npos");
+    }
+    else {
+      res.end(JSON.stringify(result));
+    }
+  });
+});
+// GET specific npo by npoID
+app.get('/npos/:npoID', (req,res) => {
+  var npoID = req.params.npoID;
+  pool.query('select * from npos where npoID = ?', npoID, function (err,result,fields) {
+    if (err) {
+      logger.error("Error while getting npo by id " + npoID);
+    }
+    else {
+      res.end(JSON.stringify(result));
+    }
+  });
+});
+// GET all images for specific npo by npoID
+app.get('/npos/:npoID/images', (req,res) => {
+  var npoID = req.params.npoID;
+  pool.query('select * from images where npoID = ?', npoID, function (err,result,fields) {
+    if (err) {
+      logger.error("Error getting images for npo with id " + npoID);
+    }
+    else {
+      res.end(JSON.stringify(result));
+    }
+  });
+});
+// POST new npo (use JSON body including: title, location, logoURL, description). the resulting npoID will be returned
+app.post('/npos', async (req,res) => {
+  var title = req.body.title;
+  var location = req.body.location;
+  var logoURL = req.body.logoURL;
+  var description = req.body.description;
+  var sql = "insert into npos (title, location, logoURL, description) values (?, ?, ?, ?)";
+  pool.query(sql, [title, location, logoURL, description], function (err, result, fields) {
+    if (err) {
+      logger.error("Error posting new npo");
+    }
+    else {
+      var npoID = result.insertId;
+      res.end(JSON.stringify(npoID));
+    }
+  });
+});
+// POST image by npoID (use JSON body for imageURL). the resulting imageID will be returned
+app.post('/npos/:npoID/images', async (req,res) => {
+  var npoID = req.params.npoID;
+  var imageURL = req.body.imageURL;
+  pool.query('insert into images (imageURL, npoID) values (?,?)', [imageURL,npoID], function (err, result, fields) {
+    if (err) {
+      logger.error("Error posting image to npoID " + npoID + ", image url: " + imageURL);
+    }
+    else {
+      var imageID = result.insertId;
+      res.end(JSON.stringify(imageID));
+    }
+  });
+});
