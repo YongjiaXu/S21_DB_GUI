@@ -220,3 +220,16 @@ app.post('/npos/:npoID/images', async (req,res) => {
     }
   });
 });
+// PUT link user to npo by userID and npoID
+app.put('/users/:userID/:npoID', async (req,res) => {
+  var userID = req.params.userID;
+  var npoID = req.params.npoID;
+  pool.query('update users set npoID = ? where userID = ?', [npoID,userID], function (err, result, fields) {
+    if (err) {
+      logger.error("Error linking user " + userID + " to npo " + npoID);
+    }
+    else {
+      res.end(JSON.stringify(result));
+    }
+  });
+});
