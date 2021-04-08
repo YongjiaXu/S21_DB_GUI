@@ -32,4 +32,21 @@ export class UserRepository {
             });
         });
     }
+
+    // post new npo
+    createNPO(title, location, logoURL, description) {
+        return new Promise((resolve, reject) => {
+            axios.post(
+                `${this.url}/npos`,
+                {
+                    "title": title,
+                    "location": location,
+                    "logoURL": logoURL,
+                    "description": description,
+                },
+            )
+            .then(response => resolve(response.data))
+            .catch(error => alert(error));
+        });
+    }
 }
