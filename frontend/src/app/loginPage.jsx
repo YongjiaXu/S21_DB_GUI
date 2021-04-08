@@ -40,7 +40,7 @@ export class LoginPage extends React.Component {
             <button className="loginButton">Login</button>
             <br/><br/>
             <button className="newUser">Create New Account</button>
-        {/* <table>
+        {/* {<table>
             <tbody>
                 {
                     this.state.users.map((user, i) => <tr key={i}>
@@ -52,7 +52,7 @@ export class LoginPage extends React.Component {
             </tbody>
         </table>
             <p>single user: {this.state.specific_user}</p>
-            {console.log(this.state.specific_user)} */}
+            {console.log(this.state.specific_user)}} */}
         </>
     }
     componentDidMount() {
