@@ -83,13 +83,26 @@ app.get('/getit/usertype', (req, res) => {
   });
 });
 
+// GET password by username
+app.get('/getit/userpwd', (req, res) => {
+  var username = req.param('username');
+  pool.query('SELECT password FROM users WHERE username = ?', username, function(err, result, fields) {
+    if (err) {
+      logger.error('Error while getting password for user ' + username);
+    }
+    else {
+      res.end(JSON.stringify(result));
+    }
+  });
+});
+
 // UPDATE user password
 app.put('/putit/userpwd', (req, res) => {
   var username = req.param('username');
   var newpwd = req.param('newpwd');
   pool.query('update users set password = ? where username = ?', [newpwd, username], function(err, result, fields) {
     if (err) {
-      logger.error('Error while getting user type ' + type);
+      logger.error('Error while setting password for user ' + username);
     }
     else {
       res.end(JSON.stringify(result));
@@ -118,7 +131,7 @@ app.delete('/deleteit/user', (req, res) => {
   var username = req.param('username');
   pool.query('delete from users where username = ? ', username, function (err, result, fields) {
     if (err) {
-      logger.error("Error while inserting new user to users");
+      logger.error("Error while deleting new user to users");
     }
     else{
       res.end(JSON.stringify(result));
@@ -126,31 +139,31 @@ app.delete('/deleteit/user', (req, res) => {
   });
 });
 
-// npos table related
-app.post('/postit/npo', (req, res) => {
-  var username = req.param('username');
-  var title = req.param('title');
-  var location = req.param('location');
-  var logoURL = req.param('logoURL');
-  var image1URL = req.param('image1URL');
-  var image2URL = req.param('image2URL');
-  var image3URL = req.param('image3URL');
-  var image4URL = req.param('image4URL');
-  var image5URL = req.param('image5URL');
-  var description = req.param('description');
+// // npos table related
+// app.post('/postit/npo', (req, res) => {
+//   var username = req.param('username');
+//   var title = req.param('title');
+//   var location = req.param('location');
+//   var logoURL = req.param('logoURL');
+//   var image1URL = req.param('image1URL');
+//   var image2URL = req.param('image2URL');
+//   var image3URL = req.param('image3URL');
+//   var image4URL = req.param('image4URL');
+//   var image5URL = req.param('image5URL');
+//   var description = req.param('description');
 
-  pool.query('insert into npos values ((select userID from users where username = ?), ?, ?, ?, ?, ?, ?, ?, ?, ?)', 
-              [username, title, location, logoURL, image1URL, image2URL, image3URL, image4URL, image5URL, description], 
-              function (err, result, fields) {
+//   pool.query('insert into npos values ((select userID from users where username = ?), ?, ?, ?, ?, ?, ?, ?, ?, ?)', 
+//               [username, title, location, logoURL, image1URL, image2URL, image3URL, image4URL, image5URL, description], 
+//               function (err, result, fields) {
 
-    if (err) {
-      logger.error("Error while inserting new user to users");
-    }
-    else{
-      res.end(JSON.stringify(result));
-    }
-  });
-});
+//     if (err) {
+//       logger.error("Error while inserting new user to users");
+//     }
+//     else{
+//       res.end(JSON.stringify(result));
+//     }
+//   });
+// });
 
 
 ///Peter
