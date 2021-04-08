@@ -1,17 +1,13 @@
 import React from 'react';
-import {LoginPage} from './loginPage';
-// import { ROUTES } from '../routes';
-// import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { NPODashboard } from './NPODashboard';
+import { NPOProfile } from './NPOProfile';
 
-
-function App() {
-  return (
-    <>
-        <LoginPage/>
-
-    </>
-  );
+export function App(){
+    return (
+        <>
+            <div class="d-flex justify-content-center">
+                <NPODashboard/>
+            </div>            
+        </>
+    );
 }
-
-export default App;
-
