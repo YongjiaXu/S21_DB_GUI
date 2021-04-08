@@ -1,13 +1,18 @@
 import React from 'react';
-import { NPODashboard } from './NPODashboard';
-import { NPOProfile } from './NPOProfile';
+import {LoginPage} from './loginPage';
+import {AdminDash} from './adminDash';
+// import { ROUTES } from '../routes';
+// import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
-export function App(){
-    return (
-        <>
-            <div class="d-flex justify-content-center">
-                <NPODashboard/>
-            </div>            
-        </>
-    );
+
+function App() {
+  return (
+    <>
+        <AdminDash/>
+
+    </>
+  );
 }
+
+export default App;
+
