@@ -334,3 +334,21 @@ app.delete('/reviews/:userID', async(req, res) => {
   });
 });
 
+
+//10.1 flag reviews or ratings as an NPO
+app.post('/ratings', async(req, res) =>{
+
+  var review = req.param('review')
+  var rating = req.param('rating')
+
+  pool.query('INSERT INTO ratings (review, rating) VALUES (?,?)', [review, rating], function(err, result, fields){
+    if(err){
+      logger.error("Failed to flag ratings")
+    }
+    else{
+      res.end(JSON.stringify(result));
+    }
+  });
+});
+
+
