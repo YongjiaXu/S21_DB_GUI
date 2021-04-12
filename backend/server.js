@@ -246,3 +246,91 @@ app.put('/users/:userID/:npoID', async (req,res) => {
     }
   });
 });
+
+
+///Prince 
+//3.1 User viewing charity's ratings
+app.get('/ratings/:npoID', (req,res) => {
+  var npoID = req.param('npoID')
+  pool.query('select * from ratings WHERE npoID =', npoID, function (err, result, fields) {
+    if (err) {
+      logger.error("Error while getting ratings");
+    }
+    else {
+      res.end(JSON.stringify(result));
+    }
+  });
+});
+
+//3.2 User viewing charity's description
+app.get('/description/:npoID', (req,res) => {
+  var npoID = req.param('npoID')
+  pool.query('select * from description WHERE npoID = ?',npoID, function (err, result, fields) {
+    if (err){
+      logger.error("Error while getting ratings");
+    }
+    else {
+      res.end(JSON.stringify(result));
+    }
+  });
+});
+
+
+//3.3 User vieweing charity's information
+app.get('/information/:npoID', (req, res) => {
+  var npoID = req.param('npoID')
+  pool.query('select * from information WHERE npoID = ?', npoID, function (err, result, fields) {
+    if (err){
+      logger.error("Error while getting charity information")
+    }
+    else {
+      res.end(JSON.stringify(result));
+    }
+  });
+});
+
+
+// 8.1  View flagged ratings as an Admin
+app.get('/ratings/:status', (req, res) => {
+  var status = req.param('status')
+  pool.query('select * from ratings WHERE flagged = ?', status, function(err, result, fields) {
+    if (err){
+      logger.error("Error while getting flagged reviews")
+    }
+    else {
+      res.end(JSON.stringify(result));
+    }
+  });
+});
+
+// 8.2 Unflag ratings as an Admin
+app.put('/ratings/:rating', async(req, res) => {
+
+  var oldRating = req.param('oldRating');
+  var newRating = req.param('newRating');
+
+  pool.query('UPDATE ratings SET rating = ? WHERE rating = ?', [newRating, oldRating], function (err, result, fields){
+    if (err){
+      logger.error("Failed updating ratings")
+    }
+    else {
+      res.end(JSON.stringify(result));
+    }
+  });
+});
+
+//8.3 delete reviews as an Admin
+app.delete('/reviews/:userID', async(req, res) => {
+
+  var userID = req.param('userID');
+
+  pool.query('DELETE FROM reviews WHERE userID = ?', userID, function(err, result, fields){
+    if (err) {
+      logger.error("Failed to delete review")
+    }
+    else {
+      res.end(JSON.stringify(result));
+    }
+  });
+});
+
