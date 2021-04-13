@@ -252,7 +252,7 @@ app.put('/users/:userID/:npoID', async (req,res) => {
 //3.1 User viewing charity's ratings
 app.get('/ratings/:npoID', (req,res) => {
   var npoID = req.param('npoID')
-  pool.query('select * from ratings WHERE npoID =', npoID, function (err, result, fields) {
+  pool.query('select rating from ratings WHERE npoID = ?', npoID, function (err, result, fields) {
     if (err) {
       logger.error("Error while getting ratings");
     }
@@ -265,7 +265,7 @@ app.get('/ratings/:npoID', (req,res) => {
 //3.2 User viewing charity's description
 app.get('/description/:npoID', (req,res) => {
   var npoID = req.param('npoID')
-  pool.query('select * from description WHERE npoID = ?',npoID, function (err, result, fields) {
+  pool.query('select description from npos WHERE npoID = ?',npoID, function (err, result, fields) {
     if (err){
       logger.error("Error while getting ratings");
     }
@@ -279,7 +279,7 @@ app.get('/description/:npoID', (req,res) => {
 //3.3 User vieweing charity's information
 app.get('/information/:npoID', (req, res) => {
   var npoID = req.param('npoID')
-  pool.query('select * from information WHERE npoID = ?', npoID, function (err, result, fields) {
+  pool.query('select location from npos WHERE npoID = ?', npoID, function (err, result, fields) {
     if (err){
       logger.error("Error while getting charity information")
     }
@@ -291,9 +291,9 @@ app.get('/information/:npoID', (req, res) => {
 
 
 // 8.1  View flagged ratings as an Admin
-app.get('/ratings/:status', (req, res) => {
-  var status = req.param('status')
-  pool.query('select * from ratings WHERE flagged = ?', status, function(err, result, fields) {
+app.get('/flagged', (req, res) => {
+  
+  pool.query('select npoID, flagged from ratings WHERE flagged = 1', function(err, result, fields) {
     if (err){
       logger.error("Error while getting flagged reviews")
     }
@@ -320,11 +320,11 @@ app.put('/ratings/:rating', async(req, res) => {
 });
 
 //8.3 delete reviews as an Admin
-app.delete('/reviews/:userID', async(req, res) => {
+app.delete('/reviews/:ratingID', async(req, res) => {
 
-  var userID = req.param('userID');
+  var ratingID = req.param('ratingID');
 
-  pool.query('DELETE FROM reviews WHERE userID = ?', userID, function(err, result, fields){
+  pool.query('DELETE FROM ratings WHERE ratingID = ?', ratingID, function(err, result, fields){
     if (err) {
       logger.error("Failed to delete review")
     }
@@ -336,12 +336,11 @@ app.delete('/reviews/:userID', async(req, res) => {
 
 
 //10.1 flag reviews or ratings as an NPO
-app.post('/ratings', async(req, res) =>{
+app.put('/ratings/:ratingID', async(req, res) =>{
 
-  var review = req.param('review')
-  var rating = req.param('rating')
+  var ratingID = req.param('ratingID')
 
-  pool.query('INSERT INTO ratings (review, rating) VALUES (?,?)', [review, rating], function(err, result, fields){
+  pool.query('UPDATE ratings SET rating = 1 WHERE ratingID = ?',ratingID, function(err, result, fields){
     if(err){
       logger.error("Failed to flag ratings")
     }
