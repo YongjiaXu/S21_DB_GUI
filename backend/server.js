@@ -44,8 +44,9 @@ app.listen(config.port, config.host, (e) => {
 // --------------------------- API routes ----------------------------
 // -------------------------------------------------------------------
 
+// Bella
 // users table related 
-// GET all users
+// 1. GET all users
 app.get('/getit/users', (req, res) => {
   pool.query('SELECT * FROM users', function (err, result, fields) {
     if (err) {
@@ -57,7 +58,7 @@ app.get('/getit/users', (req, res) => {
   });
 });
 
-// GET a specific user by username
+// 2. GET a specific user by username
 app.get('/getit/user', (req, res) => {
   var username = req.param('username');
   pool.query('SELECT * FROM users WHERE username = ?', username, function(err, result, fields) {
@@ -70,7 +71,7 @@ app.get('/getit/user', (req, res) => {
   });
 });
 
-// GET users by type
+// 3. GET users by type
 app.get('/getit/usertype', (req, res) => {
   var user_type = req.param('user_type');
   pool.query('SELECT * FROM users WHERE user_type = ?', user_type, function(err, result, fields) {
@@ -83,7 +84,7 @@ app.get('/getit/usertype', (req, res) => {
   });
 });
 
-// GET password by username
+// 4. GET password by username
 app.get('/getit/userpwd', (req, res) => {
   var username = req.param('username');
   pool.query('SELECT password FROM users WHERE username = ?', username, function(err, result, fields) {
@@ -96,7 +97,7 @@ app.get('/getit/userpwd', (req, res) => {
   });
 });
 
-// UPDATE user password
+// 5. UPDATE user password
 app.put('/putit/userpwd', (req, res) => {
   var username = req.param('username');
   var newpwd = req.param('newpwd');
@@ -110,7 +111,7 @@ app.put('/putit/userpwd', (req, res) => {
   });
 });
 
-// POST a specific user
+// 6. POST a specific user
 app.post('/postit/user', (req, res) => {
   var username = req.param('username');
   var password = req.param('password');
@@ -126,44 +127,37 @@ app.post('/postit/user', (req, res) => {
   });
 });
 
-// DELETE a user
-app.delete('/deleteit/user', (req, res) => {
+// 7. DELETE a user by username
+app.delete('/deleteit/username', (req, res) => {
   var username = req.param('username');
-  pool.query('delete from users where username = ? ', username, function (err, result, fields) {
+  pool.query('delete from ratings where raterID = (select userID from users where username = ? ); delete from users where username = ?; ', [username, username], function (err, result, fields) {
     if (err) {
-      logger.error("Error while deleting new user to users");
+      logger.error("Error while deleting user " + username);
     }
     else{
-      res.end(JSON.stringify(result));
+      res.end(JSON.stringify(result[0]));
+      res.end(JSON.stringify(result[1]));
     }
   });
 });
 
-// // npos table related
-// app.post('/postit/npo', (req, res) => {
-//   var username = req.param('username');
-//   var title = req.param('title');
-//   var location = req.param('location');
-//   var logoURL = req.param('logoURL');
-//   var image1URL = req.param('image1URL');
-//   var image2URL = req.param('image2URL');
-//   var image3URL = req.param('image3URL');
-//   var image4URL = req.param('image4URL');
-//   var image5URL = req.param('image5URL');
-//   var description = req.param('description');
+// 8. DELETE a user by userID
+app.delete('/deleteit/userID', (req, res) => {
+  var userID = req.param('userID');
+  pool.query('delete from ratings where raterID = ?; delete from users where userID = ?; ', [userID, userID], function (err, result, fields) {
+    if (err) {
+      logger.error("Error while deleting user " + userID);
+    }
+    else{
+      res.end(JSON.stringify(result[0]));
+      res.end(JSON.stringify(result[1]));
+    }
+  });
+});
 
-//   pool.query('insert into npos values ((select userID from users where username = ?), ?, ?, ?, ?, ?, ?, ?, ?, ?)', 
-//               [username, title, location, logoURL, image1URL, image2URL, image3URL, image4URL, image5URL, description], 
-//               function (err, result, fields) {
 
-//     if (err) {
-//       logger.error("Error while inserting new user to users");
-//     }
-//     else{
-//       res.end(JSON.stringify(result));
-//     }
-//   });
-// });
+
+
 
 
 ///Peter
@@ -249,10 +243,10 @@ app.put('/users/:userID/:npoID', async (req,res) => {
 
 
 ///Prince 
-//3.1 User viewing charity's ratings
+//3.1 User viewing charity's ratings by npoID
 app.get('/ratings/:npoID', (req,res) => {
   var npoID = req.param('npoID')
-  pool.query('select rating from ratings WHERE npoID = ?', npoID, function (err, result, fields) {
+  pool.query('select * from ratings WHERE npoID = ?', npoID, function (err, result, fields) {
     if (err) {
       logger.error("Error while getting ratings");
     }
@@ -262,12 +256,25 @@ app.get('/ratings/:npoID', (req,res) => {
   });
 });
 
-//3.2 User viewing charity's description
-app.get('/description/:npoID', (req,res) => {
+//3.2 User viewing charity's description by npoID
+app.get('/descriptionbyID/:npoID', (req,res) => {
   var npoID = req.param('npoID')
-  pool.query('select description from npos WHERE npoID = ?',npoID, function (err, result, fields) {
+  pool.query('select description from npos WHERE npoID = npoID',npoID, function (err, result, fields) {
     if (err){
-      logger.error("Error while getting ratings");
+      logger.error("Error while getting descriptiong for npo " + npoID);
+    }
+    else {
+      res.end(JSON.stringify(result));
+    }
+  });
+});
+
+//3.2 User viewing charity's description by npo name
+app.get('/descriptionbyName/:username', (req,res) => {
+  var username = req.param('username')
+  pool.query('select description from npos WHERE npoID = (select npoID from users where username = ?)',username, function (err, result, fields) {
+    if (err){
+      logger.error("Error while getting descriptiong for npo " + username);
     }
     else {
       res.end(JSON.stringify(result));
@@ -276,12 +283,26 @@ app.get('/description/:npoID', (req,res) => {
 });
 
 
-//3.3 User vieweing charity's information
-app.get('/information/:npoID', (req, res) => {
+
+//3.3 User vieweing charity's location by npoID
+app.get('/locationbyID/:npoID', (req, res) => {
   var npoID = req.param('npoID')
-  pool.query('select location from npos WHERE npoID = ?', npoID, function (err, result, fields) {
+  pool.query('select location from npos WHERE npoID = ?', npoID , function (err, result, fields) {
     if (err){
-      logger.error("Error while getting charity information")
+      logger.error("Error while getting charity location")
+    }
+    else {
+      res.end(JSON.stringify(result));
+    }
+  });
+});
+
+//3.3 User vieweing charity's location
+app.get('/locationbyName/:username', (req, res) => {
+  var username = req.param('username')
+  pool.query('select location from npos WHERE npoID = (select npoID from users where username = ?)', username , function (err, result, fields) {
+    if (err){
+      logger.error("Error while getting charity location")
     }
     else {
       res.end(JSON.stringify(result));
@@ -292,8 +313,7 @@ app.get('/information/:npoID', (req, res) => {
 
 // 8.1  View flagged ratings as an Admin
 app.get('/flagged', (req, res) => {
-  
-  pool.query('select npoID, flagged from ratings WHERE flagged = 1', function(err, result, fields) {
+  pool.query('select * from ratings WHERE flagged = 1', function(err, result, fields) {
     if (err){
       logger.error("Error while getting flagged reviews")
     }
