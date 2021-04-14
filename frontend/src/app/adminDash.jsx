@@ -6,7 +6,24 @@ import {UserDash} from './userDash';
 export class AdminDash extends React.Component{
     render(){
         return<>
-            <UserDash/>        
+            <h1 style={{marginLeft:"20px"}}>Admin Dashboard</h1>
+
+            <div className="fpassword update" style={{float:"left", marginLeft:"20px"}}>
+                <PasswordUpdate/>
+            </div>
+
+            <div className="npo" style={{float:"left", marginLeft:"110px"}}>
+                <h3>NPO's Needing Approval</h3>
+            </div>
+
+
+            <div className="flaggedPosts" style={{float:"right", marginRight:"20px"}}>
+                <FlaggedReviewList/>
+            </div> 
+
+            <div className="userDash" style={{float:"left", marginLeft:"20px", marginTop:"20px"}}> 
+                <UserDash />
+            </div>  
         </>
         }
 }
