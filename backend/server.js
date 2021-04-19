@@ -172,6 +172,17 @@ app.get('/npos', (req,res) => {
     }
   });
 });
+// GET all approved npos
+app.get('/npos/approved', (req,res) => {
+  pool.query('select * from npos where isApproved = true', function (err,result,fields) {
+    if (err) {
+      logger.error("Error getting approved npos");
+    }
+    else {
+      res.end(JSON.stringify(result));
+    }
+  });
+});
 // GET specific npo by npoID
 app.get('/npos/:npoID', (req,res) => {
   var npoID = req.params.npoID;
