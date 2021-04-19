@@ -161,6 +161,18 @@ app.delete('/deleteit/userID', (req, res) => {
 
 
 ///Peter
+// GET flag status of rating by ratingID
+app.get('/ratings/:ratingID/isFlagged', (req,res) => {
+  var ratingID = req.params.ratingID;
+  pool.query('select flagged from ratings where ratingID = ?', ratingID, function (err,result,fields) {
+    if(err){
+      logger.error("Error getting flagged status of rating " + ratingID);
+    }
+    else{
+      res.end(JSON.stringify(result));
+    }
+  })
+})
 // PUT approve npo by npoID
 app.put('/npos/:npoID/approve', (req,res) => {
   var npoID = req.params.npoID;
