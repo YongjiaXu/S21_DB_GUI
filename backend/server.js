@@ -240,6 +240,18 @@ app.put('/users/:userID/:npoID', async (req,res) => {
     }
   });
 });
+// GET all NPOs needing approval
+app.get('/npos/not_approved', (req,res) => {
+  pool.query('select * from npos where isApproved = false', function (err,result,fields) {
+    if (err) {
+      logger.error("Error getting all npos needing approval");
+    }
+    else {
+      res.end(JSON.stringify(result));
+    }
+  });
+});
+
 
 
 ///Prince 
