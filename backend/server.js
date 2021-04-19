@@ -161,6 +161,18 @@ app.delete('/deleteit/userID', (req, res) => {
 
 
 ///Peter
+// PUT approve npo by npoID
+app.put('/npos/:npoID/approve', (req,res) => {
+  var npoID = req.params.npoID;
+  pool.query('update npos set isApproved = true where npoID = ?', npoID, function (err,result,fields) {
+    if(err){
+      logger.error("Error approving NPO " + npoID);
+    }
+    else {
+      res.end(JSON.stringify(result));
+    }
+  });
+});
 // PUT update password (use JSON body for password)
 app.put('/users/:userID/password', (req,res) => {
   var userID = req.params.userID;
