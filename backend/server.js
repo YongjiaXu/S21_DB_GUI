@@ -162,6 +162,19 @@ app.delete('/deleteit/userID', (req, res) => {
 
 
 ///Peter
+// PUT update npo logo (use JSON body for logoURL)
+app.put('/npos/:npoID/updateLogo', (req,res) => {
+  var npoID = req.params.npoID;
+  var logoURL = req.body.logoURL;
+  pool.query('update npos set logoURL = ? where npoID = ?', [logoURL,npoID], function (err,result,fields) {
+    if(err){
+      logger.error("Error updating logoURL " + logoURL + " for npoID " + npoID);
+    }
+    else {
+      res.end(JSON.stringify(result));
+    }
+  });
+});
 // GET flag status of rating by ratingID
 app.get('/ratings/:ratingID/isFlagged', (req,res) => {
   var ratingID = req.params.ratingID;
