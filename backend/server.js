@@ -162,6 +162,19 @@ app.delete('/deleteit/userID', (req, res) => {
 
 
 ///Peter
+// PUT update npo description (use JSON body for description)
+app.put('/npos/:npoID/updateDescription', (req,res) => {
+  var npoID = req.params.npoID;
+  var description = req.body.description;
+  pool.query('update npos set description = ? where npoID = ?', [description,npoID], function (err,result,fields) {
+    if(err){
+      logger.error("Error updating description for npoID " + npoID);
+    }
+    else{
+      res.end(JSON.stringify(result));
+    }
+  });
+});
 // PUT update npo logo (use JSON body for logoURL)
 app.put('/npos/:npoID/updateLogo', (req,res) => {
   var npoID = req.params.npoID;
