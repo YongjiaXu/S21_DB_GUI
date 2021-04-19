@@ -7,6 +7,7 @@ const { log, ExpressAPILogMiddleware } = require('@rama41222/node-logger');
 // const mysqlConnect = require('./db');
 const routes = require('./routes');
 const pool = require('./db');
+const { json } = require('body-parser');
 
 // set up some configs for express.
 const config = {
@@ -173,6 +174,19 @@ app.get('/ratings/:ratingID/isFlagged', (req,res) => {
     }
   })
 })
+// PUT toggle flag status of rating by ratingID
+app.put('/ratings/:ratingID/toggleFlag', (req,res) => {
+  var ratingID = req.params.ratingID;
+  var sql = "update ratings set flagged = (case when (select flagged where ratingID = ?) = 1 then 0 when (select flagged where ratingID = ?) = 0 then 1 end ) where ratingID = ?";
+  pool.query(sql, [ratingID,ratingID,ratingID], function (err,result,fields) {
+    if(err){
+      logger.error("Error toggling flag status of rating " + ratingID);
+    }
+    else{
+      res.end(JSON.stringify(result));
+    }
+  });
+});
 // PUT approve npo by npoID
 app.put('/npos/:npoID/approve', (req,res) => {
   var npoID = req.params.npoID;
