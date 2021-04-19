@@ -370,4 +370,30 @@ app.put('/ratings/:ratingID', async(req, res) =>{
   });
 });
 
+// Mike Cuzzo
+// 8.4 Ban raters as an admin
+// by username
+app.delete('/deleteit/username', (req, res) => {
+  var username = req.param('username');
+  pool.query('delete from ratings where raterID = (select userID from users where username = ? ); ', [username], function (err, result, fields) {
+    if (err) {
+      logger.error("Error while banning user " + username);
+    }
+    else{
+      res.end(JSON.stringify(result));
+    }
+  });
+});
 
+//  by userID
+app.delete('/deleteit/userID', (req, res) => {
+  var userID = req.param('userID');
+  pool.query('delete from ratings where raterID = ?; ', [userID], function (err, result, fields) {
+    if (err) {
+      logger.error("Error while banning user " + userID);
+    }
+    else{
+      res.end(JSON.stringify(result));
+    }
+  });
+});
