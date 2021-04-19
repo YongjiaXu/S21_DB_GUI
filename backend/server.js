@@ -161,11 +161,35 @@ app.delete('/deleteit/userID', (req, res) => {
 
 
 ///Peter
+// PUT update password (use JSON body for password)
+app.put('/users/:userID/password', (req,res) => {
+  var userID = req.params.userID;
+  var password = req.body.password;
+  pool.query('update users set password = ? where userID = ?', [password,userID], function (err,result,fields) {
+    if(err){
+      logger.error("Error updating password for " + userID);
+    }
+    else {
+      res.end(JSON.stringify(result));
+    }
+  });
+});
 // GET all npos
 app.get('/npos', (req,res) => {
   pool.query('select * from npos', function (err, result, fields) {
     if (err) {
       logger.error("Error while getting npos");
+    }
+    else {
+      res.end(JSON.stringify(result));
+    }
+  });
+});
+// GET all NPOs needing approval
+app.get('/npos/notApproved', (req,res) => {
+  pool.query('select * from npos where isApproved = false', function (err,result,fields) {
+    if (err) {
+      logger.error("Error getting all npos needing approval");
     }
     else {
       res.end(JSON.stringify(result));
@@ -245,17 +269,6 @@ app.put('/users/:userID/:npoID', async (req,res) => {
   pool.query('update users set npoID = ? where userID = ?', [npoID,userID], function (err, result, fields) {
     if (err) {
       logger.error("Error linking user " + userID + " to npo " + npoID);
-    }
-    else {
-      res.end(JSON.stringify(result));
-    }
-  });
-});
-// GET all NPOs needing approval
-app.get('/npos/notApproved', (req,res) => {
-  pool.query('select * from npos where isApproved = false', function (err,result,fields) {
-    if (err) {
-      logger.error("Error getting all npos needing approval");
     }
     else {
       res.end(JSON.stringify(result));
