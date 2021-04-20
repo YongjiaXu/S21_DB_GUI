@@ -382,7 +382,7 @@ app.get('/ratings/:npoID', (req,res) => {
   });
 });
 
-//3.2 User viewing charity's description by npoID
+//3.2.1 User viewing charity's description by npoID
 app.get('/descriptionbyID/:npoID', (req,res) => {
   var npoID = req.param('npoID')
   pool.query('select description from npos WHERE npoID = npoID',npoID, function (err, result, fields) {
@@ -395,7 +395,7 @@ app.get('/descriptionbyID/:npoID', (req,res) => {
   });
 });
 
-//3.2 User viewing charity's description by npo name
+//3.2.2 User viewing charity's description by npo name
 app.get('/descriptionbyName/:username', (req,res) => {
   var username = req.param('username')
   pool.query('select description from npos WHERE npoID = (select npoID from users where username = ?)',username, function (err, result, fields) {
@@ -410,7 +410,7 @@ app.get('/descriptionbyName/:username', (req,res) => {
 
 
 
-//3.3 User vieweing charity's location by npoID
+//3.3.1 User vieweing charity's location by npoID
 app.get('/locationbyID/:npoID', (req, res) => {
   var npoID = req.param('npoID')
   pool.query('select location from npos WHERE npoID = ?', npoID , function (err, result, fields) {
@@ -423,7 +423,7 @@ app.get('/locationbyID/:npoID', (req, res) => {
   });
 });
 
-//3.3 User vieweing charity's location
+//3.3.2 User vieweing charity's location
 app.get('/locationbyName/:username', (req, res) => {
   var username = req.param('username')
   pool.query('select location from npos WHERE npoID = (select npoID from users where username = ?)', username , function (err, result, fields) {
