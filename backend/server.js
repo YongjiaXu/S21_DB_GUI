@@ -162,6 +162,19 @@ app.delete('/deleteit/userID', (req, res) => {
 
 
 ///Peter
+// PUT update npo location by npoID (use JSON body for location)
+app.put('/npos/:npoID/updateLocation', (req,res) => {
+  var npoID = req.params.npoID;
+  var location = req.body.location;
+  pool.query('update npos set location = ? where npoID = ?', [location,npoID], function (err,result,fields){
+    if(err){
+      logger.error("Error updating location for npoID " + npoID);
+    }
+    else{
+      res.end(JSON.stringify(result));
+    }
+  });
+});
 // DELETE remove npo image by npoID and imageID
 app.delete('/images/:npoID/:imageID', (req,res) => {
   var npoID = req.params.npoID;
