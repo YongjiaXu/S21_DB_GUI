@@ -25,8 +25,7 @@ export class NPOProfile extends React.Component
         return(
             <>                
                 <div class="card" style={{width: '80em'}}>
-                    <div class="card-header" style=
-                    {{color: 'white', background: 'black'}}>
+                    <div class="card-header" style={{ color: 'white', background: '#425088' }}>
                         <h1> (Insert NPO Here) Overview 
                             <span style={{float: 'right'}}> (Display Average Rating Here) </span>
                         </h1>
@@ -34,16 +33,21 @@ export class NPOProfile extends React.Component
 
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-4" style={{float: 'left', clear: 'both', overflow: 'auto'}}>
-                                <img src="https://via.placeholder.com/300x300"
-                                alt="Company Logo">
-                                </img>
+                            <div className='card' style={{'border': 'none'}}>
+                                <div class="col-4">
+                                    <img src="https://via.placeholder.com/300x300"
+                                    alt="Company Logo">
+                                    </img>
+                                </div>
                             </div>
                             
                             <div class='col-8' style={{float: 'left', overflow: 'auto'}}>
+                            <div className='card'>
+                            <div className='card-header' style={{ color: 'white', background: '#425088' }}>
                                 <h2>Location: (insert location here)</h2>
+                            </div>
+                            <div className='card-body'>
                                 <br/>
-                                <h2 style={{'text-align': 'left'}}>Description</h2>
                                 <p style={{'font-size': '1.05em'}}>
                                     "Did you ever hear the tragedy of Darth Plagueis The Wise? 
                                     I thought not. It’s not a story the Jedi would tell you. 
@@ -59,7 +63,9 @@ export class NPOProfile extends React.Component
                                     him in his sleep. Ironic. He could save others from death, 
                                     but not himself."
                                 </p>
+                                </div>
                             </div>
+                        </div>
                         </div>
 
                         <br/>
@@ -83,7 +89,7 @@ export class NPOProfile extends React.Component
                                 <h2 style={{'text-align': 'center'}}> Ratings </h2>
 
                                 <div class="card" style={{width: '77em'}}>
-                                    <div class='card-header' style={{background: 'black', color: 'white'}}>
+                                    <div class='card-header' style={{ color: 'white', background: '#425088' }}>
                                         <Rating value = {3}/>
                                     </div>
                                     
@@ -104,7 +110,7 @@ export class NPOProfile extends React.Component
                                 <br/>
 
                                 <div class="card" style={{width: '77em'}}>
-                                    <div class='card-header' style={{background: 'black', color: 'white'}}>
+                                    <div class='card-header' style={{ color: 'white', background: '#425088' }}>
                                         <Rating value = {5}/>
                                     </div>
                                     
@@ -125,7 +131,7 @@ export class NPOProfile extends React.Component
                                 <br/>
 
                                 <div class="card" style={{width: '77em'}}>
-                                    <div class='card-header' style={{background: 'black', color: 'white'}}>
+                                    <div class='card-header' style={{ color: 'white', background: '#425088' }}>
                                         <Rating value = {1}/>
                                     </div>
                                     
@@ -149,7 +155,7 @@ export class NPOProfile extends React.Component
 
                         <div class="row">
                             <div class="card" style={{width: '80em'}}>
-                                <div class="card-header" style={{background: 'black', color: 'white'}}>
+                                <div class="card-header" style={{ color: 'white', background: '#425088' }}>
                                     Leave a review
                                 </div>
                                 <ul class="list-group list-group-flush">
@@ -204,7 +210,7 @@ export class NPOProfile extends React.Component
 
                                         <div class="row">
                                             <div class="col-12">
-                                                <button type="button" class="btn btn-primary"
+                                                <button type="button" className="btn btn-success"
                                                     type="button">
                                                     Submit
                                                 </button>
