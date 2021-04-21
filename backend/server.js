@@ -287,6 +287,30 @@ app.put('/ratings/:ratingID/toggleFlag', (req,res) => {
     }
   });
 });
+// PUT flag rating by ratingID
+app.put('/ratings/:ratingID/flag', (req,res) => {
+  var ratingID = req.params.ratingID;
+  pool.query('update ratings set flagged = 1 where ratingID = ?', ratingID, function (err,result,fields) {
+    if (err) {
+      logger.error("Error flagging rating " + ratingID);
+    }
+    else {
+      res.end(JSON.stringify(result));
+    }
+  });
+});
+// PUT unflag rating by ratingID
+app.put('/ratings/:ratingID/unflag', (req,res) => {
+  var ratingID = req.params.ratingID;
+  pool.query('update ratings set flagged = 0 where ratingID = ?', ratingID, function (err,result,fields) {
+    if (err) {
+      logger.error("Error unflagging rating " + ratingID);
+    }
+    else {
+      res.end(JSON.stringify(result));
+    }
+  });
+});
 // PUT approve npo by npoID
 app.put('/npos/:npoID/approve', (req,res) => {
   var npoID = req.params.npoID;
