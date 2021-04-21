@@ -58,4 +58,4 @@
     - Install DBeaver
       - Create connection
     - Postman is a great tool to test whether the link works and changes the database
-  - You can access the website here: http://3.21.114.143:3000/. But this won't update immediately after you push, so don't expect an instant feedback on this page. I'll pull the repository from ec2 server and then we should see the changes on the public url.
+  - You can access the website here: http://3.143.234.231:3000. But this won't update immediately after you push, so don't expect an instant feedback on this page. I'll pull the repository from ec2 server and then we should see the changes on the public url.
