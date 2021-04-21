@@ -1,5 +1,6 @@
 # S21_DB_GUI Project
 ***(Feel free to add or edit anything to share your tips and help our team)***
+updated with making pull request
 ## Merge and Branch
 - First clone the repo to your local directory
   - `git clone https://github.com/YongjiaXu/S21_DB_GUI.git`
@@ -24,9 +25,8 @@
   - `git add --all`
   - `git commit -m [message]`
   - `git push` *if it fails and pops up a message say use git push -something blablabla; copy that one and push again
-  - Go back to master: `git checkout master`
-  - Merge with your branch: `git merge [branch name]`
-  - `git push`
+- Make pull request
+  - Go back to our github repo page. On the top, it should show a message saying making a pull request. Click on that and it will take you to a more detailed page and create pull request. After doing the pull request, it automatically merges with master, so the master have every updates in your branch.
 - To delete a branch
   - `git branch -d [branch name]` (we probably don't need this throughout the semester)
 - If it tells you there's a conflict (basically means master changed something and you also changed something on your branch without merging)
