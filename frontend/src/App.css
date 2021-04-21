@@ -22,10 +22,32 @@
   color: #09d3ac;
 }
 
-.userTitle{
-  float:left;
+#listOfPref{
+  text-align: center;
 }
 
-.userPassChange{
-  float:right;
+#password{
+  padding-bottom: 50px;
+}
+
+#pref{
+  clear:both;
+}
+
+#head{
+  background-color: rgb(0, 87, 201);
+  color:white;
+}
+
+#listOfNonProfs{
+  text-align: center;
+}
+
+#name{
+  font-weight: bold;
+}
+
+#npoCard{
+  padding-bottom: 10px;
+
 }
