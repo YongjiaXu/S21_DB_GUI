@@ -1,47 +1,100 @@
 import React from 'react';
-import {PasswordUpdate} from './passwordUpdate';
-import {userRepository} from '../api/userRepository'
+import { Npo } from '../app/models/npo'
+import { Rating } from '../app/models/rating'
+import { PasswordUpdate } from './passwordUpdate';
+// Requires Bootstrap
+// Base User Dashboard, does nothing yet
 
 export class UserDash extends React.Component{
     state={
-        userName: 'Place Holder',
+        userName: 'Place Holder Name',
         preferences: ["Freddy", "Yes"],
         password: '',
-        npos: ["Kaer Morhen", "Kaer Trolde", "Styggian Castle"]
+        npos: [new Npo("Kaer Morhen", 1, "Sucks"),
+            new Npo("Mahakam", 5, "Rules")]
+    }
+
+    addPreference(pref){
+        var preferences = this.state.preferences;
+        preferences.push(pref);
+        this.setState({preferences});
     }
 
     render (){
         return <>
-            <nav>
-                <ul className="breadcrumb">
-                    <li className="breadcrumb-item"><a href="#">Log Out</a></li>
+            <nav> 
+                <ul id="head" className="breadcrumb">
+                    <li id="head"className="breadcrumb-item active"><a id="head" href="#"> Log Out </a></li>
                 </ul>
             </nav>
-            <h1 class="userTitle" style={{textDecoration:"underline"}}> {this.state.userName} </h1>
 
-            <div id="profs" style={{float:"left"}}>
-                <h1 class="listOfNonProfs"> Non-Profit Organinzations </h1>
-                {this.state.npos.map((x,i)=> <>
-                    <div>
-                        {x}
+            <div className="row">
+                <div className="col-7">
+                    <h1> {this.state.userName}</h1>
+                </div>
+
+                <div className="col-5">
+                    <div id="password" className="row">
+                        <div className="col-4">
+                        </div>
+                        <div className="col-4">
+                            <button type="button" className="btn btn-primary btn-block"> 
+                                Change Password?
+                            </button>
+                        </div>
+                        <div className="col-4">
+                        </div>
                     </div>
-                </>
-                )}
+                </div>
             </div>
 
-            <button class="userPassChange" type="button" className=" btn btn-success btn-block" onClick={{}} >
-                Change Password?
-            </button>
-
-            <h1 class="listOfPref" style={{float:"right"}}> List of Preferences</h1>
-            <div>
-                {this.state.preferences.map((x,i)=> <>
+            <div className="row">
+                <div className="col-6">
+                    <h1 id="listOfNonProfs"> Non-Profit Organinzations </h1>
+                    <br/>
                     <div>
-                        {x}
+                        {this.state.npos.map((x,i)=> <>
+                            <div id="npoCard" className="card">
+                                <div id="name"className="card-header">
+                                    {x.name} 
+                                    <div className="float-right">
+                                        <Rating value = {x.rating}/>
+                                    </div> 
+                                </div>
+                                <div className="card-body">
+                                    <div>
+                                        <div>"{x.description}"</div>
+                                    </div>
+                                </div>
+                                <button type="button" className="btn btn-danger btn-block"> 
+                                    Remove NPO?
+                                </button>
+                            </div>
+                        </>
+                        )}
                     </div>
-                </>
-                )}
+                </div>
+                
+                <div className="col-6">
+                    <div id="listOfPref">
+                        <h1> List of Preferences</h1>
+                        <br/>
+                        <button type="button" className="btn btn-primary btn-block"> 
+                            Add Preference?
+                        </button>
+                        <div>
+                            {this.state.preferences.map((x,i)=> <>
+                                <div id="pref"className="card">
+                                    <div className="card-body">
+                                        {x}
+                                    </div>
+                                </div>
+                            </>
+                            )}
+                        </div>
+                    </div>
+                </div>  
             </div>
-            </>
+        </>
     }
 }
