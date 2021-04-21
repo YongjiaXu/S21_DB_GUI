@@ -1,5 +1,5 @@
 import React from 'react'
-import { Rating } from './rating';
+import { Rating } from './models/rating';
 
 export class NPODashboard extends React.Component
 {

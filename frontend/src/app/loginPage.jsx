@@ -1,67 +1,50 @@
 import React from 'react';
+import {Link} from "react-router-dom";
 import {UserRepository} from '../api/userRepository';
-import {CreateAccount} from './createAccount';
+import { CreateAccount } from './createAccount';
+
 export class LoginPage extends React.Component {
-    userRepository = new UserRepository();
+    //userRepository = new UserRepository();
     state = {
         users : [],
         specific_user: ''
     }
 
-    login(user, password){
-        this.userRepository.getUser(user)
-            .then()
-    }
+    // login(user, password){
+    //     this.userRepository.getUser(user)
+    //         .then()
+    // }
 
     render () {
-        return <> 
-        <h1 id="login-header">Login</h1>
-        <div className="form-group">
-            <label htmlFor="name">Username:</label>
-            <br/>
-            <input type="text"
-                id="name"
-                name="name"
-                value={this.state.name}
-                onChange={event => this.setState({name: event.target.value})}
-                className="form-control" />
-        </div>
-        <div className="form-group">
-            <label htmlFor="email">Password:</label>
-            <br/>
-            <input type="text"
-                    id="email"
-                    name="email"
-                   value={this.state.email}
-                    onChange={event => this.setState({email: event.target.value})}
-                    className="form-control" />
-            </div>
-            <br/>
-            <button className="loginButton">Login</button>
-            <br/><br/>
-            <button className="newUser">Create New Account</button>
-        {/* {<table>
-            <tbody>
-                {
-                    this.state.users.map((user, i) => <tr key={i}>
-                        <td> {user.username} </td>
-                        <td> {user.password} </td>
-                        <td> {user.user_type} </td>
-                    </tr>)
-                }
-            </tbody>
-        </table>
-            <p>single user: {this.state.specific_user}</p>
-            {console.log(this.state.specific_user)}} */}
+        return <>
+                <div className="signup-form">
+                <form>
+                    <h2>Login</h2>
+                    
+                    <div className="text-center" style={{ marginBottom: '.5rem' }}>Don't have an account? <Link to = '/register'>Sign Up</Link> </div>
+                    
+                            <div className="form-group">
+                                <input type="email" className="form-control" name="email" placeholder="Email" required="required"/> 
+                            </div>
+		
+                            <div className="form-group">
+                                <input type="password" className="form-control" name="password" placeholder="Password" required="required" />
+                            </div>
+                            
+                            <div className="form-group">
+                                <button type="submit" className="btn btn-success btn-lg btn-block">Register Now</button>
+                            </div>
+                        </form>
+                    </div>
         </>
     }
-    componentDidMount() {
-        this.userRepository.getUsers()
-            .then( users => this.setState({users: users}));
-        let username = 'npo';
-        this.userRepository.getUser(username)
-            .then( user => {
-                this.setState({specific_user: user[0].username});
-            });
-    }
+    // componentDidMount() {
+    //     this.userRepository.getUsers()
+    //         .then( users => this.setState({users: users}));
+    //     let username = 'npo';
+    //     this.userRepository.getUser(username)
+    //         .then( user => {
+    //             this.setState({specific_user: user[0].username});
+    //         });
+    // }
 }

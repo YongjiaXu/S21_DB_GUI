@@ -5,6 +5,8 @@ import './index.css';
 import App from './app/app'
 import { LoginPage } from './app/loginPage';
 
-ReactDOM.render(
-    <App />, document.getElementById('root')
-);
+import 'bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+
+ReactDOM.render(<App />, document.getElementById('root'));
