@@ -1,6 +1,6 @@
 # S21_DB_GUI Project
 ***(Feel free to add or edit anything to share your tips and help our team)***
-updated with making pull request
+- updated with making pull request
 ## Merge and Branch
 - First clone the repo to your local directory
   - `git clone https://github.com/YongjiaXu/S21_DB_GUI.git`
