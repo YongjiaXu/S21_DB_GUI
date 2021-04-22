@@ -45,6 +45,48 @@ app.listen(config.port, config.host, (e) => {
 // --------------------------- API routes ----------------------------
 // -------------------------------------------------------------------
 
+// Sam
+// login & register
+
+// login
+app.post('/postit/login', (req, res) => {
+  const username = req.body.username;
+  const password = req.body.password;
+  console.log('login check');
+  pool.query('SELECT * FROM users WHERE username = ? AND password = ?', [username,password], function(err, result, fields) {
+    if (err) {
+      console.log(username, password, result[0].password)
+      if (password !== result.password) {
+        return res
+        .status(400)
+        .send('Please Error while getting user all fields!');
+      }
+      return res.status(400).send('Please Error while getting user all fields!');
+    }
+    else {
+      console.log(username, password, result[0].password)
+      res.end(JSON.stringify(result));
+    }
+  });
+});
+
+// register
+app.post('/postit/register', (req, res) => {
+  const username = req.body.username;
+  const password = req.body.password;
+//  const user_type = req.body.user_type;
+//   pool.query('INSERT INTO users (username, password, user_type) VALUES (?,?,?)', [username, password, user_type], function (err, result, fields) {
+
+  pool.query('INSERT INTO users (username, password) VALUES (?,?)', [username, password], function (err, result, fields) {
+    if (err) {
+      logger.error("Error while inserting new user to users");
+    }
+    else{
+      res.end(JSON.stringify(result));
+    }
+  });
+});
+
 // Bella
 // users table related 
 // 1. GET all users

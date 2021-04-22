@@ -1,67 +1,90 @@
 import React from 'react';
+import {Link, Redirect} from "react-router-dom";
 import {UserRepository} from '../api/userRepository';
-import {CreateAccount} from './createAccount';
-export class LoginPage extends React.Component {
-    userRepository = new UserRepository();
-    state = {
-        users : [],
-        specific_user: ''
-    }
+import { CreateAccount } from './createAccount';
 
-    login(user, password){
-        this.userRepository.getUser(user)
-            .then()
+export class LoginPage extends React.Component {
+    
+    userRepository = new UserRepository();
+    
+    state = {
+        id: 0,
+        username: "",
+        password: "",
+        authenticated: null
+    };
+
+    login() {
+        if (this.state.username == '' || this.state.password == '')
+            alert('Please enter all fields!');
+        else {
+            this.userRepository.login(this.state.username, this.state.password)
+                .then(user => {
+                    console.log(user);
+                    if (user[0].userID !== undefined) {
+                        console.log(user);
+                        console.log('logged in');
+                        this.setState({ authenticated: true });
+                        this.setState({ id: user[0].userID });
+                    }
+                    else {
+                        console.log('login failed');
+                        this.setState({ authenticated: false });
+                    }
+                }).catch({
+
+                });
+        }
     }
 
     render () {
-        return <> 
-        <h1 id="login-header">Login</h1>
-        <div className="form-group">
-            <label htmlFor="name">Username:</label>
-            <br/>
-            <input type="text"
-                id="name"
-                name="name"
-                value={this.state.name}
-                onChange={event => this.setState({name: event.target.value})}
-                className="form-control" />
-        </div>
-        <div className="form-group">
-            <label htmlFor="email">Password:</label>
-            <br/>
-            <input type="text"
-                    id="email"
-                    name="email"
-                   value={this.state.email}
-                    onChange={event => this.setState({email: event.target.value})}
-                    className="form-control" />
+        return <>
+            <div className="signup-form">
+                <form>
+                    <h2>Login</h2>
+                    
+                    <div className="text-center" style={{ marginBottom: '.5rem' }}>Don't have an account? <Link to='/register'>Sign Up</Link> </div>
+                    
+                    <div className="form-group">
+                        <input type="text"
+                            className="form-control"
+                            name="username"
+                            placeholder="username"
+                            required="required"
+                            value={this.state.username}
+                            onChange={e => this.setState({ username: e.target.value })}/>
+                    </div>
+		
+                    <div className="form-group">
+                        <input type="password"
+                            className="form-control"
+                            name="password"
+                            placeholder="Password"
+                            required="required"
+                            value={this.state.password}
+                            value={this.state.password}
+                            onChange={e => this.setState({ password: e.target.value })}
+                                />
+                    </div>
+                            
+                    <div className="form-group">
+                        <button type="button"
+                            className="btn btn-success btn-lg btn-block"
+                            onClick={() => this.login()}>Login</button>
+                    </div>
+                    {this.state.authenticated && <Redirect to={'/admin-dash/'} />}
+
+                </form>
             </div>
-            <br/>
-            <button className="loginButton">Login</button>
-            <br/><br/>
-            <button className="newUser">Create New Account</button>
-        {/* {<table>
-            <tbody>
-                {
-                    this.state.users.map((user, i) => <tr key={i}>
-                        <td> {user.username} </td>
-                        <td> {user.password} </td>
-                        <td> {user.user_type} </td>
-                    </tr>)
-                }
-            </tbody>
-        </table>
-            <p>single user: {this.state.specific_user}</p>
-            {console.log(this.state.specific_user)}} */}
         </>
     }
-    componentDidMount() {
-        this.userRepository.getUsers()
-            .then( users => this.setState({users: users}));
-        let username = 'npo';
-        this.userRepository.getUser(username)
-            .then( user => {
-                this.setState({specific_user: user[0].username});
-            });
-    }
+    // componentDidMount() {
+    //     this.userRepository.getUsers()
+    //         .then( users => this.setState({users: users}));
+    //     let username = 'npo';
+    //     this.userRepository.getUser(username)
+    //         .then( user => {
+    //             this.setState({specific_user: user[0].username});
+    //         });
+    // }
 }
