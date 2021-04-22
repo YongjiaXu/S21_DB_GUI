@@ -1,8 +1,8 @@
 import axios from "axios";
 
 export class UserRepository {
-    // url = 'http://localhost:8000';
-    url = 'http//3.21.114.143:8000'; // switch to cloud once pulled
+    url = 'http://localhost:8000';
+    // url = 'http//3.21.114.143:8000'; // switch to cloud once pulled
     config = {};
 
     // get all the users
@@ -28,43 +28,6 @@ export class UserRepository {
             .then(x => resolve(x.data))
             .catch(e => {
                 alert("User does not exist!.");
-                reject();
-            });
-        });
-    }
-
-     // login
-     login(username, password) {
-         return new Promise((resolve, reject) => {
-             axios.get(`${this.url}/getit/login`,
-                 {
-                    'username': username,
-                    'password': password,
-                 }
-                 , this.config)
-                 .then(x => {
-                     console.log('logged in');
-                     resolve(x.data);
-                 })
-                 .catch(e => {
-                 alert("can't find user");
-                 reject();
-             });
-         });
-     }
-
-
-    register(username,email, password) {
-        return new Promise((resolve, reject) => {
-            axios.get(`${this.url}/postit/user`,
-                {
-                "username": username,
-                "password": password,
-                }
-                , this.config)
-            .then(x => resolve(x.data))
-            .catch(e => {
-                alert("Register Failed.");
                 reject();
             });
         });
