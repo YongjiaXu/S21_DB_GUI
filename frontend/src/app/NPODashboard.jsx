@@ -1,33 +1,24 @@
 import React from 'react'
 import { Rating } from './models/rating';
-import { npoRepository } from '../api/npoRepository';
+import { NPORepository } from '../api/npoRepository';
+import {Npo} from './models/npo';
 
 export class NPODashboard extends React.Component
 {
-    npoRepo = new npoRepository();
+    npoRepo = new NPORepository();
 
     state = {
         npo:[]
-
     };
-
-    componentDidMount() {
-        let id = +this.props.match.params.id;
-        if (id) {
-            this.npoRepo.getNPO(id)
-            .then(x => { 
-                this.setState({x})
-             });
-        }
-    }
 
     render (){
         return(
             <>
+            {this.state.npo.map(x=>
                 <div class='card' style={{width:'80em'}}>
                     <div class='card-header' style=
                     {{color: 'white', background: '#425088'}}>
-                        <h1> NPO Dashboard for { this.state.title }
+                        <h1> NPO Dashboard for { x.title}
                             <button type='button' 
                             className="btn btn-success" 
                             style={{float: 'right'}}> 
@@ -67,7 +58,7 @@ export class NPODashboard extends React.Component
                                 <h2> Change Logo </h2>
                                 </div>
                                 <div className='card-body'>
-                                <img src={this.state.logoURL}
+                                <img src={x.logoURL}
                                 alt="Logo"></img>
                                 <br/>
                                 <input type='file'></input>
@@ -201,7 +192,17 @@ export class NPODashboard extends React.Component
                         </div>
                     </div>
                 </div>
+                )}
             </>
         )
+    }
+    componentDidMount() {
+        let id = +this.props.match.params.id;
+        if (id) {
+            this.npoRepo.getNPO(id)
+            .then(npo => { 
+                this.setState({npo})
+             });
+        }
     }
 }
