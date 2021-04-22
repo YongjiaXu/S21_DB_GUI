@@ -155,7 +155,7 @@ export class NPODashboard extends React.Component
                                     <div class='card-body'>
                                         <div class='row'>
                                             <div class='col-10' style={{ color:'grey' }}>{x.raterID}</div>
-                                            <div class='col-2'>{new Date().toDateString()}</div>
+                                            <div class='col-2'>{x.ratingDate.toString().substring(0,10)}</div>
                                         </div>
                                         <div class='row'>
                                             <div class='col-10'>{x.comment}</div>
