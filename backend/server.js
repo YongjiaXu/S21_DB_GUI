@@ -156,9 +156,57 @@ app.delete('/deleteit/userID', (req, res) => {
   });
 });
 
+// 9. Get userID by username
+app.get('/getit/userID', (req, res) => {
+  var username = req.param('username');
+  pool.query('select userID from users where username = ? ', username, function (err, result, fields) {
+    if (err) {
+      logger.error("Error while getting userID for user " + username);
+    }
+    else{
+      res.end(JSON.stringify(result));
+    }
+  });
+});
 
+// 9. Get npoID by npo title
+app.get('/getit/npoIDByTitle', (req, res) => {
+  var npoTitle = req.param('npoTitle');
+  pool.query('select npoID from npos where title = ? ', npoTitle, function (err, result, fields) {
+    if (err) {
+      logger.error("Error while getting npoID for npo " + npoTitle);
+    }
+    else{
+      res.end(JSON.stringify(result));
+    }
+  });
+});
 
+// 10. Get npoID by userID - after npo is linked to user table
+app.get('/getit/npoIDByUserID', (req, res) => {
+  var userID = req.param('userID');
+  pool.query('select npoID from users where userID = ? ', userID, function (err, result, fields) {
+    if (err) {
+      logger.error("Error while getting npoID for userID " + userID);
+    }
+    else{
+      res.end(JSON.stringify(result));
+    }
+  });
+});
 
+// 11. Get npoID by username - after npo is linked to user table
+app.get('/getit/npoIDByUsername', (req, res) => {
+  var username = req.param('username');
+  pool.query('select npoID from users where username = ? ', username, function (err, result, fields) {
+    if (err) {
+      logger.error("Error while getting npoID for username " + username);
+    }
+    else{
+      res.end(JSON.stringify(result));
+    }
+  });
+});
 
 
 ///Peter
@@ -235,6 +283,30 @@ app.put('/ratings/:ratingID/toggleFlag', (req,res) => {
       logger.error("Error toggling flag status of rating " + ratingID);
     }
     else{
+      res.end(JSON.stringify(result));
+    }
+  });
+});
+// PUT flag rating by ratingID
+app.put('/ratings/:ratingID/flag', (req,res) => {
+  var ratingID = req.params.ratingID;
+  pool.query('update ratings set flagged = 1 where ratingID = ?', ratingID, function (err,result,fields) {
+    if (err) {
+      logger.error("Error flagging rating " + ratingID);
+    }
+    else {
+      res.end(JSON.stringify(result));
+    }
+  });
+});
+// PUT unflag rating by ratingID
+app.put('/ratings/:ratingID/unflag', (req,res) => {
+  var ratingID = req.params.ratingID;
+  pool.query('update ratings set flagged = 0 where ratingID = ?', ratingID, function (err,result,fields) {
+    if (err) {
+      logger.error("Error unflagging rating " + ratingID);
+    }
+    else {
       res.end(JSON.stringify(result));
     }
   });
