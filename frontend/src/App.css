@@ -21,3 +21,33 @@
 .App-link {
   color: #09d3ac;
 }
+
+#listOfPref{
+  text-align: center;
+}
+
+#password{
+  padding-bottom: 50px;
+}
+
+#pref{
+  clear:both;
+}
+
+#head{
+  background-color: rgb(0, 87, 201);
+  color:white;
+}
+
+#listOfNonProfs{
+  text-align: center;
+}
+
+#name{
+  font-weight: bold;
+}
+
+#npoCard{
+  padding-bottom: 10px;
+
+}

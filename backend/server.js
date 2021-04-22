@@ -7,6 +7,7 @@ const { log, ExpressAPILogMiddleware } = require('@rama41222/node-logger');
 // const mysqlConnect = require('./db');
 const routes = require('./routes');
 const pool = require('./db');
+const { json } = require('body-parser');
 
 // set up some configs for express.
 const config = {
@@ -175,17 +176,213 @@ app.delete('/deleteit/userID', (req, res) => {
   });
 });
 
+// 9. Get userID by username
+app.get('/getit/userID', (req, res) => {
+  var username = req.param('username');
+  pool.query('select userID from users where username = ? ', username, function (err, result, fields) {
+    if (err) {
+      logger.error("Error while getting userID for user " + username);
+    }
+    else{
+      res.end(JSON.stringify(result));
+    }
+  });
+});
 
+// 9. Get npoID by npo title
+app.get('/getit/npoIDByTitle', (req, res) => {
+  var npoTitle = req.param('npoTitle');
+  pool.query('select npoID from npos where title = ? ', npoTitle, function (err, result, fields) {
+    if (err) {
+      logger.error("Error while getting npoID for npo " + npoTitle);
+    }
+    else{
+      res.end(JSON.stringify(result));
+    }
+  });
+});
 
+// 10. Get npoID by userID - after npo is linked to user table
+app.get('/getit/npoIDByUserID', (req, res) => {
+  var userID = req.param('userID');
+  pool.query('select npoID from users where userID = ? ', userID, function (err, result, fields) {
+    if (err) {
+      logger.error("Error while getting npoID for userID " + userID);
+    }
+    else{
+      res.end(JSON.stringify(result));
+    }
+  });
+});
 
+// 11. Get npoID by username - after npo is linked to user table
+app.get('/getit/npoIDByUsername', (req, res) => {
+  var username = req.param('username');
+  pool.query('select npoID from users where username = ? ', username, function (err, result, fields) {
+    if (err) {
+      logger.error("Error while getting npoID for username " + username);
+    }
+    else{
+      res.end(JSON.stringify(result));
+    }
+  });
+});
 
 
 ///Peter
+// PUT update npo location by npoID (use JSON body for location)
+app.put('/npos/:npoID/updateLocation', (req,res) => {
+  var npoID = req.params.npoID;
+  var location = req.body.location;
+  pool.query('update npos set location = ? where npoID = ?', [location,npoID], function (err,result,fields){
+    if(err){
+      logger.error("Error updating location for npoID " + npoID);
+    }
+    else{
+      res.end(JSON.stringify(result));
+    }
+  });
+});
+// DELETE remove npo image by npoID and imageID
+app.delete('/images/:npoID/:imageID', (req,res) => {
+  var npoID = req.params.npoID;
+  var imageID = req.params.imageID;
+  pool.query('delete from images where npoID = ? and imageID = ?', [npoID,imageID], function (err,result,fields) {
+    if(err){
+      logger.error("Error removing image from npo " + npoID + " with imageID " + imageID);
+    }
+    else{
+      res.end(JSON.stringify(result));
+    }
+  });
+});
+// PUT update npo description (use JSON body for description)
+app.put('/npos/:npoID/updateDescription', (req,res) => {
+  var npoID = req.params.npoID;
+  var description = req.body.description;
+  pool.query('update npos set description = ? where npoID = ?', [description,npoID], function (err,result,fields) {
+    if(err){
+      logger.error("Error updating description for npoID " + npoID);
+    }
+    else{
+      res.end(JSON.stringify(result));
+    }
+  });
+});
+// PUT update npo logo (use JSON body for logoURL)
+app.put('/npos/:npoID/updateLogo', (req,res) => {
+  var npoID = req.params.npoID;
+  var logoURL = req.body.logoURL;
+  pool.query('update npos set logoURL = ? where npoID = ?', [logoURL,npoID], function (err,result,fields) {
+    if(err){
+      logger.error("Error updating logoURL " + logoURL + " for npoID " + npoID);
+    }
+    else {
+      res.end(JSON.stringify(result));
+    }
+  });
+});
+// GET flag status of rating by ratingID
+app.get('/ratings/:ratingID/isFlagged', (req,res) => {
+  var ratingID = req.params.ratingID;
+  pool.query('select flagged from ratings where ratingID = ?', ratingID, function (err,result,fields) {
+    if(err){
+      logger.error("Error getting flagged status of rating " + ratingID);
+    }
+    else{
+      res.end(JSON.stringify(result));
+    }
+  })
+})
+// PUT toggle flag status of rating by ratingID
+app.put('/ratings/:ratingID/toggleFlag', (req,res) => {
+  var ratingID = req.params.ratingID;
+  var sql = "update ratings set flagged = (case when (select flagged where ratingID = ?) = 1 then 0 when (select flagged where ratingID = ?) = 0 then 1 end ) where ratingID = ?";
+  pool.query(sql, [ratingID,ratingID,ratingID], function (err,result,fields) {
+    if(err){
+      logger.error("Error toggling flag status of rating " + ratingID);
+    }
+    else{
+      res.end(JSON.stringify(result));
+    }
+  });
+});
+// PUT flag rating by ratingID
+app.put('/ratings/:ratingID/flag', (req,res) => {
+  var ratingID = req.params.ratingID;
+  pool.query('update ratings set flagged = 1 where ratingID = ?', ratingID, function (err,result,fields) {
+    if (err) {
+      logger.error("Error flagging rating " + ratingID);
+    }
+    else {
+      res.end(JSON.stringify(result));
+    }
+  });
+});
+// PUT unflag rating by ratingID
+app.put('/ratings/:ratingID/unflag', (req,res) => {
+  var ratingID = req.params.ratingID;
+  pool.query('update ratings set flagged = 0 where ratingID = ?', ratingID, function (err,result,fields) {
+    if (err) {
+      logger.error("Error unflagging rating " + ratingID);
+    }
+    else {
+      res.end(JSON.stringify(result));
+    }
+  });
+});
+// PUT approve npo by npoID
+app.put('/npos/:npoID/approve', (req,res) => {
+  var npoID = req.params.npoID;
+  pool.query('update npos set isApproved = true where npoID = ?', npoID, function (err,result,fields) {
+    if(err){
+      logger.error("Error approving NPO " + npoID);
+    }
+    else {
+      res.end(JSON.stringify(result));
+    }
+  });
+});
+// PUT update password (use JSON body for password)
+app.put('/users/:userID/password', (req,res) => {
+  var userID = req.params.userID;
+  var password = req.body.password;
+  pool.query('update users set password = ? where userID = ?', [password,userID], function (err,result,fields) {
+    if(err){
+      logger.error("Error updating password for " + userID);
+    }
+    else {
+      res.end(JSON.stringify(result));
+    }
+  });
+});
 // GET all npos
 app.get('/npos', (req,res) => {
   pool.query('select * from npos', function (err, result, fields) {
     if (err) {
       logger.error("Error while getting npos");
+    }
+    else {
+      res.end(JSON.stringify(result));
+    }
+  });
+});
+// GET all NPOs needing approval
+app.get('/npos/notApproved', (req,res) => {
+  pool.query('select * from npos where isApproved = false', function (err,result,fields) {
+    if (err) {
+      logger.error("Error getting all npos needing approval");
+    }
+    else {
+      res.end(JSON.stringify(result));
+    }
+  });
+});
+// GET all approved npos
+app.get('/npos/approved', (req,res) => {
+  pool.query('select * from npos where isApproved = true', function (err,result,fields) {
+    if (err) {
+      logger.error("Error getting approved npos");
     }
     else {
       res.end(JSON.stringify(result));
@@ -262,6 +459,7 @@ app.put('/users/:userID/:npoID', async (req,res) => {
 });
 
 
+
 ///Prince 
 //3.1 User viewing charity's ratings by npoID
 app.get('/ratings/:npoID', (req,res) => {
@@ -276,7 +474,7 @@ app.get('/ratings/:npoID', (req,res) => {
   });
 });
 
-//3.2 User viewing charity's description by npoID
+//3.2.1 User viewing charity's description by npoID
 app.get('/descriptionbyID/:npoID', (req,res) => {
   var npoID = req.param('npoID')
   pool.query('select description from npos WHERE npoID = npoID',npoID, function (err, result, fields) {
@@ -289,7 +487,7 @@ app.get('/descriptionbyID/:npoID', (req,res) => {
   });
 });
 
-//3.2 User viewing charity's description by npo name
+//3.2.2 User viewing charity's description by npo name
 app.get('/descriptionbyName/:username', (req,res) => {
   var username = req.param('username')
   pool.query('select description from npos WHERE npoID = (select npoID from users where username = ?)',username, function (err, result, fields) {
@@ -304,7 +502,7 @@ app.get('/descriptionbyName/:username', (req,res) => {
 
 
 
-//3.3 User vieweing charity's location by npoID
+//3.3.1 User vieweing charity's location by npoID
 app.get('/locationbyID/:npoID', (req, res) => {
   var npoID = req.param('npoID')
   pool.query('select location from npos WHERE npoID = ?', npoID , function (err, result, fields) {
@@ -317,7 +515,7 @@ app.get('/locationbyID/:npoID', (req, res) => {
   });
 });
 
-//3.3 User vieweing charity's location
+//3.3.2 User vieweing charity's location
 app.get('/locationbyName/:username', (req, res) => {
   var username = req.param('username')
   pool.query('select location from npos WHERE npoID = (select npoID from users where username = ?)', username , function (err, result, fields) {

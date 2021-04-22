@@ -9,5 +9,15 @@ FROM node:14
 # Set the working directory within docker image
 WORKDIR /usr/src/app
 
+RUN npm install -g nodemon
+
+COPY package.json /code/package.json
+RUN npm install && npm ls
+RUN mv /code/node_modules /node_modules
+
+COPY . /code
+
+CMD ["npm", "start"]
+
 # expose port 3000
 EXPOSE 3000
