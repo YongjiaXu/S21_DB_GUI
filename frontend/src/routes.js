@@ -6,7 +6,7 @@ import {UserDash} from './app/userDash';
 
 export const ROUTES = [
     
-    {path: '/CreateAccount', component: CreateAccount},
+    {path: '/register', component: CreateAccount},
     {path: '/NPODashboard/:id', component: NPODashboard},
     {path: '/NPOProfile/:id', component: NPOProfile},
     {path: '/UserDash/:id', component: UserDash},
