@@ -7,12 +7,27 @@ export class NPODashboard extends React.Component
     userRepo = new UserRepository();
 
     state = {
+        userID: 0,
+        username: 'blankuser',
+        password: '',
+        user_type: 0,
+        npoID: 0
     }
 
     componentDidMount() {
-        this.userRepo.getUser('user').then(x => {
-            this.setState( x );
-        })
+        this.userRepo.getUser('npo').then(x => {
+            console.log(x);
+            debugger;
+            this.setState(
+                this.state.userID = x.userID,
+                this.state.username = x.username,
+                this.state.password = x.password,
+                this.state.user_type = x.user_type,
+                this.state.npoID = x.npoID );
+        });
+
+        console.log(this.state);
+        debugger;
     }
 
     render (){
@@ -21,12 +36,11 @@ export class NPODashboard extends React.Component
                 <div class='card' style={{width:'80em'}}>
                     <div class='card-header' style=
                     {{color: 'white', background: '#425088'}}>
-                        <h1> NPO Dashboard
+                        <h1> NPO Dashboard for { this.state.username }
                             <span style={{float: 'right'}}> 
                                 (Display Average Rating Here) 
                             </span> 
                         </h1>
-                        <h1>{ this.state.username }</h1>
                     </div>
 
                     <div class='card-body'>

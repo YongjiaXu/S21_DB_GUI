@@ -33,6 +33,17 @@ export class UserRepository {
         });
     }
 
+    getNPO(username) {
+        return new Promise((resolve, reject) => {
+            axios.get(`${this.url}/getit/user?username=${username}`, this.config)
+            .then(x => resolve(x.data))
+            .catch(e => {
+                alert("User does not exist!");
+                reject();
+            });
+        });
+    }
+
     // post new npo
     createNPO(title, location, logoURL, description) {
         return new Promise((resolve, reject) => {

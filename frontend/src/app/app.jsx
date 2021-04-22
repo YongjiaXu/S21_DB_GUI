@@ -11,11 +11,11 @@ function App() {
     <>
       <Router>
         <Switch>
-          <Route exact path="/getit/:user" component={NPODashboard} />
-          <Route exact path="/npo/profile" component={NPOProfile}/>
           <Route exact path="/login" component={LoginPage} />
           <Route exact path="/register" component={CreateAccount} />
-          <Route exact path="/admin-dash" component={AdminDash} />          
+          <Route exact path="/admin-dash" component={AdminDash} />
+          <Route exact path="/npo/dashboard" component={NPODashboard} />
+          <Route exact path="/npo/profile" component={NPOProfile}/>          
         </Switch>
       </Router>
     </>
