@@ -1,17 +1,14 @@
 import React from 'react';
-import { Npo } from '../app/models/npo'
-import { Rating } from '../app/models/rating'
-import { PasswordUpdate } from './passwordUpdate';
+import { Npo } from './models/npo'
+import { Rating } from './models/rating'
+import { User } from './models/user';
+//import {PasswordUpdate} from './passwordUpdate';
 // Requires Bootstrap
-// Base User Dashboard, does nothing yet
 
 export class UserDash extends React.Component{
     state={
-        userName: 'Place Holder Name',
-        preferences: ["Freddy", "Yes"],
-        password: '',
-        npos: [new Npo("Kaer Morhen", 1, "Sucks"),
-            new Npo("Mahakam", 5, "Rules")]
+        user: new User('Place Holder Name','', [new Npo(1, "Kaer Morhen", "Kaedwan",'', 1, "Sucks", true),
+            new Npo(2, "Mahakam", 'Dwarf Fortress', '', 5, "Rules", true)])
     }
 
     addPreference(pref){
@@ -29,20 +26,19 @@ export class UserDash extends React.Component{
             </nav>
 
             <div className="row">
-                <div className="col-7">
-                    <h1> {this.state.userName}</h1>
+                <div className="col-9">
+                    <h1> {this.state.user.username}</h1>
                 </div>
 
-                <div className="col-5">
-                    <div id="password" className="row">
-                        <div className="col-4">
-                        </div>
-                        <div className="col-4">
+                <div id="password"className="col-3">
+                    <div className="row">
+                        <div>
                             <button type="button" className="btn btn-primary btn-block"> 
                                 Change Password?
                             </button>
-                        </div>
-                        <div className="col-4">
+                            <button type="button" className="btn btn-primary btn-block"> 
+                                Delete Account?
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -53,10 +49,10 @@ export class UserDash extends React.Component{
                     <h1 id="listOfNonProfs"> Non-Profit Organinzations </h1>
                     <br/>
                     <div>
-                        {this.state.npos.map((x,i)=> <>
+                        {this.state.user.npos.map((x,i)=> <>
                             <div id="npoCard" className="card">
                                 <div id="name"className="card-header">
-                                    {x.name} 
+                                    {x.title} 
                                     <div className="float-right">
                                         <Rating value = {x.rating}/>
                                     </div> 
@@ -74,26 +70,6 @@ export class UserDash extends React.Component{
                         )}
                     </div>
                 </div>
-                
-                <div className="col-6">
-                    <div id="listOfPref">
-                        <h1> List of Preferences</h1>
-                        <br/>
-                        <button type="button" className="btn btn-primary btn-block"> 
-                            Add Preference?
-                        </button>
-                        <div>
-                            {this.state.preferences.map((x,i)=> <>
-                                <div id="pref"className="card">
-                                    <div className="card-body">
-                                        {x}
-                                    </div>
-                                </div>
-                            </>
-                            )}
-                        </div>
-                    </div>
-                </div>  
             </div>
         </>
     }
