@@ -60,6 +60,7 @@ export class UserDash extends React.Component{
                     <br/>
                     <div>
                         {this.state.npos.map((x,i)=> <>
+                        <div key={i} className="container">
                             <div id="npoCard" className="card">
                                 <div id="name"className="card-header">
                                     {x.title} 
@@ -75,6 +76,7 @@ export class UserDash extends React.Component{
                                 <Link to={'/NPOProfile/'+x.npoID} type="button" className="btn btn-danger btn-block"> 
                                     View NPO Profile
                                 </Link>
+                            </div>
                             </div>
                         </>
                         )}

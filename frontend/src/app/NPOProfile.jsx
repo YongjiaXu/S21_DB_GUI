@@ -52,8 +52,9 @@ export class NPOProfile extends React.Component
     render (){
         return(
             <>
+            <div className="conatiner" stlye={{width:'100%'}}>
               {this.state.npo.map(x=>               
-                <div class="card" style={{width: '80em'}}>
+                <div class="card" style={{width: '100%'}}>
                     <div class="card-header" style={{ color: 'white', background: '#425088' }}>
                         <h1> {x.title}
                             <span style={{float: 'right'}}> (Display Average Rating Here) </span>
@@ -91,8 +92,8 @@ export class NPOProfile extends React.Component
                             <div class='col-12'>
                                 <h2 style={{'text-align': 'center'}}> Image Gallery </h2>
                                 {this.state.gallery.map((x,i)=>
-                                <img key={i} src={x}
-                                alt="Image 1" style={{padding: '0.5em'}}></img>
+                                <img key={i} src={x.imageURL}
+                                alt="Image 1" style={{padding: '0.5em',width: '20%'}}></img>
                                 )}
                             </div>
                         </div>
@@ -192,6 +193,7 @@ export class NPOProfile extends React.Component
                     </div>
                 </div>
               )}
+              </div>
             </>
         )
     }
