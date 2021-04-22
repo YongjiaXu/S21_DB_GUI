@@ -2,29 +2,39 @@ import React from 'react';
 import { Npo } from './models/npo'
 import { Rating } from './models/rating'
 import { User } from './models/user';
+import {UserRepository} from '../api/userRepository'
+import {NPORepository} from '../api/npoRepository'
+import {Link} from 'react-router-dom'
 //import {PasswordUpdate} from './passwordUpdate';
 // Requires Bootstrap
 
 export class UserDash extends React.Component{
+
+    userRepo = new UserRepository();
+    npoRepo = new NPORepository();
+
     state={
-        user: new User('Place Holder Name','', [new Npo(1, "Kaer Morhen", "Kaedwan",'', 1, "Sucks", true),
-            new Npo(2, "Mahakam", 'Dwarf Fortress', '', 5, "Rules", true)])
+        user: new User('Place Holder Name','',''),
+        npos:[]
     }
 
-    addPreference(pref){
-        var preferences = this.state.preferences;
-        preferences.push(pref);
-        this.setState({preferences});
+    componentDidMount() {
+        let id = +this.props.match.params.id;
+        if (id) {
+            this.userRepo.getUser(id)
+            .then(user => { 
+                this.setState({user})
+             });
+        }
+
+        this.npoRepo.getNPOS()
+        .then(npos=>{
+            this.setState({npos})
+        });
     }
 
     render (){
         return <>
-            <nav> 
-                <ul id="head" className="breadcrumb">
-                    <li id="head"className="breadcrumb-item active"><a id="head" href="#"> Log Out </a></li>
-                </ul>
-            </nav>
-
             <div className="row">
                 <div className="col-9">
                     <h1> {this.state.user.username}</h1>
@@ -49,7 +59,7 @@ export class UserDash extends React.Component{
                     <h1 id="listOfNonProfs"> Non-Profit Organinzations </h1>
                     <br/>
                     <div>
-                        {this.state.user.npos.map((x,i)=> <>
+                        {this.state.npos.map((x,i)=> <>
                             <div id="npoCard" className="card">
                                 <div id="name"className="card-header">
                                     {x.title} 
@@ -62,9 +72,9 @@ export class UserDash extends React.Component{
                                         <div>"{x.description}"</div>
                                     </div>
                                 </div>
-                                <button type="button" className="btn btn-danger btn-block"> 
-                                    Remove NPO?
-                                </button>
+                                <Link to={'/NPOProfile/'+x.npoID} type="button" className="btn btn-danger btn-block"> 
+                                    View NPO Profile
+                                </Link>
                             </div>
                         </>
                         )}

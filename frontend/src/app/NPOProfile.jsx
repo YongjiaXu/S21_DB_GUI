@@ -1,12 +1,21 @@
 import React from 'react'
 import { Rating } from './models/rating';
+import {NPORepository} from '../api/npoRepository'
+import {ReviewRepository} from '../api/reviewRepository'
 
 export class NPOProfile extends React.Component
 {
+    npoRepo = new NPORepository();
+
+    reviewRepo = new ReviewRepository();
+
     state = {
         userName: '',
         rating: '',
-        comment: ''
+        comment: '',
+        npo:[],
+        gallery:[],
+        reviews:[]
     };
 
     onSubmitClick() {
@@ -19,14 +28,34 @@ export class NPOProfile extends React.Component
         });
     }
 
+    componentDidMount() {
+        let id = +this.props.match.params.id;
+        if (id) {
+            this.npoRepo.getNPO(id)
+            .then(npo => { 
+                this.setState({npo})
+             });
+             this.npoRepo.getGallery(id)
+             .then(gallery=>{
+                 this.setState({gallery})
+             });
+
+             this.reviewRepo.getReviews(id)
+             .then(reviews=>{
+                 this.setState({reviews})
+             });
+        }
+    }
+
 
 
     render (){
         return(
-            <>                
+            <>
+              {this.state.npo.map(x=>               
                 <div class="card" style={{width: '80em'}}>
                     <div class="card-header" style={{ color: 'white', background: '#425088' }}>
-                        <h1> (Insert NPO Here) Overview 
+                        <h1> {x.title}
                             <span style={{float: 'right'}}> (Display Average Rating Here) </span>
                         </h1>
                     </div>
@@ -35,8 +64,8 @@ export class NPOProfile extends React.Component
                         <div class="row">
                             <div className='card' style={{'border': 'none'}}>
                                 <div class="col-4">
-                                    <img src="https://via.placeholder.com/300x300"
-                                    alt="Company Logo">
+                                    <img src={x.logoURL}
+                                    alt="Company Logo" style={{ height: '20em', width: '20em' }}>
                                     </img>
                                 </div>
                             </div>
@@ -44,24 +73,12 @@ export class NPOProfile extends React.Component
                             <div class='col-8' style={{float: 'left', overflow: 'auto'}}>
                             <div className='card'>
                             <div className='card-header' style={{ color: 'white', background: '#425088' }}>
-                                <h2>Location: (insert location here)</h2>
+                                <h2>{x.location}</h2>
                             </div>
                             <div className='card-body'>
                                 <br/>
                                 <p style={{'font-size': '1.05em'}}>
-                                    "Did you ever hear the tragedy of Darth Plagueis The Wise? 
-                                    I thought not. It’s not a story the Jedi would tell you. 
-                                    It’s a Sith legend. Darth Plagueis was a Dark Lord of the Sith, 
-                                    so powerful and so wise he could use the Force to influence 
-                                    the midichlorians to create life… He had such a knowledge of 
-                                    the dark side that he could even keep the ones he cared about 
-                                    from dying. The dark side of the Force is a pathway to many 
-                                    abilities some consider to be unnatural. He became so powerful… 
-                                    the only thing he was afraid of was losing his power, which 
-                                    eventually, of course, he did. Unfortunately, he taught his 
-                                    apprentice everything he knew, then his apprentice killed 
-                                    him in his sleep. Ironic. He could save others from death, 
-                                    but not himself."
+                                    {x.description}
                                 </p>
                                 </div>
                             </div>
@@ -73,81 +90,33 @@ export class NPOProfile extends React.Component
                         <div class="row">
                             <div class='col-12'>
                                 <h2 style={{'text-align': 'center'}}> Image Gallery </h2>
-                                <img src="https://via.placeholder.com/300x300"
+                                {this.state.gallery.map((x,i)=>
+                                <img key={i} src={x}
                                 alt="Image 1" style={{padding: '0.5em'}}></img>
-                                
-                                <img src="https://via.placeholder.com/300x400"
-                                alt="Image 2" style={{padding: '0.5em'}}></img>
-
-                                <img src="https://via.placeholder.com/500x300"
-                                alt="Image 3" style={{padding: '0.5em'}}></img>
+                                )}
                             </div>
                         </div>
 
                         <div class="row">
                             <div class='col-12'>
                                 <h2 style={{'text-align': 'center'}}> Ratings </h2>
-
-                                <div class="card" style={{width: '77em'}}>
-                                    <div class='card-header' style={{ color: 'white', background: '#425088' }}>
-                                        <Rating value = {3}/>
-                                    </div>
-                                    
-                                    <div class='card-body'>
-                                        <div class='row'>
-                                            <div class='col-10' style={{ color:'grey' }}>JoeShmoe</div>
-                                            <div class='col-2'>{new Date().toDateString()}</div>
+                                {this.state.reviews.map((x,i)=>
+                                    <div key={i} class="card" style={{width: '77em'}}>
+                                        <div class='card-header' style={{ color: 'white', background: '#425088' }}>
+                                            <Rating value = {x.rating}/>
                                         </div>
-                                        <div class='row'>
-                                            <div class='col-10'>"Decent charity I guess"</div>
-                                            <div class="col-2">
-                                                <button type="button" class="btn btn-danger">Flag</button>
+                                    
+                                        <div class='card-body'>
+                                            <div class='row'>
+                                                <div class='col-10' style={{ color:'grey' }}>{x.raterID}</div>
+                                                <div class='col-2'>{x.ratingDate}</div>
+                                            </div>
+                                            <div class='row'>
+                                                <div class='col-10'>{x.comment}</div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-
-                                <br/>
-
-                                <div class="card" style={{width: '77em'}}>
-                                    <div class='card-header' style={{ color: 'white', background: '#425088' }}>
-                                        <Rating value = {5}/>
-                                    </div>
-                                    
-                                    <div class='card-body'>
-                                        <div class='row'>
-                                            <div class='col-10' style={{ color:'grey' }}>HanShotFirst</div>
-                                            <div class='col-2'>{new Date().toDateString()}</div>
-                                        </div>
-                                        <div class='row'>
-                                            <div class='col-10'>"Very helpful to the community! Needs more funding"</div>
-                                            <div class="col-2">
-                                                <button type="button" class="btn btn-danger">Flag</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <br/>
-
-                                <div class="card" style={{width: '77em'}}>
-                                    <div class='card-header' style={{ color: 'white', background: '#425088' }}>
-                                        <Rating value = {1}/>
-                                    </div>
-                                    
-                                    <div class='card-body'>
-                                        <div class='row'>
-                                            <div class='col-10' style={{ color:'grey' }}>GaryOak</div>
-                                            <div class='col-2'>{new Date().toDateString()}</div>
-                                        </div>
-                                        <div class='row'>
-                                            <div class='col-10'>"This charity Stinks"</div>
-                                            <div class="col-2">
-                                                <button type="button" class="btn btn-danger">Flag</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>                                
+                                )}                                
                             </div>
                         </div>
 
@@ -222,6 +191,7 @@ export class NPOProfile extends React.Component
                         </div>
                     </div>
                 </div>
+              )}
             </>
         )
     }

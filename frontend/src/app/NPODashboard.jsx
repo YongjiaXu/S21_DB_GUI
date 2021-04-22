@@ -11,6 +11,16 @@ export class NPODashboard extends React.Component
         npo:[]
     };
 
+    componentDidMount() {
+        let id = +this.props.match.params.id;
+        if (id) {
+            this.npoRepo.getNPO(id)
+            .then(npo => { 
+                this.setState({npo})
+             });
+        }
+    }
+
     render (){
         return(
             <>
@@ -196,14 +206,5 @@ export class NPODashboard extends React.Component
                 )}
             </>
         )
-    }
-    componentDidMount() {
-        let id = +this.props.match.params.id;
-        if (id) {
-            this.npoRepo.getNPO(id)
-            .then(npo => { 
-                this.setState({npo})
-             });
-        }
     }
 }

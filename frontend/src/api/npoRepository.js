@@ -26,4 +26,14 @@ export class NPORepository{
                     });
             }); 
         }
+
+        getGallery(npoID) {
+            return new Promise((resolve, reject) => {
+                axios.get(`${this.url}/npos/${npoID}/images`, this.config)
+                    .then(x => resolve(x.data))
+                    .catch(e => {
+                        alert("catch error when getting npo");
+                        reject();});
+            });
+        }
 }

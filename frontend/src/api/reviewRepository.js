@@ -19,4 +19,14 @@ export class ReviewRepository{
                         reject();});
             });
         }
+
+        getReviews(npoID) {
+            return new Promise((resolve, reject) => {
+                axios.get(`${this.url}/ratings/${npoID}`, this.config)
+                    .then(x => resolve(x.data))
+                    .catch(e => {
+                        alert("catch error when getting npo");
+                        reject();});
+            });
+        }
 }
