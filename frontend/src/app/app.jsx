@@ -3,20 +3,18 @@ import { LoginPage } from './loginPage';
 import { CreateAccount } from './createAccount';
 import {AdminDash} from './adminDash';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import {ROUTES} from '../routes';
 
 
 function App() {
   return (
     <>
+
       <Router>
         <Switch>
-
-          <Route exact path="/login" component={LoginPage} />
-          <Route exact path="/register" component={CreateAccount} />
-          <Route exact path="/admin-dash" component={AdminDash} />          
-
+          {ROUTES.map((route,index)=><Route key={index} {...route} />)}
         </Switch>
-      </Router>
+      </Router>       
     </>
   );
 }
