@@ -59,7 +59,8 @@ export class NPODashboard extends React.Component
                                 </div>
                                 <div className='card-body'>
                                 <img src={x.logoURL}
-                                alt="Logo"></img>
+                                alt="Logo"
+                                style={{ height: '20em', width: '20em' }}></img>
                                 <br/>
                                 <input type='file'></input>
                                 </div>
