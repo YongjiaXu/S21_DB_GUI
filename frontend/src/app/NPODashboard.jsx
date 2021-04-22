@@ -1,14 +1,17 @@
 import React from 'react'
 import { Rating } from './models/rating';
 import { NPORepository } from '../api/npoRepository';
+import {ReviewRepository} from '../api/reviewRepository'
 import {Npo} from './models/npo';
 
 export class NPODashboard extends React.Component
 {
     npoRepo = new NPORepository();
+    reviewRepo = new ReviewRepository();
 
     state = {
-        npo:[]
+        npo:[],
+        reviews:[]
     };
 
     componentDidMount() {
@@ -18,6 +21,10 @@ export class NPODashboard extends React.Component
             .then(npo => { 
                 this.setState({npo})
              });
+             this.reviewRepo.getReviews(id)
+             .then(reviews=>{
+                 this.setState({reviews})
+             })
         }
     }
 
@@ -140,66 +147,25 @@ export class NPODashboard extends React.Component
 
                         <div class='row' style={{float: 'middle'}}>
                             <h2> Ratings <span> (Display Average Rating Here) </span> </h2>
-
+                            {this.state.reviews.map((x,i)=>
                             <div class="card" style={{width: '77em'}}>
                                     <div class='card-header' style={{ color: 'white', background: '#425088' }}>
-                                        <Rating value = {3}/>
+                                        <Rating value = {x.rating}/>
                                     </div>
                                     <div class='card-body'>
                                         <div class='row'>
-                                            <div class='col-10' style={{ color:'grey' }}>JoeShmoe</div>
+                                            <div class='col-10' style={{ color:'grey' }}>{x.raterID}</div>
                                             <div class='col-2'>{new Date().toDateString()}</div>
                                         </div>
                                         <div class='row'>
-                                            <div class='col-10'>"Decent charity I guess"</div>
+                                            <div class='col-10'>{x.comment}</div>
                                             <div class="col-2">
                                                 <button type="button" class="btn btn-danger">Flag</button>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-
-                                <br/>
-
-                                <div class="card" style={{width: '77em'}}>
-                                    <div class='card-header' style={{ color: 'white', background: '#425088' }}>
-                                        <Rating value = {5}/>
-                                    </div>
-                                    
-                                    <div class='card-body'>
-                                        <div class='row'>
-                                            <div class='col-10' style={{ color:'grey' }}>HanShotFirst</div>
-                                            <div class='col-2'>{new Date().toDateString()}</div>
-                                        </div>
-                                        <div class='row'>
-                                            <div class='col-10'>"Very helpful to the community! Needs more funding"</div>
-                                            <div class="col-2">
-                                                <button type="button" class="btn btn-danger">Flag</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <br/>
-
-                                <div class="card" style={{width: '77em'}}>
-                                    <div class='card-header' style={{ color: 'white', background: '#425088' }}>
-                                        <Rating value = {1}/>
-                                    </div>
-                                    
-                                    <div class='card-body'>
-                                        <div class='row'>
-                                            <div class='col-10' style={{ color:'grey' }}>GaryOak</div>
-                                            <div class='col-2'>{new Date().toDateString()}</div>
-                                        </div>
-                                        <div class='row'>
-                                            <div class='col-10'>"This charity Stinks"</div>
-                                            <div class="col-2">
-                                                <button type="button" class="btn btn-danger">Flag</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                            )}
                         </div>
                     </div>
                 </div>
