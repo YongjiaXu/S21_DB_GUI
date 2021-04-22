@@ -211,7 +211,7 @@ app.get('/getit/userID', (req, res) => {
   });
 });
 
-// 9. Get npoID by npo title
+// 10. Get npoID by npo title
 app.get('/getit/npoIDByTitle', (req, res) => {
   var npoTitle = req.param('npoTitle');
   pool.query('select npoID from npos where title = ? ', npoTitle, function (err, result, fields) {
@@ -224,7 +224,7 @@ app.get('/getit/npoIDByTitle', (req, res) => {
   });
 });
 
-// 10. Get npoID by userID - after npo is linked to user table
+// 11. Get npoID by userID - after npo is linked to user table
 app.get('/getit/npoIDByUserID', (req, res) => {
   var userID = req.param('userID');
   pool.query('select npoID from users where userID = ? ', userID, function (err, result, fields) {
@@ -237,12 +237,38 @@ app.get('/getit/npoIDByUserID', (req, res) => {
   });
 });
 
-// 11. Get npoID by username - after npo is linked to user table
+// 12. Get npoID by username - after npo is linked to user table
 app.get('/getit/npoIDByUsername', (req, res) => {
   var username = req.param('username');
   pool.query('select npoID from users where username = ? ', username, function (err, result, fields) {
     if (err) {
       logger.error("Error while getting npoID for username " + username);
+    }
+    else{
+      res.end(JSON.stringify(result));
+    }
+  });
+});
+
+// 13. GET average rating for a specific npo
+app.get('/getit/avgrating', (req, res) => {
+  var npoID = req.param('npoID');
+  pool.query('select avg(rating) from ratings where npoID = ?', npoID, function (err, result, fields) {
+    if (err) {
+      logger.error("Error while getting average rating for npo " + npoID);
+    }
+    else{
+      res.end(JSON.stringify(result));
+    }
+  });
+});
+
+// 14. GET username by userID
+app.get('/getit/username', (req, res) => {
+  var userID = req.param('userID');
+  pool.query('select username from users where userID = ?', userID, function (err, result, fields) {
+    if (err) {
+      logger.error("Error while getting average rating for npo " + npoID);
     }
     else{
       res.end(JSON.stringify(result));
