@@ -61,11 +61,32 @@ app.get('/getit/users', (req, res) => {
 // 2. GET a specific user by username
 app.get('/getit/user', (req, res) => {
   var username = req.param('username');
-  pool.query('SELECT * FROM users WHERE username = ?', username, function(err, result, fields) {
+  pool.query('SELECT * FROM users WHERE username = ? ', username, function(err, result, fields) {
     if (err) {
       logger.error('Error while getting user ' + username);
     }
     else{
+      res.end(JSON.stringify(result));
+    }
+  });
+});
+
+// 2. GET a specific user by username
+app.get('/getit/login', (req, res) => {
+  const username = req.body.username;
+  const password = req.body.password;
+
+  pool.query('SELECT * FROM users WHERE username = ? AND password = ?', [username,password], function(err, result, fields) {
+    if (err) {
+      console.log(username, password, result[0].password)
+      if (password !== result[0].password) {
+        return res
+        .status(400)
+        .json({ passwordincorrect: "Password incorrect" });
+      }
+      logger.error('Error while getting user ' + username);
+    }
+    else {
       res.end(JSON.stringify(result));
     }
   });
@@ -113,9 +134,8 @@ app.put('/putit/userpwd', (req, res) => {
 
 // 6. POST a specific user
 app.post('/postit/user', (req, res) => {
-  var username = req.param('username');
-  var password = req.param('password');
-  var user_type = req.param('user_type');
+  const username = req.body.username;
+  const password = req.body.password;
 
   pool.query('INSERT INTO users (username, password, user_type) VALUES (?,?,?)', [username, password, user_type], function (err, result, fields) {
     if (err) {
