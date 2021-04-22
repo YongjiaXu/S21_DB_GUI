@@ -3,6 +3,7 @@ import { CreateAccount } from './app/createAccount';
 import { NPODashboard} from './app/NPODashboard';
 import { NPOProfile } from './app/NPOProfile';
 import {UserDash} from './app/userDash';
+import {AdminDash} from './app/adminDash';
 
 export const ROUTES = [
     
@@ -10,5 +11,6 @@ export const ROUTES = [
     {path: '/NPODashboard/:id', component: NPODashboard},
     {path: '/NPOProfile/:id', component: NPOProfile},
     {path: '/UserDash/:id', component: UserDash},
+    {path: '/AdminDash', component: AdminDash},
     {path: '/', component: LoginPage}
 ]
