@@ -12,6 +12,7 @@ export class LoginPage extends React.Component {
         username: "",
         password: "",
         authenticated: null,
+        npo: null,
         type:0
     };
 
@@ -27,7 +28,8 @@ export class LoginPage extends React.Component {
                         console.log('logged in');
                         this.setState({ authenticated: true });
                         this.setState({ id: user[0].userID });
-                        this.setState({ type: user[0].user_type });
+                        this.setState({ npo: user[0].npoID });
+                        this.setState({ type: user[0].user_type });         
                     }
                     else {
                         console.log('login failed');
@@ -75,9 +77,9 @@ export class LoginPage extends React.Component {
                             onClick={() => this.login()}>Login</button>
                     </div>
                     
-                    {this.state.authenticated && this.state.type==1 && <Redirect to={'/UserDash/:id'+this.state.id} />}
-                    {this.state.authenticated && this.state.type==2 && <Redirect to={'/AdminDash/:id'} />}
-                    {this.state.authenticated && this.state.type==3 && <Redirect to={'/NPODashboard/'+this.state.id} />}
+                    {this.state.authenticated && this.state.type==1 && <Redirect to={'/UserDash/'+this.state.id} />}
+                    {this.state.authenticated && this.state.type==2 && <Redirect to={'/AdminDash/'} />}
+                    {this.state.authenticated && this.state.type==3 && <Redirect to={'/NPODashboard/'+this.state.npo} />}
                     
 
                 </form>

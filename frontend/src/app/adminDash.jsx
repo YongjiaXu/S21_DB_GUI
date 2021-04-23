@@ -1,8 +1,17 @@
 import React from 'react';
 import {FlaggedReviewList} from './flaggedReviews';
-import {PasswordUpdate} from './passwordUpdate';
+import {UserRepository} from '../api/userRepository';
 
 export class AdminDash extends React.Component{
+
+    userRepo = new UserRepository();
+
+    changePW(pw, pwconfirm){
+        if(pw==pwconfirm){
+
+        }
+    }
+
     render(){
         return<>
         <div className='container'>
@@ -33,6 +42,15 @@ export class AdminDash extends React.Component{
                                         <input id='newPassConfirm' type='text' style={{width: '15em', height: '2em'}}></input>
                                     </p>
                                     <button type='button' className="btn btn-success">Submit</button>
+                                    </div>
+                                </div>
+                                <br/>
+                                <div className='card'>
+                                    <div className='card-header' style={{ color: 'white', background: '#425088' }}>
+                                    <h2> NPOs Needing Approval </h2>
+                                    </div>
+                                    <div className='card-body'>
+                                    /* HERE BRO */
                                     </div>
                                 </div>
                             </div>
