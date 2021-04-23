@@ -1,25 +1,25 @@
 import React from 'react';
-import {LoginPage} from './loginPage';
-import {AdminDash} from './adminDash';
+import { LoginPage } from './loginPage';
 import { CreateAccount } from './createAccount';
+import {AdminDash} from './adminDash';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import { NPODashboard } from './NPODashboard';
-import { NPOProfile } from './NPOProfile';
+import {ROUTES} from '../routes';
+import {Header} from './header';
+
 
 function App() {
   return (
     <>
+
       <Router>
+      <Header/>
         <Switch>
-          <Route exact path="/login" component={LoginPage} />
-          <Route exact path="/register" component={CreateAccount} />
-          <Route exact path="/admin-dash" component={AdminDash} />
-          <Route exact path="/npo/dashboard" component={NPODashboard} />
-          <Route exact path="/npo/profile" component={NPOProfile}/>          
+          {ROUTES.map((route,index)=><Route key={index} {...route} />)}
         </Switch>
-      </Router>
+      </Router>       
     </>
   );
 }
 
 export default App;
+

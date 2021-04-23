@@ -33,12 +33,38 @@ export class UserRepository {
         });
     }
 
-    getNPO(username) {
+    // login
+    login(username, password) {
         return new Promise((resolve, reject) => {
-            axios.get(`${this.url}/getit/user?username=${username}`, this.config)
+            axios.post(`${this.url}/postit/login`,
+                {
+                    "username": username,
+                    "password": password,
+                }
+                , this.config)
+                .then(x => {
+                    console.log('logged in');
+                    resolve(x.data);
+                })
+                .catch(e => {
+                alert("can't find user");
+                reject();
+            });
+        });
+    }
+    
+    
+    register(username,email, password) {
+        return new Promise((resolve, reject) => {
+            axios.post(`${this.url}/postit/register`,
+                {
+                "username": username,
+                "password": password,
+                }
+                , this.config)
             .then(x => resolve(x.data))
             .catch(e => {
-                alert("User does not exist!");
+                alert("Register Failed.");
                 reject();
             });
         });
