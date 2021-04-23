@@ -21,6 +21,18 @@ export class UserRepository {
     }
 
 
+    getUsername(id){
+        return new Promise((resolve, reject) => {
+            axios.get(`${this.url}/getit/username/${id}`, this.config)
+            .then(x => resolve(x.data))
+            .catch(e => {
+                alert("User does not exist!.");
+                reject();
+            });
+        });
+    }
+
+
     // get specific user by username
     getUser(username) {
         return new Promise((resolve, reject) => {
