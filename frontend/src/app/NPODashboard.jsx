@@ -39,8 +39,6 @@ export class NPODashboard extends React.Component
         for(let i = 0; i < this.state.reviews.length; ++i)
         {
             averageRate += this.state.reviews[i].rating;
-            console.log(averageRate);
-            debugger;
         }
         averageRate /= this.state.reviews.length;
         return averageRate;
@@ -54,13 +52,19 @@ export class NPODashboard extends React.Component
             <div key={i} className='container'>
                 <div className='card'>
                     <div className='card-header'>
-                        <h1> NPO Dashboard for { x.title}
-                            <button type='button' 
-                            className="btn btn-success" 
-                            style={{float: 'right'}}> 
-                                Return 
-                            </button> 
-                        </h1>
+                        <div className='row'>
+                            <div className='col-6'>
+                                <h1>{x.title}</h1>
+                            </div>
+                            <div className='col-6'>
+                                <h1 className="float-right">
+                                    <button type='button' 
+                                    className="btn btn-success"> 
+                                        Home 
+                                    </button> 
+                                </h1>
+                            </div>
+                        </div>
                     </div>
 
                     <div className='card-body'>
@@ -78,11 +82,11 @@ export class NPODashboard extends React.Component
                                     </p>
                                     <p>
                                         New Password: <br/>
-                                        <input id='newPass' type='text' style={{width: '15em', height: '2em'}}></input>
+                                        <input id='newPass' type='text' className='form-control'></input>
                                     </p>
                                     <p>
                                         Confirm New Password: <br/>
-                                        <input id='newPassConfirm' type='text' style={{width: '15em', height: '2em'}}></input>
+                                        <input id='newPassConfirm' type='text' className='form-control'></input>
                                     </p>
                                     <button type='button' className="btn btn-success">Submit</button>
                                     </div>
@@ -96,9 +100,9 @@ export class NPODashboard extends React.Component
                                 <div className='card-body'>
                                 <img src={x.logoURL}
                                 alt="Logo"
-                                style={{ height: '20em', width: '20em' }}></img>
+                                className='logo'></img>
                                 <br/>
-                                <input type='file'></input>
+                                <input type='file' className='form-control-file'></input>
                                 </div>
                                 </div>
                             </div>
@@ -115,9 +119,7 @@ export class NPODashboard extends React.Component
                                 <div className='card-body'>
                                 <p>
                                     New Description: <br/>
-                                    <textarea id='newDescription'
-                                    style={{width: '30em', height: '6em'}}>
-                                    </textarea>
+                                    <textarea className='form-control' id='newDescription' rows='7'></textarea>
                                 </p>
                                 <button type='button' className="btn btn-success"> Save Changes </button>
                                 </div>
@@ -131,7 +133,7 @@ export class NPODashboard extends React.Component
                             <div className='card-body'>
                                 <p>
                                     New Location: <br/>
-                                    <input id='newLocation' type='text' style={{width: '15em', height: '2em'}}></input>
+                                    <input id='newLocation' type='text' className='form-control'></input>
                                 </p>
                                 <button type='button' className="btn btn-success"> Save Changes </button>
                                 </div>
@@ -141,18 +143,20 @@ export class NPODashboard extends React.Component
 
                         <div className='card'>
                         <div className='card-header'>
-                        <h2> Add Images </h2> <br/>
+                        <h2> Add Images </h2>
                         </div>
                         <div className='card-body'>
                         <p>
                             {this.state.gallery.map((x,i)=>
                             <img key={i} src={x.imageURL}
-                            alt="Image 1" style={{padding: '0.5em',width: '20%'}}></img>
+                            alt="Image"
+                            class='extraImages'>
+                            </img>
                             )}
                         </p>
                         <p>
-                            Add Image<br/>
-                            <input id='newImage' type='file'></input>
+                            Add Image
+                            <input id='newImage' type='file' className='form-control-file'></input>
                         </p>
                         <button type='button' className="btn btn-success"> Save Changes </button>
                         </div>
@@ -160,21 +164,25 @@ export class NPODashboard extends React.Component
 
 
 
-                        <div className='row' style={{float: 'middle'}}>
-                            <h2> 
-                                Ratings 
-                                <span> 
-                                    <Rating value = {this.calculateAverageRating()}/> 
-                                </span> 
-                            </h2>
+                        <div className='row'>
+                            <div className='col-6'>
+                                <h2>Ratings</h2>
+                            </div>
+                            <div className='col-6'>
+                                <h2 className='float-right'>
+                                    Average Rating: <Rating value = {this.calculateAverageRating()}/>
+                                </h2>
+                            </div>
+                        </div>
+                        <div className='row'>
                             {this.state.reviews.map((x,i)=>
-                            <div key={i} className="card" style={{width: '77em'}}>
+                            <div key={i} className="card">
                                     <div className='card-header'>
                                         <Rating value = {x.rating}/>
                                     </div>
                                     <div className='card-body'>
                                         <div className='row'>
-                                            <div className='col-10' style={{ color:'grey' }}>{x.raterID}</div>
+                                            <div className='col-10'>{x.raterID}</div>
                                             <div className='col-2'>{x.ratingDate.toString().substring(0,10)}</div>
                                         </div>
                                         <div className='row'>
