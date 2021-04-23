@@ -4,6 +4,7 @@ import { NPODashboard} from './app/NPODashboard';
 import { NPOProfile } from './app/NPOProfile';
 import {UserDash} from './app/userDash';
 import {AdminDash} from './app/adminDash';
+import {NewUser} from './app/newUser';
 
 export const ROUTES = [
     
@@ -12,5 +13,6 @@ export const ROUTES = [
     {path: '/NPOProfile/:id', component: NPOProfile},
     {path: '/UserDash/:id', component: UserDash},
     {path: '/AdminDash', component: AdminDash},
+    {path: '/newUser', component: NewUser},
     {path: '/', component: LoginPage}
 ]

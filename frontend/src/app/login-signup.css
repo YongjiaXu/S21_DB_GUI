@@ -15,6 +15,12 @@
 	position: relative;
 	text-align: center;
 }
+.signup-form h3 {
+	color: #faf4f4;
+	margin: 0 0 15px;
+	position: relative;
+	text-align: center;
+}
 .signup-form h2:before, .signup-form h2:after {
 	content: "";
 	height: 2px;

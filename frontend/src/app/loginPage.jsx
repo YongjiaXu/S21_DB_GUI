@@ -77,6 +77,7 @@ export class LoginPage extends React.Component {
                     {this.state.authenticated && this.state.type==1 && <Redirect to={'/UserDash/'+this.state.id} />}
                     {this.state.authenticated && this.state.type==2 && <Redirect to={'/AdminDash/'} />}
                     {this.state.authenticated && this.state.type==3 && <Redirect to={'/NPODashboard/'+this.state.id} />}
+                    {this.state.authenticated && !this.state.type && <Redirect to={'/newUser/'} />}
 
 
                 </form>
