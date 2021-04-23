@@ -3,7 +3,7 @@ import { Rating } from './models/rating';
 import { NPORepository } from '../api/npoRepository';
 import {ReviewRepository} from '../api/reviewRepository'
 import {Npo} from './models/npo';
-import { UserRepository } from '../api/userRepository';
+import {styles} from './card-theme.css';
 
 export class NPODashboard extends React.Component
 {
@@ -46,16 +46,14 @@ export class NPODashboard extends React.Component
         return averageRate;
     }
 
-
     render (){
         return(
             <>
-            <div className='container' style={{width:"100%"}}>
+            <div className='container'>
             {this.state.npo.map((x,i)=>
             <div key={i} className='container'>
-                <div className='card' style={{width:'100%'}}>
-                    <div className='card-header' style=
-                    {{color: 'white', background: '#425088'}}>
+                <div className='card'>
+                    <div className='card-header'>
                         <h1> NPO Dashboard for { x.title}
                             <button type='button' 
                             className="btn btn-success" 
@@ -69,7 +67,7 @@ export class NPODashboard extends React.Component
                         <div className='row'>
                             <div className='col-6'>
                                 <div className='card'>
-                                    <div className='card-header' style={{ color: 'white', background: '#425088' }}>
+                                    <div className='card-header'>
                                     <h2> Change Password </h2>
                                     </div>
                                     <div className='card-body'>
@@ -92,7 +90,7 @@ export class NPODashboard extends React.Component
                             </div>
                             <div className='col-6'>
                                 <div className='card'>
-                                <div className='card-header' style={{ color: 'white', background: '#425088' }}>
+                                <div className='card-header'>
                                 <h2> Change Logo </h2>
                                 </div>
                                 <div className='card-body'>
@@ -111,7 +109,7 @@ export class NPODashboard extends React.Component
                         <div className='row'>
                             <div className='col-6'>
                                 <div className='card'>
-                                <div className='card-header' style={{ color: 'white', background: '#425088' }}>
+                                <div className='card-header'>
                                 <h2> Edit Description </h2>
                                 </div>
                                 <div className='card-body'>
@@ -127,7 +125,7 @@ export class NPODashboard extends React.Component
                             </div>
                             <div className='col-6'>
                             <div className='card'>
-                            <div className='card-header' style={{ color: 'white', background: '#425088' }}>
+                            <div className='card-header'>
                                 <h2> Change Location </h2>
                             </div>
                             <div className='card-body'>
@@ -142,7 +140,7 @@ export class NPODashboard extends React.Component
                         </div>
 
                         <div className='card'>
-                        <div className='card-header' style={{ color: 'white', background: '#425088' }}>
+                        <div className='card-header'>
                         <h2> Add Images </h2> <br/>
                         </div>
                         <div className='card-body'>
@@ -171,7 +169,7 @@ export class NPODashboard extends React.Component
                             </h2>
                             {this.state.reviews.map((x,i)=>
                             <div key={i} className="card" style={{width: '77em'}}>
-                                    <div className='card-header' style={{ color: 'white', background: '#425088' }}>
+                                    <div className='card-header'>
                                         <Rating value = {x.rating}/>
                                     </div>
                                     <div className='card-body'>

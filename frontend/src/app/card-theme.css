@@ -1,0 +1,16 @@
+.container{
+    width: 100%;
+}
+
+.card {
+    width: 100%;
+}
+
+.card-header {
+    color: white;
+    background: #425088;
+}
+
+.card-body{
+
+}
