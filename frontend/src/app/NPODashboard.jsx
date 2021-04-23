@@ -150,7 +150,7 @@ export class NPODashboard extends React.Component
                             {this.state.gallery.map((x,i)=>
                             <img key={i} src={x.imageURL}
                             alt="Image"
-                            class='extraImages'>
+                            className='extraImages'>
                             </img>
                             )}
                         </p>

@@ -66,8 +66,8 @@ export class NPOProfile extends React.Component
             <>
             <div className="container">
               {this.state.npo.map(x=>               
-                <div class="card">
-                    <div class="card-header">
+                <div className="card">
+                    <div className="card-header">
                         <div className='row'>
                             <div className='col-6'>
                                 <h1>{x.title}</h1>
@@ -83,16 +83,16 @@ export class NPOProfile extends React.Component
                         </div>
                     </div>
 
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-4">
+                    <div className="card-body">
+                        <div className="row">
+                            <div className="col-4">
                                 <img src={x.logoURL}
                                 alt="Company Logo"
                                 className='profileLogo'>
                                 </img>
                             </div>
 
-                            <div class='col-8'>
+                            <div className='col-8'>
                             <div className='card'>
                             <div className='card-header'>
                                 <h2> Location: {x.location}</h2>
@@ -123,32 +123,32 @@ export class NPOProfile extends React.Component
                             </div>
                         </div>
 
-                        <div class='row'>
-                            <div class='col-6'>
+                        <div className='row'>
+                            <div className='col-6'>
                                 <h2>Ratings</h2>
                             </div>
-                            <div class='col-6'>
+                            <div className='col-6'>
                                 <h2 className='float-right'>
                                     Average Rating: <Rating value = {this.calculateAverageRating()}/>
                                 </h2>
                             </div>
                         </div>
 
-                        <div class="row">
-                            <div class='col-12'>
+                        <div className="row">
+                            <div className='col-12'>
                                 {this.state.reviews.map((x,i)=>
                                     <div key={i} className="card">
-                                        <div class='card-header'>
+                                        <div className='card-header'>
                                             <Rating value = {x.rating}/>
                                         </div>
                                     
-                                        <div class='card-body'>
-                                            <div class='row'>
-                                                <div class='col-10'>{x.raterID}</div>
-                                                <div class='col-2'>{x.ratingDate.toString().substr(0,10)}</div>
+                                        <div className='card-body'>
+                                            <div className='row'>
+                                                <div className='col-10'>{x.raterID}</div>
+                                                <div className='col-2'>{x.ratingDate.toString().substr(0,10)}</div>
                                             </div>
-                                            <div class='row'>
-                                                <div class='col-10'>{x.comment}</div>
+                                            <div className='row'>
+                                                <div className='col-10'>{x.comment}</div>
                                             </div>
                                         </div>
                                     </div>
@@ -159,15 +159,15 @@ export class NPOProfile extends React.Component
                         <br/>
 
                         <div className='container'>
-                        <div class="row">
-                            <div class="card">
-                                <div class="card-header">
+                        <div className="row">
+                            <div className="card">
+                                <div className="card-header">
                                     Leave a review
                                 </div>
-                                <ul class="list-group list-group-flush">
-                                    <li class="list-group-item">
-                                        <div class="row">
-                                            <div class="col-8">
+                                <ul className="list-group list-group-flush">
+                                    <li className="list-group-item">
+                                        <div className="row">
+                                            <div className="col-8">
                                                 <label htmlFor="yourName">Your Name</label>
                                                 <br/>
                                                 <input type="text"
@@ -179,7 +179,7 @@ export class NPOProfile extends React.Component
                                                 </input>
                                             </div>
 
-                                            <div class="col-2">
+                                            <div className="col-2">
                                                 <label htmlFor="Rating" >Rating</label>
                                                 <br/>
                                                 <select 
@@ -197,13 +197,13 @@ export class NPOProfile extends React.Component
                                                 </select>
                                             </div>
 
-                                            <div class="col-2">
+                                            <div className="col-2">
                                                 <br/>
                                                 <Rating value = {this.state.rating}/>
                                             </div>
                                         </div>
-                                        <div class="row">
-                                            <div class="col-12">
+                                        <div className="row">
+                                            <div className="col-12">
                                                 <label htmlFor="Comment"> Comment </label>
                                                 <br/>
                                                 <textarea id="Comment"
@@ -215,8 +215,8 @@ export class NPOProfile extends React.Component
                                             </div>
                                         </div>
 
-                                        <div class="row">
-                                            <div class="col-12">
+                                        <div className="row">
+                                            <div className="col-12">
                                                 <button type="button" className="btn btn-success"
                                                     type="button">
                                                     Submit
