@@ -14,3 +14,18 @@
 .card-body{
 
 }
+
+.logo {
+    height: 50%; 
+    width: 50%;
+}
+
+.profileLogo{
+    height: 100%; 
+    width: 100%;
+}
+
+.extraImages {
+    padding: 0.5%;
+    width: 20%;
+}
