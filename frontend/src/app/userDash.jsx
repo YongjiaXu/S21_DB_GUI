@@ -54,35 +54,6 @@ export class UserDash extends React.Component{
                 </div>
             </div>
 
-            <div className="row">
-                <div className="col-6">
-                    <h1 id="listOfNonProfs"> Non-Profit Organinzations </h1>
-                    <br/>
-                    <div>
-                        {this.state.npos.map((x,i)=> <>
-                        <div key={i} className="container">
-                            <div id="npoCard" className="card">
-                                <div id="name"className="card-header">
-                                    {x.title} 
-                                    <div className="float-right">
-                                        <Rating value = {x.rating}/>
-                                    </div> 
-                                </div>
-                                <div className="card-body">
-                                    <div>
-                                        <div>"{x.description}"</div>
-                                    </div>
-                                </div>
-                                <Link to={'/NPOProfile/'+x.npoID} type="button" className="btn btn-danger btn-block"> 
-                                    View NPO Profile
-                                </Link>
-                            </div>
-                            </div>
-                        </>
-                        )}
-                    </div>
-                </div>
-            </div>
         </>
     }
 }

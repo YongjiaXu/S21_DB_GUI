@@ -3,6 +3,7 @@ import { Rating } from './models/rating';
 import { NPORepository } from '../api/npoRepository';
 import {ReviewRepository} from '../api/reviewRepository'
 import {Npo} from './models/npo';
+import { UserRepository } from '../api/userRepository';
 
 export class NPODashboard extends React.Component
 {
@@ -44,6 +45,7 @@ export class NPODashboard extends React.Component
         averageRate /= this.state.reviews.length;
         return averageRate;
     }
+
 
     render (){
         return(

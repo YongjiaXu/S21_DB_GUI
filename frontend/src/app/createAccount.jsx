@@ -85,6 +85,10 @@ export class CreateAccount extends React.Component{
                             value={this.state.password2}
                             onChange={e => this.setState({ password2: e.target.value })} />
                     </div>
+
+                    <div>radio input</div>
+
+                    {this.state.radio=='2' && <npocreate/>}
                             
                     <div className="form-group">
                         <button type="button"
