@@ -99,4 +99,16 @@ export class UserRepository {
         });
     }
 
+    changePW(username,pw){
+        return new Promise((resolve, reject)=>{
+            axios.put(
+                `${this.url}/userpwd`,
+                {"username":username,
+                 "newpwd": pw},
+            )
+            .catch(error=>alert(error));
+        });
+
+    }
+
 }
