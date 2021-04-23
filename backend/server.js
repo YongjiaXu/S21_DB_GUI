@@ -142,11 +142,11 @@ app.get('/getit/userpwd', (req, res) => {
 
 // 5. UPDATE user password
 app.put('/putit/userpwd', (req, res) => {
-  var username = req.param('username');
+  var userid = req.param('userid');
   var newpwd = req.param('newpwd');
-  pool.query('update users set password = ? where username = ?', [newpwd, username], function(err, result, fields) {
+  pool.query('update users set password = ? where userID = ?', [newpwd, userid], function(err, result, fields) {
     if (err) {
-      logger.error('Error while setting password for user ' + username);
+      logger.error('Error while setting password for user ' + userid);
     }
     else {
       res.end(JSON.stringify(result));
