@@ -10,7 +10,6 @@ import {Header} from './header';
 function App() {
   return (
     <>
-
       <Router>
       <Header/>
         <Switch>

@@ -11,6 +11,7 @@ export class NPODashboard extends React.Component
 
     state = {
         npo:[],
+        gallery:[],
         reviews:[]
     };
 
@@ -21,11 +22,27 @@ export class NPODashboard extends React.Component
             .then(npo => { 
                 this.setState({npo})
              });
+             this.npoRepo.getGallery(id)
+             .then(gallery=>{
+                 this.setState({gallery})
+             });
              this.reviewRepo.getReviews(id)
              .then(reviews=>{
                  this.setState({reviews})
              })
         }
+    }
+
+    calculateAverageRating(){
+        let averageRate = 0;
+        for(let i = 0; i < this.state.reviews.length; ++i)
+        {
+            averageRate += this.state.reviews[i].rating;
+            console.log(averageRate);
+            debugger;
+        }
+        averageRate /= this.state.reviews.length;
+        return averageRate;
     }
 
     render (){
@@ -128,14 +145,10 @@ export class NPODashboard extends React.Component
                         </div>
                         <div className='card-body'>
                         <p>
-                            <img src="https://via.placeholder.com/300x300"
-                            alt="Image 1" style={{padding: '0.5em'}}></img>
-                            
-                            <img src="https://via.placeholder.com/300x400"
-                            alt="Image 2" style={{padding: '0.5em'}}></img>
-
-                            <img src="https://via.placeholder.com/500x300"
-                            alt="Image 3" style={{padding: '0.5em'}}></img>
+                            {this.state.gallery.map((x,i)=>
+                            <img key={i} src={x.imageURL}
+                            alt="Image 1" style={{padding: '0.5em',width: '20%'}}></img>
+                            )}
                         </p>
                         <p>
                             Add Image<br/>
@@ -148,7 +161,12 @@ export class NPODashboard extends React.Component
 
 
                         <div className='row' style={{float: 'middle'}}>
-                            <h2> Ratings <span> (Display Average Rating Here) </span> </h2>
+                            <h2> 
+                                Ratings 
+                                <span> 
+                                    <Rating value = {this.calculateAverageRating()}/> 
+                                </span> 
+                            </h2>
                             {this.state.reviews.map((x,i)=>
                             <div key={i} className="card" style={{width: '77em'}}>
                                     <div className='card-header' style={{ color: 'white', background: '#425088' }}>

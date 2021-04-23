@@ -15,7 +15,8 @@ export class NPOProfile extends React.Component
         comment: '',
         npo:[],
         gallery:[],
-        reviews:[]
+        reviews:[],
+        averageRating: 0
     };
 
     onSubmitClick() {
@@ -47,7 +48,17 @@ export class NPOProfile extends React.Component
         }
     }
 
-
+    calculateAverageRating(){
+        let averageRate = 0;
+        for(let i = 0; i < this.state.reviews.length; ++i)
+        {
+            averageRate += this.state.reviews[i].rating;
+            console.log(averageRate);
+            debugger;
+        }
+        averageRate /= this.state.reviews.length;
+        return averageRate;
+    }
 
     render (){
         return(
@@ -57,7 +68,9 @@ export class NPOProfile extends React.Component
                 <div class="card" style={{width: '100%'}}>
                     <div class="card-header" style={{ color: 'white', background: '#425088' }}>
                         <h1> {x.title}
-                            <span style={{float: 'right'}}> (Display Average Rating Here) </span>
+                            <span style={{float: 'right'}}> 
+                                Average Rating: <Rating value = {this.calculateAverageRating()}/>
+                            </span>
                         </h1>
                     </div>
 
@@ -93,7 +106,7 @@ export class NPOProfile extends React.Component
                                 <h2 style={{'text-align': 'center'}}> Image Gallery </h2>
                                 {this.state.gallery.map((x,i)=>
                                 <img key={i} src={x.imageURL}
-                                alt="Image 1" style={{padding: '0.5em',width: '20%'}}></img>
+                                alt="Image" style={{padding: '0.5em',width: '20%'}}></img>
                                 )}
                             </div>
                         </div>
