@@ -65,9 +65,11 @@ export const FlaggedReviewList = props =>{
                         <p className="text-secondary card-text">{username(x.raterID)} on {npo(x.npoID)} for {x.rating} stars</p>
                         <p className="float-right text-secondary card-text">{x.date}</p>
                         <p className="card-text">"{x.comment}"</p>
-                        <button className="btn btn-warning" onClick={()=>this.removePost(flagged,i)}>Delete Post</button>
-                        <button className="btn btn-danger">Ban User</button>
-                        <button className="btn btn-success" onClick={()=>this.removePost(flagged,i)}>Keep Post</button>
+                        <div className="d-flex justify-content-center"> 
+                        <button className="btn btn-warning" onClick={()=>this.removePost(flagged,i)} style={{width:'30%'}}>Delete Post</button>
+                        <button className="btn btn-danger mx-2" style={{width:'30%'}}>Ban User</button>
+                        <button className="btn btn-success" onClick={()=>this.removePost(flagged,i)} style={{width:'30%'}}>Keep Post</button>
+                        </div>
                     </div>
                     </div>
                 <br/>

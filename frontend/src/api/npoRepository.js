@@ -36,4 +36,15 @@ export class NPORepository{
                         reject();});
             });
         }
+
+        getNANPOS(){
+            return new Promise((resolve, reject) => {
+                axios.get(`${this.url}/npos/notApproved`, this.config)
+                    .then(x => resolve(x.data))
+                    .catch(error => {
+                        alert(error);
+                        reject(error);
+                    });
+            }); 
+        }
 }

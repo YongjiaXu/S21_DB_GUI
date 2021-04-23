@@ -1,6 +1,7 @@
 import React from 'react';
 import {FlaggedReviewList} from './flaggedReviews';
 import {UserRepository} from '../api/userRepository';
+import {NpoApproval} from './npoApproval'
 
 export class AdminDash extends React.Component{
 
@@ -50,7 +51,7 @@ export class AdminDash extends React.Component{
                                     <h2> NPOs Needing Approval </h2>
                                     </div>
                                     <div className='card-body'>
-                                    /* HERE BRO */
+                                    <NpoApproval />
                                     </div>
                                 </div>
                             </div>
