@@ -108,9 +108,7 @@ export class UserRepository {
     changePW(userID,pw){
         return new Promise((resolve, reject)=>{
             axios.put(
-                `${this.url}/putit/userpwd`,
-                {"userid":userID,
-                 "newpwd": pw},
+                `${this.url}/putit/userpwd?userid=${userID}&newpwd=${pw}`,
             )
             .catch(error=>alert(error));
         });

@@ -9,21 +9,10 @@ export class AdminDash extends React.Component{
     userRepo = new UserRepository();
 
     state={
+        pw:"",
+        pwConfirm:"",
         userID: 0,
         user: []
-    }
-
-    updatePW(pw,pwconfirm){
-        console.log(pw+" "+pwconfirm);
-        if(pw==pwconfirm){
-            let id=+this.props.match.params.userID;
-            this.userRepo.changePW(id,pw)
-            .then(alert("Password Changed Sucessfully"))
-        }
-        else{
-            alert("Passwords do not match")
-        }
-
     }
 
     componentDidMount() {
@@ -38,6 +27,19 @@ export class AdminDash extends React.Component{
             })
 
         }
+    }
+
+    updatePW(pw,pwconfirm){
+        console.log(pw+" "+pwconfirm);
+        if(pw===pwconfirm){
+            let id=+this.props.match.params.userID;
+            this.userRepo.changePW(id,pw)
+            .then(this.setState({pw:""}))
+        }
+        else{
+            console.log("rofl")
+        }
+
     }
 
     render(){
@@ -55,11 +57,11 @@ export class AdminDash extends React.Component{
                     <div className='card-body'>
                         <div className='row'>
                             <div className='col-6'>
-                                <div className='card'>
-                                    <div className='card-header' style={{ color: 'white', background: '#425088' }}>
+                            <div className='card'>
+                                <div className='card-header' style={{ color: 'white', background: '#425088' }}>
                                     <h2> Change Password </h2>
-                                    </div>
-                                    <div className='card-body'>
+                                </div>
+                                <div className='card-body'>
                                     <p>
                                         **Password must contain at least one uppercase and
                                         one lowercase letter, a number, a special symbol, other
@@ -67,15 +69,15 @@ export class AdminDash extends React.Component{
                                     </p>
                                     <p>
                                         New Password: <br/>
-                                        <input id='newPass' type='text' style={{width: '15em', height: '2em'}}></input>
+                                        <input id='newPass' type='text' style={{width: '15em', height: '2em'}} onChange={event=>this.setState({pw:event.target.value})}></input>
                                     </p>
                                     <p>
                                         Confirm New Password: <br/>
-                                        <input id='newPassConfirm' type='text' style={{width: '15em', height: '2em'}}></input>
+                                        <input id='newPassConfirm' type='text' style={{width: '15em', height: '2em'}} onChange={event=>this.setState({pwConfirm:event.target.value})}></input>
                                     </p>
-                                    <button type='button' className="btn btn-success">Submit</button>
-                                    </div>
+                                    <button type='button' className="btn btn-success" onClick={()=>this.updatePW(this.state.pw,this.state.pwConfirm)}>Submit</button>
                                 </div>
+                            </div>
                                 <br/>
                                 <div className='card'>
                                     <div className='card-header' style={{ color: 'white', background: '#425088' }}>

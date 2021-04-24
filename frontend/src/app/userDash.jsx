@@ -40,7 +40,7 @@ export class UserDash extends React.Component{
 
     updatePW(pw,pwconfirm){
         console.log(pw+" "+pwconfirm);
-        if(pw==pwconfirm){
+        if(pw===pwconfirm){
             let id=+this.props.match.params.userID;
             this.userRepo.changePW(id,pw);
         }
