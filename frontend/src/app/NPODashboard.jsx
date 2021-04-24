@@ -13,7 +13,11 @@ export class NPODashboard extends React.Component
     state = {
         npo:[],
         gallery:[],
-        reviews:[]
+        reviews:[],
+        description: '',
+        location: '',
+        logoURL: '',
+        imgURL: ''
     };
 
     componentDidMount() {
@@ -42,6 +46,70 @@ export class NPODashboard extends React.Component
         }
         averageRate /= this.state.reviews.length;
         return averageRate;
+    }
+
+    changePassword(newPassword, confirmPassword)
+    {
+        if(newPassword != confirmPassword)
+        {
+            alert("ERROR: Passwords don't match");
+        }
+        else
+        {
+
+        }
+    }
+
+    onChangeLocation()
+    {
+        console.log(+this.props.match.params.id);
+        console.log(this.state.location);
+        debugger;
+        this.npoRepo.updateLocation(
+            +this.props.match.params.id, this.state.location
+        );
+
+        this.setState({
+            location: '',
+        });
+        alert("Changes have been saved!");
+    }
+
+    onChangeDescription()
+    {
+        console.log(+this.props.match.params.id);
+        console.log(this.state.description);
+        debugger;
+
+        this.npoRepo.updateDescription(
+            +this.props.match.params.id, this.state.description
+        );
+
+        this.setState({
+            description: '',
+        });
+        alert("Changes have been saved!");
+    }
+
+    onChangeLogo()
+    {
+        console.log(+this.props.match.params.id);
+        console.log(this.state.logoURL);
+        debugger;
+
+        this.npoRepo.updateLogo(
+            +this.props.match.params.id, this.state.logoURL
+        );
+
+        this.setState({
+            logoURL: '',
+        });
+        alert("Changes have been saved!");
+    }
+
+    onAddImage(newImage)
+    {
+
     }
 
     render (){
@@ -102,7 +170,14 @@ export class NPODashboard extends React.Component
                                 alt="Logo"
                                 className='logo'></img>
                                 <br/>
-                                <input type='file' className='form-control-file'></input>
+                                <input type='file' 
+                                className='form-control-file'
+                                value={this.state.logoURL}
+                                onChange={ event => this.setState({logoURL: event.target.value})}></input>
+                                <br/>
+                                <button type='button' 
+                                className="btn btn-success"
+                                onClick={ () => this.onChangeLogo() }> Save Changes </button>
                                 </div>
                                 </div>
                             </div>
@@ -119,9 +194,15 @@ export class NPODashboard extends React.Component
                                 <div className='card-body'>
                                 <p>
                                     New Description: <br/>
-                                    <textarea className='form-control' id='newDescription' rows='7'></textarea>
+                                    <textarea className='form-control' 
+                                    id='newDescription' 
+                                    rows='7'
+                                    value={this.state.description}
+                                    onChange={ event=> this.setState( { description: event.target.value } ) }></textarea>
                                 </p>
-                                <button type='button' className="btn btn-success"> Save Changes </button>
+                                <button type='button' 
+                                className="btn btn-success"
+                                onClick={ () => this.onChangeDescription() }> Save Changes </button>
                                 </div>
                                 </div>
                             </div>
@@ -133,9 +214,15 @@ export class NPODashboard extends React.Component
                             <div className='card-body'>
                                 <p>
                                     New Location: <br/>
-                                    <input id='newLocation' type='text' className='form-control'></input>
+                                    <input id='newLocation' 
+                                    type='text' 
+                                    className='form-control'
+                                    value={this.state.location}
+                                    onChange={ event => this.setState( {location: event.target.value} ) }></input>
                                 </p>
-                                <button type='button' className="btn btn-success"> Save Changes </button>
+                                <button type='button' 
+                                className="btn btn-success"
+                                onClick={() => this.onChangeLocation()}> Save Changes </button>
                                 </div>
                             </div>
                             </div>
