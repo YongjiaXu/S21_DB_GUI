@@ -287,6 +287,24 @@ app.delete('/deleteit/npos/:npoID', (req, res) => {
   });
 });
 
+// 16. POST a review
+app.post('/postit/review', (req, res) => {
+  var rating = req.param('rating');
+  var raterID = req.param('raterID');
+  var flagged = req.param('flagged');
+  var comment = req.param('comment');
+  var npoID = req.param('npoID');
+  var ratingDate = req.param('ratingDate');
+  pool.query('insert into ratings (rating, raterID, flagged, comment, npoID, ratingDate) values (?,?,?,?,?,?)', [rating, raterID, flagged, comment, npoID, ratingDate], function (err, result, fields) {
+    if (err) {
+      logger.error("Error while adding review ");
+    }
+    else{
+      res.end(JSON.stringify(result));
+    }
+  });
+});
+
 
 ///Peter
 // PUT update npo location by npoID (use JSON body for location)
