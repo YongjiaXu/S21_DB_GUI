@@ -61,7 +61,7 @@ export class NPODashboard extends React.Component
 
     changePassword(newPassword, confirmPassword)
     {
-        if(newPassword != confirmPassword)
+        if(newPassword !== confirmPassword)
         {
             alert("ERROR: Passwords don't match");
         }
@@ -121,6 +121,19 @@ export class NPODashboard extends React.Component
     onAddImage()
     {
         
+    }
+
+    flag(id){
+        this.reviewRepo.flagToggle(id);
+    }
+
+    flagButton(status,id){
+        if(status===0){
+            return (<button type="button" className="btn btn-danger" onClick={()=>this.flag(id)}>Flag</button>)
+        }
+        else{
+            return (<button type="button" className="btn btn-success" onClick={()=>this.flag(id)}>Un-Flag</button>)
+        }
     }
 
     render (){
@@ -292,7 +305,7 @@ export class NPODashboard extends React.Component
                                         <div className='row'>
                                             <div className='col-10'>{x.comment}</div>
                                             <div className="col-2">
-                                                <button type="button" className="btn btn-danger">Flag</button>
+                                                {this.flagButton(x.flagged,x.ratingID)}
                                             </div>
                                         </div>
                                     </div>
