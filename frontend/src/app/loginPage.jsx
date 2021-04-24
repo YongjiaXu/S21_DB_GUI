@@ -12,7 +12,7 @@ export class LoginPage extends React.Component {
         username: "",
         password: "",
         authenticated: null,
-        type:0
+        user_type:0
     };
 
     login() {
@@ -74,10 +74,10 @@ export class LoginPage extends React.Component {
                             className="btn btn-success btn-lg btn-block"
                             onClick={() => this.login()}>Login</button>
                     </div>
-                    {this.state.authenticated && this.state.type==1 && <Redirect to={'/UserDash/'+this.state.id} />}
-                    {this.state.authenticated && this.state.type==2 && <Redirect to={'/AdminDash/'} />}
-                    {this.state.authenticated && this.state.type==3 && <Redirect to={'/NPODashboard/'+this.state.id} />}
-                    {this.state.authenticated && !this.state.type && <Redirect to={'/newUser/'} />}
+                    {this.state.authenticated && this.state.user_type==1 && <Redirect to={'/UserDash/'+this.state.id} />}
+                    {this.state.authenticated && this.state.user_type==2 && <Redirect to={'/AdminDash/'} />}
+                    {this.state.authenticated && this.state.user_type==3 && <Redirect to={'/NPODashboard/'+this.state.id} />}
+                    {this.state.authenticated && !this.state.user_type && <Redirect to={'/newUser/'} />}
 
 
                 </form>
