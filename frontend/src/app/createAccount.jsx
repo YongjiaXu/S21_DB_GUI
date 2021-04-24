@@ -17,19 +17,19 @@ export class CreateAccount extends React.Component{
     };
 
     onRegister(username, email, password, password2) {
-
-        if (this.state.username == ''
-            || this.state.email == ''
-            || this.state.password == ''
-            || this.state.passwor2 == ''
-            || this.state.password == '')
+        
+        if (this.state.username === ''
+            || this.state.email === ''
+            || this.state.password === ''
+            || this.state.passwor2 === '')
             alert('Please enter all fields');
         else if (this.state.password !== this.state.password2)
             alert('Passwords do not match');
 
 
-        else{
-            this.userRepository.register(username, email, password)
+        else {
+            console.log("userType: " + this.state.user_type);
+            this.userRepository.register(this.state.username, this.state.email, this.state.password, this.state.user_type)
                 .then(user => {
                     console.log(user.id);
                     this.setState({ success: true });
@@ -92,23 +92,23 @@ export class CreateAccount extends React.Component{
                     <div className="form-group">
 
                     <div className="form-check form-check-inline">
-                            <input class="form-check-input"
+                            <input className="form-check-input"
                                 type="radio"
                                 name="flexRadioDefault"
                                 id="flexRadioDefault1"
                                 checked
-                                onChange={e => this.setState({ password2: e.target.value })} />
-                        <label class="form-check-label" for="flexRadioDefault1">Browser Account</label>
+                                value={this.state.user_type}
+                                onChange={e => this.setState({ user_type: 1 })} />
+                        <label className="form-check-label" htmlFor="flexRadioDefault1">Browser Account</label>
                         </div>
                     <div className="form-check form-check-inline">
-                            <input class="form-check-input"
+                            <input className="form-check-input"
                                 type="radio" 
                                 name="flexRadioDefault"
                                 id="flexRadioDefault2"
-                                value={this.state.password2}
-                                value={this.state.password2}
-                                onChange={e => this.setState({ password2: e.target.value })}/>
-                        <label class="form-check-label" for="flexRadioDefault2">NPO Account</label>
+                                value={this.state.user_type}
+                                onChange={e => this.setState({ user_type: 3 })}/>
+                        <label className="form-check-label" htmlFor="flexRadioDefault2">NPO Account</label>
                         </div>
                     </div>
    
