@@ -29,4 +29,24 @@ export class ReviewRepository{
                         reject();});
             });
         }
+
+        flagToggle(ratingID){
+            return new Promise((resolve, reject)=>{
+                axios.put(
+                    `${this.url}/ratings/${ratingID}/toggleFlag`,
+                )
+                .catch(error=>alert(error));
+            });
+
+        }
+
+        deletePost(ratingID){
+            return new Promise((resolve, reject)=>{
+                axios.delete(
+                    `${this.url}/reviews/${ratingID}`,
+                )
+                .catch(error=>alert(error));
+            });
+        }
+
 }

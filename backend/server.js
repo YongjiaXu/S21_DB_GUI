@@ -52,16 +52,18 @@ app.listen(config.port, config.host, (e) => {
 app.post('/postit/login', (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
+  
   console.log('login check');
-  pool.query('SELECT * FROM users WHERE username = ? AND password = ?', [username,password], function(err, result, fields) {
+  
+  pool.query('SELECT * FROM users WHERE username = ? AND password = ?', [username, password], function (err, result, fields) {
     if (err) {
       console.log(username, password, result[0].password)
       if (password !== result.password) {
         return res
         .status(400)
-        .send('Please Error while getting user all fields!');
+        .send('Wrong Password!');
       }
-      return res.status(400).send('Please Error while getting user all fields!');
+      return res.status(400).send('Error while getting user.');
     }
     else {
       console.log(username, password, result[0].password)
@@ -74,10 +76,12 @@ app.post('/postit/login', (req, res) => {
 app.post('/postit/register', (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
-//  const user_type = req.body.user_type;
-//   pool.query('INSERT INTO users (username, password, user_type) VALUES (?,?,?)', [username, password, user_type], function (err, result, fields) {
-
-  pool.query('INSERT INTO users (username, password) VALUES (?,?)', [username, password], function (err, result, fields) {
+  const user_type = req.body.user_type;
+  
+  console.log('register check');
+  console.log(username, password, user_type)
+  
+  pool.query('INSERT INTO users (username, password, user_type) VALUES (?,?,?)', [username, password, user_type], function (err, result, fields) {
     if (err) {
       logger.error("Error while inserting new user to users");
     }
@@ -178,22 +182,20 @@ app.delete('/deleteit/username', (req, res) => {
       logger.error("Error while deleting user " + username);
     }
     else{
-      res.end(JSON.stringify(result[0]));
-      res.end(JSON.stringify(result[1]));
+      res.end(JSON.stringify(result));
     }
   });
 });
 
 // 8. DELETE a user by userID
-app.delete('/deleteit/userID', (req, res) => {
+app.delete('/deleteit/:userID', (req, res) => {
   var userID = req.param('userID');
   pool.query('delete from ratings where raterID = ?; delete from users where userID = ?; ', [userID, userID], function (err, result, fields) {
     if (err) {
       logger.error("Error while deleting user " + userID);
     }
     else{
-      res.end(JSON.stringify(result[0]));
-      res.end(JSON.stringify(result[1]));
+      res.end(JSON.stringify(result));
     }
   });
 });
@@ -264,11 +266,42 @@ app.get('/getit/avgrating', (req, res) => {
 });
 
 // 14. GET username by userID
-app.get('/getit/username/', (req, res) => {
+app.get('/getit/username/:userID', (req, res) => {
   var userID = req.param('userID');
   pool.query('select username from users where userID = ?', userID, function (err, result, fields) {
     if (err) {
       logger.error("Error while getting average rating for npo " + npoID);
+    }
+    else{
+      res.end(JSON.stringify(result));
+    }
+  });
+});
+
+// 15. DELETE npo by npoID
+app.delete('/deleteit/npos/:npoID', (req, res) => {
+  var npoID = req.param('npoID');
+  pool.query('delete from images where npoID = ?; delete from npos where npoID = ?', [npoID, npoID], function (err, result, fields) {
+    if (err) {
+      logger.error("Error while deleting npoID " + npoID);
+    }
+    else{
+      res.end(JSON.stringify(result));
+    }
+  });
+});
+
+// 16. POST a review
+app.post('/postit/review', (req, res) => {
+  var rating = req.param('rating');
+  var raterID = req.param('raterID');
+  var flagged = req.param('flagged');
+  var comment = req.param('comment');
+  var npoID = req.param('npoID');
+  var ratingDate = req.param('ratingDate');
+  pool.query('insert into ratings (rating, raterID, flagged, comment, npoID, ratingDate) values (?,?,?,?,?,?)', [rating, raterID, flagged, comment, npoID, ratingDate], function (err, result, fields) {
+    if (err) {
+      logger.error("Error while adding review ");
     }
     else{
       res.end(JSON.stringify(result));

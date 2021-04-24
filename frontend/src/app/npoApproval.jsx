@@ -1,34 +1,29 @@
 import React, { useState, useEffect } from 'react';
-import {ReviewRepository} from '../api/reviewRepository';
-import {UserRepository} from '../api/userRepository';
+import {Link} from 'react-router-dom';
 import {NPORepository} from '../api/npoRepository';
 
-export const FlaggedReviewList = props =>{
+export const NpoApproval = props =>{
 
     const [npos, setNpos] = useState('');
 
 
-    const reviewRepository = new ReviewRepository();
-
-    const userRepository = new UserRepository();
-
     const npoRepository = new NPORepository();
 
     useEffect(()=>{
-        if(!flagged){
+        if(!npos){
             npoRepository.getNANPOS().then(z=>{
                 setNpos(z);
             })
         }
     });
 
+    function approve(id){
+        npoRepository.approve(id);
+    }
 
-    // removePost(reviews,index){
-    //     reviews.splice(index,1);
-    //     this.setState({
-    //         flagged:reviews
-    //     })
-    // };
+    function denyNPO(id){
+        npoRepository.deny(id);
+    }
 
     if(!npos){
         return<>
@@ -36,25 +31,35 @@ export const FlaggedReviewList = props =>{
         </>
     }
         return<>
-        <div className="card">
             {
-                !flagged.length && <h5>No Flagged Reviews</h5>
+                !npos.length && <h5>No NPOS Needing Approved</h5>
             }
             {
-                flagged.map((x, i) => <div key={ i } style={{}}>
-                <div className="card"style={{background:"#ebebeb"}}>
-                    <div className="card-body">
-                        <p className="text-secondary card-text">{username(x.raterID)} on {npo(x.npoID)} for {x.rating} stars</p>
-                        <p className="float-right text-secondary card-text">{x.date}</p>
-                        <p className="card-text">"{x.comment}"</p>
-                        <button className="btn btn-warning" onClick={()=>this.removePost(flagged,i)}>Delete Post</button>
-                        <button className="btn btn-danger">Ban User</button>
-                        <button className="btn btn-success" onClick={()=>this.removePost(flagged,i)}>Keep Post</button>
+                    <div>
+                        {npos.map((x,i)=> <>
+                        <div key={i} className="container">
+                            <div id="npoCard" className="card">
+                                <div id="name"className="card-header">
+                                    {x.title} ({x.location}) 
+                                </div>
+                                <div className="card-body">
+                                    <div>
+                                        <div>"{x.description}"</div>
+                                    </div>
+                                    <div className="d-flex justify-content-center">
+                                    <Link to={'/NPOProfile/'+x.npoID} className="btn btn-warning" style={{width:'30%'}}> 
+                                    Profile
+                                    </Link>
+                                    <button className="btn btn-danger mx-2"style={{width:'30%'}} onClick={()=> {if(window.confirm('Denying will delete the NPO, are you sure?')) denyNPO(x.npoID)}}>Deny</button>
+                                    <button className="btn btn-success"style={{width:'30%'}} onClick={()=>approve(x.npoID)}>Approve</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <br/>
+                            </div>
+                        </>
+                        )}
                     </div>
-                    </div>
-                <br/>
-            </div>)
             }
-        </div>
         </>
 }

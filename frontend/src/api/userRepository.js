@@ -66,12 +66,14 @@ export class UserRepository {
     }
     
     
-    register(username,email, password) {
+    register(username,email, password, user_type) {
         return new Promise((resolve, reject) => {
             axios.post(`${this.url}/postit/register`,
                 {
-                "username": username,
-                "password": password,
+                    "username": username,
+                    "email": email,
+                    "password": password,
+                    "user_type":user_type,
                 }
                 , this.config)
             .then(x => resolve(x.data))
@@ -102,13 +104,22 @@ export class UserRepository {
     changePW(userID,pw){
         return new Promise((resolve, reject)=>{
             axios.put(
-                `${this.url}/userpwd`,
+                `${this.url}/putit/userpwd`,
                 {"userid":userID,
                  "newpwd": pw},
             )
             .catch(error=>alert(error));
         });
 
+    }
+
+    banUser(userID){
+        return new Promise((resolve, reject)=>{
+            axios.delete(
+                `${this.url}/deleteit/${userID}`,
+            )
+            .catch(error=>alert(error));
+        });
     }
 
 }

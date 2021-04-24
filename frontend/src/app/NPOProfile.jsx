@@ -2,6 +2,7 @@ import React from 'react'
 import { Rating } from './models/rating';
 import {NPORepository} from '../api/npoRepository'
 import {ReviewRepository} from '../api/reviewRepository'
+import {UserRepository} from '../api/userRepository'
 import {styles} from './card-theme.css';
 
 export class NPOProfile extends React.Component
@@ -10,6 +11,8 @@ export class NPOProfile extends React.Component
 
     reviewRepo = new ReviewRepository();
 
+    userRepo = new UserRepository();
+
     state = {
         userName: '',
         rating: '',
@@ -17,7 +20,8 @@ export class NPOProfile extends React.Component
         npo:[],
         gallery:[],
         reviews:[],
-        averageRating: 0
+        averageRating: 0,
+        users:[]
     };
 
     submitReview(){
@@ -40,7 +44,17 @@ export class NPOProfile extends React.Component
              .then(reviews=>{
                  this.setState({reviews})
              });
+             this.userRepo.getUsers()
+             .then(users=>{
+                 this.setState({users})
+            });
         }
+    }
+
+    username(raterID){
+        const result = this.state.users.find(({userID})=> userID===raterID);
+        console.log(result.username);
+        return result.username;
     }
 
     calculateAverageRating(){
@@ -138,7 +152,7 @@ export class NPOProfile extends React.Component
                                     
                                         <div className='card-body'>
                                             <div className='row'>
-                                                <div className='col-10'>{x.raterID}</div>
+                                                <div className='col-10'>{this.username(x.raterID)}</div>
                                                 <div className='col-2'>{x.ratingDate.toString().substr(0,10)}</div>
                                             </div>
                                             <div className='row'>

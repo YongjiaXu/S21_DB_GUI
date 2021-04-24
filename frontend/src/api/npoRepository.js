@@ -38,6 +38,16 @@ export class NPORepository{
             }); 
         }
 
+        getGallery(npoID) {
+            return new Promise((resolve, reject) => {
+                axios.get(`${this.url}/npos/${npoID}/images`, this.config)
+                    .then(x => resolve(x.data))
+                    .catch(e => {
+                        alert("catch error when getting npo images");
+                        reject();});
+            });
+        }
+
         approve(npoID){
             return new Promise((resolve, reject) => {
                 axios.put(`${this.url}/npos/${npoID}/approve`, this.config)
@@ -47,12 +57,11 @@ export class NPORepository{
             });           
         }
 
-        getGallery(npoID) {
+        deny(npoID){
             return new Promise((resolve, reject) => {
-                axios.get(`${this.url}/npos/${npoID}/images`, this.config)
-                    .then(x => resolve(x.data))
+                axios.delete(`${this.url}/deleteit/npos/${npoID}`, this.config)
                     .catch(e => {
-                        alert("catch error when getting npo");
+                        alert("error approving npo");
                         reject();});
             });
         }

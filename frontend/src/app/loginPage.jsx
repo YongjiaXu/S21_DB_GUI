@@ -12,8 +12,7 @@ export class LoginPage extends React.Component {
         username: "",
         password: "",
         authenticated: null,
-        npo: null,
-        type:0
+        user_type:0
     };
 
     login() {
@@ -77,22 +76,10 @@ export class LoginPage extends React.Component {
                             onClick={() => this.login()}>Login</button>
                     </div>
                     
-                    {this.state.authenticated && this.state.type==1 && <Redirect to={'/UserDash/'+this.state.id} />}
-                    {this.state.authenticated && this.state.type==2 && <Redirect to={'/AdminDash/'} />}
-                    {this.state.authenticated && this.state.type==3 && <Redirect to={'/NPODashboard/'+this.state.npo} />}
+                    {this.state.authenticated && <Redirect to={'/Home/'} />}
                     
-
                 </form>
             </div>
         </>
     }
-    // componentDidMount() {
-    //     this.userRepository.getUsers()
-    //         .then( users => this.setState({users: users}));
-    //     let username = 'npo';
-    //     this.userRepository.getUser(username)
-    //         .then( user => {
-    //             this.setState({specific_user: user[0].username});
-    //         });
-    // }
 }
