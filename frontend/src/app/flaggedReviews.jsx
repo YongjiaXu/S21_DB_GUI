@@ -8,7 +8,6 @@ export const FlaggedReviewList = props =>{
     const [flagged, setFlagged] = useState('');
     const [users, setUsers] = useState('');
     const [npos, setNpos] = useState('');
-    const [value,setValue] = useState(0);
 
     const reviewRepository = new ReviewRepository();
 

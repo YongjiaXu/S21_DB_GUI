@@ -17,6 +17,10 @@ export const NpoApproval = props =>{
         }
     });
 
+    function approve(id){
+        npoRepository.approve(id);
+    }
+
     if(!npos){
         return<>
         <h2>Loading NPOs....</h2>
@@ -43,7 +47,7 @@ export const NpoApproval = props =>{
                                     Profile
                                     </Link>
                                     <button className="btn btn-danger mx-2"style={{width:'30%'}}>Deny</button>
-                                    <button className="btn btn-success"style={{width:'30%'}}>Approve</button>
+                                    <button className="btn btn-success"style={{width:'30%'}} onClick={()=>approve(x.npoID)}>Approve</button>
                                     </div>
                                 </div>
                             </div>

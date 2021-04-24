@@ -32,7 +32,7 @@ export class NPORepository{
                 axios.get(`${this.url}/npos/${npoID}/images`, this.config)
                     .then(x => resolve(x.data))
                     .catch(e => {
-                        alert("catch error when getting npo");
+                        alert("catch error when getting npo images");
                         reject();});
             });
         }
@@ -46,5 +46,14 @@ export class NPORepository{
                         reject(error);
                     });
             }); 
+        }
+
+        approve(npoID){
+            return new Promise((resolve, reject) => {
+                axios.put(`${this.url}/npos/${npoID}/approve`, this.config)
+                    .catch(e => {
+                        alert("error approving npo");
+                        reject();});
+            });           
         }
 }
