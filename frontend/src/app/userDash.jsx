@@ -30,6 +30,10 @@ export class UserDash extends React.Component{
         }
     }
 
+    deleteAccount(id){
+        console.log(id);
+    }
+
     render (){
         return <>
             <div className='container'>
@@ -76,7 +80,7 @@ export class UserDash extends React.Component{
                                 <div className='card-body'>
                                     <p>
                                         Are you sure? No Looking Back<br/>
-                                        <button type='button' className="btn btn-danger"> Delete </button>
+                                        <button type='button' className="btn btn-danger" onClick={()=> {if(window.confirm('Are you sure you wish to delete your account?')) this.deleteAccount(x.userID)}}> Delete Account </button>
                                     </p>
                                 </div>
                             </div>

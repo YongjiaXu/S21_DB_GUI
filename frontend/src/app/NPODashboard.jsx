@@ -2,6 +2,8 @@ import React from 'react'
 import { Rating } from './models/rating';
 import { NPORepository } from '../api/npoRepository';
 import {ReviewRepository} from '../api/reviewRepository'
+import {UserRepository} from '../api/userRepository'
+
 import {Npo} from './models/npo';
 import {styles} from './card-theme.css';
 
@@ -9,29 +11,35 @@ export class NPODashboard extends React.Component
 {
     npoRepo = new NPORepository();
     reviewRepo = new ReviewRepository();
+    userRepo = new UserRepository();
 
     state = {
         npo:[],
         gallery:[],
-        reviews:[]
+        reviews:[],
+        users:[]
     };
 
     componentDidMount() {
-        let id = +this.props.match.params.id;
-        if (id) {
-            this.npoRepo.getNPO(id)
-            .then(npo => { 
-                this.setState({npo})
-             });
-             this.npoRepo.getGallery(id)
-             .then(gallery=>{
-                 this.setState({gallery})
-             });
-             this.reviewRepo.getReviews(id)
-             .then(reviews=>{
-                 this.setState({reviews})
-             })
-        }
+            let id = +this.props.match.params.id;
+            if (id) {
+                this.npoRepo.getNPO(id)
+                .then(npo => { 
+                    this.setState({npo})
+                 });
+                 this.npoRepo.getGallery(id)
+                 .then(gallery=>{
+                     this.setState({gallery})
+                 });
+                 this.userRepo.getUsers()
+                 .then(users=>{
+                     this.setState({users})
+                });
+                 this.reviewRepo.getReviews(id)
+                 .then(reviews=>{
+                     this.setState({reviews})
+                 });
+            }
     }
 
     calculateAverageRating(){
@@ -42,6 +50,11 @@ export class NPODashboard extends React.Component
         }
         averageRate /= this.state.reviews.length;
         return averageRate;
+    }
+
+    username(raterID){
+        let result = this.state.users.find(({userID})=> userID===raterID);
+        return result.username;
     }
 
     render (){
@@ -182,7 +195,7 @@ export class NPODashboard extends React.Component
                                     </div>
                                     <div className='card-body'>
                                         <div className='row'>
-                                            <div className='col-10'>{x.raterID}</div>
+                                            <div className='col-10'>{this.username(x.raterID)}</div>
                                             <div className='col-2'>{x.ratingDate.toString().substring(0,10)}</div>
                                         </div>
                                         <div className='row'>
