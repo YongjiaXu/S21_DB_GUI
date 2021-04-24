@@ -3,7 +3,7 @@ import { Npo } from './models/npo'
 import { Rating } from './models/rating'
 import { User } from './models/user';
 import {UserRepository} from '../api/userRepository'
-import {Link} from 'react-router-dom'
+import {Link, Redirect} from 'react-router-dom'
 import {styles} from './card-theme.css';
 //import {PasswordUpdate} from './passwordUpdate';
 
@@ -33,7 +33,8 @@ export class UserDash extends React.Component{
     }
 
     deleteAccount(id){
-        console.log(id);
+        this.userRepo.banUser(id);
+        
     }
 
     updatePW(pw,pwconfirm){
@@ -94,7 +95,7 @@ export class UserDash extends React.Component{
                                 <div className='card-body'>
                                     <p>
                                         Are you sure? No Looking Back<br/>
-                                        <button type='button' className="btn btn-danger" onClick={()=> {if(window.confirm('Are you sure you wish to delete your account?')) this.deleteAccount(x.userID)}}> Delete Account </button>
+                                        <Link to ={'/deleted'}type='button' className="btn btn-danger" onClick={()=> {if(window.confirm('Are you sure you wish to delete your account?')) this.deleteAccount(x.userID)}}> Delete Account </Link>
                                     </p>
                                 </div>
                             </div>

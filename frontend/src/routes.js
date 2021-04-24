@@ -5,6 +5,7 @@ import { NPOProfile } from './app/NPOProfile';
 import {UserDash} from './app/userDash';
 import {AdminDash} from './app/adminDash';
 import {NewUser} from './app/newUser';
+import { DeletedAccount } from './app/deletedAccount';
 
 export const ROUTES = [
     
@@ -14,5 +15,6 @@ export const ROUTES = [
     {path: '/UserDash/:id', component: UserDash},
     {path: '/AdminDash', component: AdminDash},
     {path: '/newUser', component: NewUser},
+    {path: '/deleted', component: DeletedAccount},
     {path: '/', component: LoginPage}
 ]

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import {Link} from 'react-router-dom'
 
 export class DeletedAccount extends Component{
     render(){
@@ -12,6 +13,7 @@ export class DeletedAccount extends Component{
                             Sorry it didn't work out. :(
                         </p>
                     </div>
+                    <Link to={'/'}>Go to Login Page</Link>
                 </form>
             </div>    
         </>
