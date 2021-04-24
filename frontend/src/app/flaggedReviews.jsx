@@ -8,7 +8,7 @@ export const FlaggedReviewList = props =>{
     const [flagged, setFlagged] = useState('');
     const [users, setUsers] = useState('');
     const [npos, setNpos] = useState('');
-    const [approval, setApproval] = useState('');
+    const [value,setValue] = useState(0);
 
     const reviewRepository = new ReviewRepository();
 
@@ -41,12 +41,17 @@ export const FlaggedReviewList = props =>{
     }
 
 
-    // removePost(reviews,index){
-    //     reviews.splice(index,1);
-    //     this.setState({
-    //         flagged:reviews
-    //     })
-    // };
+    function removePost(reviews,index){
+        reviews.splice(index,1);
+        this.setState({
+            flagged:reviews
+        })
+    };
+
+    function unflag(id){
+        reviewRepository.flagToggle(id);
+    }
+
 
     if(!flagged||!users||!npos){
         return<>
@@ -68,7 +73,7 @@ export const FlaggedReviewList = props =>{
                         <div className="d-flex justify-content-center"> 
                         <button className="btn btn-warning" onClick={()=>this.removePost(flagged,i)} style={{width:'30%'}}>Delete Post</button>
                         <button className="btn btn-danger mx-2" style={{width:'30%'}}>Ban User</button>
-                        <button className="btn btn-success" onClick={()=>this.removePost(flagged,i)} style={{width:'30%'}}>Keep Post</button>
+                        <button className="btn btn-success" onClick={()=>unflag(x.ratingID)} style={{width:'30%'}}>Keep Post</button>
                         </div>
                     </div>
                     </div>
