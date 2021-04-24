@@ -12,7 +12,7 @@ export const Homapage = props => {
 
     useEffect(() => {
         if (!NPOs) {
-            npoRepo.getNPOS().then(x => {
+            npoRepo.getApprovedNPOS().then(x => {
                 setNPOs(x);
             });
         }
