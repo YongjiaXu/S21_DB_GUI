@@ -27,6 +27,26 @@ export class NPORepository{
             }); 
         }
 
+        getNANPOS(){
+            return new Promise((resolve, reject) => {
+                axios.get(`${this.url}/npos/notApproved`, this.config)
+                    .then(x => resolve(x.data))
+                    .catch(error => {
+                        alert(error);
+                        reject(error);
+                    });
+            }); 
+        }
+
+        approve(npoID){
+            return new Promise((resolve, reject) => {
+                axios.put(`${this.url}/npos/${npoID}/approve`, this.config)
+                    .catch(e => {
+                        alert("error approving npo");
+                        reject();});
+            });           
+        }
+
         getGallery(npoID) {
             return new Promise((resolve, reject) => {
                 axios.get(`${this.url}/npos/${npoID}/images`, this.config)
