@@ -3,8 +3,6 @@ import { Rating } from './models/rating';
 import { NPORepository } from '../api/npoRepository';
 import {ReviewRepository} from '../api/reviewRepository'
 import {UserRepository} from '../api/userRepository'
-
-import {Npo} from './models/npo';
 import {styles} from './card-theme.css';
 
 export class NPODashboard extends React.Component
@@ -17,30 +15,34 @@ export class NPODashboard extends React.Component
         npo:[],
         gallery:[],
         reviews:[],
-        users:[]
+        users:[],
+        description: '',
+        location: '',
+        logoURL: '',
+        imgURL: ''
     };
 
     componentDidMount() {
-            let id = +this.props.match.params.id;
-            if (id) {
-                this.npoRepo.getNPO(id)
-                .then(npo => { 
-                    this.setState({npo})
-                 });
-                 this.npoRepo.getGallery(id)
-                 .then(gallery=>{
-                     this.setState({gallery})
-                 });
-                 this.userRepo.getUsers()
-                 .then(users=>{
-                     this.setState({users})
-                });
-                 this.reviewRepo.getReviews(id)
-                 .then(reviews=>{
-                     this.setState({reviews})
-                 });
-            }
-    }
+        let id = +this.props.match.params.id;
+        if (id) {
+            this.npoRepo.getNPO(id)
+            .then(npo => { 
+                this.setState({npo})
+             });
+             this.npoRepo.getGallery(id)
+             .then(gallery=>{
+                 this.setState({gallery})
+             });
+             this.userRepo.getUsers()
+             .then(users=>{
+                 this.setState({users})
+            });
+             this.reviewRepo.getReviews(id)
+             .then(reviews=>{
+                 this.setState({reviews})
+             });
+        }
+}
 
     calculateAverageRating(){
         let averageRate = 0;
@@ -55,6 +57,70 @@ export class NPODashboard extends React.Component
     username(raterID){
         let result = this.state.users.find(({userID})=> userID===raterID);
         return result.username;
+    }
+
+    changePassword(newPassword, confirmPassword)
+    {
+        if(newPassword != confirmPassword)
+        {
+            alert("ERROR: Passwords don't match");
+        }
+        else
+        {
+
+        }
+    }
+
+    onChangeLocation()
+    {
+        console.log(+this.props.match.params.id);
+        console.log(this.state.location);
+        debugger;
+        this.npoRepo.updateLocation(
+            +this.props.match.params.id, this.state.location
+        );
+
+        this.setState({
+            location: '',
+        });
+        alert("Changes have been saved!");
+    }
+
+    onChangeDescription()
+    {
+        console.log(+this.props.match.params.id);
+        console.log(this.state.description);
+        debugger;
+
+        this.npoRepo.updateDescription(
+            +this.props.match.params.id, this.state.description
+        );
+
+        this.setState({
+            description: '',
+        });
+        alert("Changes have been saved!");
+    }
+
+    onChangeLogo()
+    {
+        console.log(+this.props.match.params.id);
+        console.log(this.state.logoURL);
+        debugger;
+
+        this.npoRepo.updateLogo(
+            +this.props.match.params.id, this.state.logoURL
+        );
+
+        this.setState({
+            logoURL: '',
+        });
+        alert("Changes have been saved!");
+    }
+
+    onAddImage()
+    {
+        
     }
 
     render (){
@@ -115,7 +181,15 @@ export class NPODashboard extends React.Component
                                 alt="Logo"
                                 className='logo'></img>
                                 <br/>
-                                <input type='file' className='form-control-file'></input>
+                                Upload Image by URL:
+                                <input type='text' 
+                                className='form-control'
+                                value={this.state.logoURL}
+                                onChange={ event => this.setState({logoURL: event.target.value})}></input>
+                                <br/>
+                                <button type='button' 
+                                className="btn btn-success"
+                                onClick={ () => this.onChangeLogo() }> Save Changes </button>
                                 </div>
                                 </div>
                             </div>
@@ -132,9 +206,15 @@ export class NPODashboard extends React.Component
                                 <div className='card-body'>
                                 <p>
                                     New Description: <br/>
-                                    <textarea className='form-control' id='newDescription' rows='7'></textarea>
+                                    <textarea className='form-control' 
+                                    id='newDescription' 
+                                    rows='7'
+                                    value={this.state.description}
+                                    onChange={ event=> this.setState( { description: event.target.value } ) }></textarea>
                                 </p>
-                                <button type='button' className="btn btn-success"> Save Changes </button>
+                                <button type='button' 
+                                className="btn btn-success"
+                                onClick={ () => this.onChangeDescription() }> Save Changes </button>
                                 </div>
                                 </div>
                             </div>
@@ -146,9 +226,15 @@ export class NPODashboard extends React.Component
                             <div className='card-body'>
                                 <p>
                                     New Location: <br/>
-                                    <input id='newLocation' type='text' className='form-control'></input>
+                                    <input id='newLocation' 
+                                    type='text' 
+                                    className='form-control'
+                                    value={this.state.location}
+                                    onChange={ event => this.setState( {location: event.target.value} ) }></input>
                                 </p>
-                                <button type='button' className="btn btn-success"> Save Changes </button>
+                                <button type='button' 
+                                className="btn btn-success"
+                                onClick={() => this.onChangeLocation()}> Save Changes </button>
                                 </div>
                             </div>
                             </div>
@@ -168,10 +254,15 @@ export class NPODashboard extends React.Component
                             )}
                         </p>
                         <p>
-                            Add Image
-                            <input id='newImage' type='file' className='form-control-file'></input>
+                            Upload image by URL:
+                            <input id='newImage' 
+                            type='text' 
+                            className='form-control'
+                            onChange={event => this.setState({ imgURL: event.target.value })}></input>
                         </p>
-                        <button type='button' className="btn btn-success"> Save Changes </button>
+                        <button type='button' 
+                        className="btn btn-success"
+                        onClick={() => this.onAddImage()}> Save Changes </button>
                         </div>
                         </div>
 
