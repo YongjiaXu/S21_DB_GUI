@@ -22,7 +22,7 @@ export const NpoApproval = props =>{
     }
 
     function denyNPO(id){
-        console.log(id);
+        npoRepository.deny(id);
     }
 
     if(!npos){

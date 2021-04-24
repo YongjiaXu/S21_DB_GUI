@@ -56,4 +56,13 @@ export class NPORepository{
                         reject();});
             });           
         }
+
+        deny(npoID){
+            return new Promise((resolve, reject) => {
+                axios.delete(`${this.url}/deleteit/npos/${npoID}`, this.config)
+                    .catch(e => {
+                        alert("error approving npo");
+                        reject();});
+            });
+        }
 }
