@@ -3,7 +3,7 @@ import { Rating } from './models/rating';
 import {NPORepository} from '../api/npoRepository'
 import {ReviewRepository} from '../api/reviewRepository'
 import {UserRepository} from '../api/userRepository'
-import {Link} from 'react-router-dom'
+import {Link,Redirect} from 'react-router-dom'
 import {styles} from './card-theme.css';
 import {Header} from './header'
 
@@ -84,6 +84,11 @@ export class NPOProfile extends React.Component
         return averageRate;
     }
 
+    deleteNPO(){
+        this.npoRepo.deny(+this.props.match.params.npoID)
+        return(<Redirect to={'/Home/'+this.state.userType+'/'+this.state.userID}/>)
+    }
+
     render() {
         
         if (!this.state.users.length||this.state.userID===0||this.state.userType===0)
@@ -91,7 +96,7 @@ export class NPOProfile extends React.Component
 
         return(
             <>
-            <header/>
+            <Header/>
             <div className="container">
               {this.state.npo.map((x,i)=>               
                 <div key={i} className="card">
@@ -105,7 +110,8 @@ export class NPOProfile extends React.Component
                                     <Link to={"/Home/"+this.state.userType+"/"+this.state.userID}type='button' 
                                     className="btn btn-success"> 
                                         Home 
-                                    </Link> 
+                                    </Link>
+                                    {this.state.userType===2 && <button type="button" className="btn btn-danger" onClick={()=> {if(window.confirm('Denying will delete the NPO, are you sure?')) this.deleteNPO()}}>!Delete NPO!</button>}
                                 </h1>
                             </div>
                         </div>
