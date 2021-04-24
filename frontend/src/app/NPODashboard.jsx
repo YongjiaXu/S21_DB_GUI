@@ -107,9 +107,9 @@ export class NPODashboard extends React.Component
         alert("Changes have been saved!");
     }
 
-    onAddImage(newImage)
+    onAddImage()
     {
-
+        
     }
 
     render (){
@@ -170,8 +170,9 @@ export class NPODashboard extends React.Component
                                 alt="Logo"
                                 className='logo'></img>
                                 <br/>
-                                <input type='file' 
-                                className='form-control-file'
+                                Upload Image by URL:
+                                <input type='text' 
+                                className='form-control'
                                 value={this.state.logoURL}
                                 onChange={ event => this.setState({logoURL: event.target.value})}></input>
                                 <br/>
@@ -242,10 +243,15 @@ export class NPODashboard extends React.Component
                             )}
                         </p>
                         <p>
-                            Add Image
-                            <input id='newImage' type='file' className='form-control-file'></input>
+                            Upload image by URL:
+                            <input id='newImage' 
+                            type='text' 
+                            className='form-control'
+                            onChange={event => this.setState({ imgURL: event.target.value })}></input>
                         </p>
-                        <button type='button' className="btn btn-success"> Save Changes </button>
+                        <button type='button' 
+                        className="btn btn-success"
+                        onClick={() => this.onAddImage()}> Save Changes </button>
                         </div>
                         </div>
 
