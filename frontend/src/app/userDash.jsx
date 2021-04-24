@@ -12,6 +12,8 @@ export class UserDash extends React.Component{
     userRepo = new UserRepository();
 
     state={
+        pw:"",
+        pwConfirm:"",
         user: [],
         npos:[]
     }
@@ -32,6 +34,18 @@ export class UserDash extends React.Component{
 
     deleteAccount(id){
         console.log(id);
+    }
+
+    updatePW(pw,pwconfirm){
+        console.log(pw+" "+pwconfirm);
+        if(pw==pwconfirm){
+            let id=+this.props.match.params.id;
+            this.userRepo.changePW(id,pw);
+        }
+        else{
+            console.log("rofl")
+        }
+
     }
 
     render (){
@@ -61,13 +75,13 @@ export class UserDash extends React.Component{
                                     </p>
                                     <p>
                                         New Password: <br/>
-                                        <input id='newPass' type='text' style={{width: '15em', height: '2em'}}></input>
+                                        <input id='newPass' type='text' style={{width: '15em', height: '2em'}} onChange={event=>this.setState({pw:event.target.value})}></input>
                                     </p>
                                     <p>
                                         Confirm New Password: <br/>
-                                        <input id='newPassConfirm' type='text' style={{width: '15em', height: '2em'}}></input>
+                                        <input id='newPassConfirm' type='text' style={{width: '15em', height: '2em'}} onChange={event=>this.setState({pwConfirm:event.target.value})}></input>
                                     </p>
-                                    <button type='button' className="btn btn-success">Submit</button>
+                                    <button type='button' className="btn btn-success" onClick={()=>this.updatePW(this.state.pw,this.state.pwConfirm)}>Submit</button>
                                 </div>
                             </div>
                             <br/>
