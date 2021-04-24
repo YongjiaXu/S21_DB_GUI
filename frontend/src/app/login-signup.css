@@ -41,6 +41,11 @@
 	margin-bottom: 30px;
 	text-align: center;
 }
+.signup-form .exit-text {
+	color: rgb(255, 255, 255);
+	margin-bottom: 30px;
+	text-align: center;
+}
 .signup-form form {
 	color: rgb(204, 191, 191);
 	border-radius: 3px;
