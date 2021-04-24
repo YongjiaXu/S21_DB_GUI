@@ -104,4 +104,22 @@ export class NPORepository{
                     });
             });
         }
+
+        addImage(npoID, imageURL)
+        {
+            console.log(npoID);
+            console.log(imageURL);
+            debugger;
+            return new Promise((resolve, reject) => {
+                axios.post(`${this.url}/npos/${npoID}/images`,
+                {
+                    "imageURL": imageURL
+                },this.config)
+                    .then(x => resolve(x.data))
+                    .catch(error => {
+                        alert(error);
+                        reject(error);
+                    });
+            });
+        }
 }

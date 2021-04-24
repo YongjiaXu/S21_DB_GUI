@@ -81,7 +81,7 @@ export class NPODashboard extends React.Component
         );
 
         this.setState({
-            location: '',
+            location: ''
         });
         alert("Changes have been saved!");
     }
@@ -97,7 +97,7 @@ export class NPODashboard extends React.Component
         );
 
         this.setState({
-            description: '',
+            description: ''
         });
         alert("Changes have been saved!");
     }
@@ -113,14 +113,22 @@ export class NPODashboard extends React.Component
         );
 
         this.setState({
-            logoURL: '',
+            logoURL: ''
         });
         alert("Changes have been saved!");
     }
 
     onAddImage()
     {
-        
+        debugger;
+        this.npoRepo.addImage(
+            +this.props.match.params.id, this.state.imgURL
+        );
+
+        this.setState({
+            imgURL: ''
+        });
+        alert("Changes have been saved!");
     }
 
     render (){
@@ -258,6 +266,7 @@ export class NPODashboard extends React.Component
                             <input id='newImage' 
                             type='text' 
                             className='form-control'
+                            value={this.state.imgURL}
                             onChange={event => this.setState({ imgURL: event.target.value })}></input>
                         </p>
                         <button type='button' 
