@@ -19,7 +19,9 @@ export class NPODashboard extends React.Component
         description: '',
         location: '',
         logoURL: '',
-        imgURL: ''
+        imgURL: '',
+        newPassword: '',
+        confirmPassword: ''
     };
 
     componentDidMount() {
@@ -46,8 +48,7 @@ export class NPODashboard extends React.Component
 
     calculateAverageRating(){
         let averageRate = 0;
-        for(let i = 0; i < this.state.reviews.length; ++i)
-        {
+        for(let i = 0; i < this.state.reviews.length; ++i) {
             averageRate += this.state.reviews[i].rating;
         }
         averageRate /= this.state.reviews.length;
@@ -59,16 +60,23 @@ export class NPODashboard extends React.Component
         return result.username;
     }
 
-    changePassword(newPassword, confirmPassword)
+    changePassword()
     {
-        if(newPassword != confirmPassword)
+        if(this.state.newPassword != this.state.confirmPassword)
         {
             alert("ERROR: Passwords don't match");
         }
         else
         {
-
+            this.userRepo.changePW(
+                +this.props.match.params.id, this.state.newPassword
+            );
         }
+
+        this.setState({
+            newPassword: '',
+            confirmPassword: ''
+        });
     }
 
     onChangeLocation()
@@ -169,13 +177,23 @@ export class NPODashboard extends React.Component
                                     </p>
                                     <p>
                                         New Password: <br/>
-                                        <input id='newPass' type='text' className='form-control'></input>
+                                        <input id='newPass' 
+                                        type='password' 
+                                        className='form-control'
+                                        value={this.state.newPassword}
+                                        onChange={ event => this.setState({newPassword: event.target.value})}></input>
                                     </p>
                                     <p>
                                         Confirm New Password: <br/>
-                                        <input id='newPassConfirm' type='text' className='form-control'></input>
+                                        <input id='newPassConfirm' 
+                                        type='password' 
+                                        className='form-control'
+                                        value={this.state.confirmPassword}
+                                        onChange={ event => this.setState({confirmPassword: event.target.value})}></input>
                                     </p>
-                                    <button type='button' className="btn btn-success">Submit</button>
+                                    <button type='button' 
+                                    className="btn btn-success"
+                                    onClick={() => this.changePassword()}>Submit</button>
                                     </div>
                                 </div>
                             </div>

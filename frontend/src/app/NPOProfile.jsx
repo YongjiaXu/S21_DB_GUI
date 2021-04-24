@@ -20,14 +20,8 @@ export class NPOProfile extends React.Component
         averageRating: 0
     };
 
-    onSubmitClick() {
-        this.props.onReviewAdded(this.state);
+    submitReview(){
 
-        this.setState({
-            userName: '',
-            rating: '',
-            comment: ''
-        });
     }
 
     componentDidMount() {
@@ -217,8 +211,10 @@ export class NPOProfile extends React.Component
 
                                         <div className="row">
                                             <div className="col-12">
-                                                <button type="button" className="btn btn-success"
-                                                    type="button">
+                                                <button type="button" 
+                                                className="btn btn-success"
+                                                type="button"
+                                                onClick={ () => this.submitReview() }>
                                                     Submit
                                                 </button>
                                             </div>

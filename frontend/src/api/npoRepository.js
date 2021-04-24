@@ -89,9 +89,6 @@ export class NPORepository{
         
         updateLogo(npoID, logoURL)
         {
-            console.log(npoID);
-            console.log(logoURL);
-            debugger;
             return new Promise((resolve, reject) => {
                 axios.put(`${this.url}/npos/${npoID}/updateLogo`,
                 {
@@ -107,9 +104,6 @@ export class NPORepository{
 
         addImage(npoID, imageURL)
         {
-            console.log(npoID);
-            console.log(imageURL);
-            debugger;
             return new Promise((resolve, reject) => {
                 axios.post(`${this.url}/npos/${npoID}/images`,
                 {
