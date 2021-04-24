@@ -136,7 +136,11 @@ export class NPODashboard extends React.Component
         }
     }
 
-    render (){
+    render() {
+        
+        if (!this.state.users.length)
+            return <>...</>
+        
         return(
             <>
             <div className='container'>
