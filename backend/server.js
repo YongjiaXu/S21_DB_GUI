@@ -178,8 +178,7 @@ app.delete('/deleteit/username', (req, res) => {
       logger.error("Error while deleting user " + username);
     }
     else{
-      res.end(JSON.stringify(result[0]));
-      res.end(JSON.stringify(result[1]));
+      res.end(JSON.stringify(result));
     }
   });
 });
@@ -192,8 +191,7 @@ app.delete('/deleteit/:userID', (req, res) => {
       logger.error("Error while deleting user " + userID);
     }
     else{
-      res.end(JSON.stringify(result[0]));
-      res.end(JSON.stringify(result[1]));
+      res.end(JSON.stringify(result));
     }
   });
 });
