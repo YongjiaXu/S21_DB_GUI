@@ -79,8 +79,8 @@ export class NPOProfile extends React.Component
         return(
             <>
             <div className="container">
-              {this.state.npo.map(x=>               
-                <div className="card">
+              {this.state.npo.map((x,i)=>               
+                <div key={i} className="card">
                     <div className="card-header">
                         <div className='row'>
                             <div className='col-6'>
