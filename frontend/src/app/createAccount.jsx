@@ -88,6 +88,7 @@ export class CreateAccount extends React.Component{
                             value={this.state.password2}
                             onChange={e => this.setState({ password2: e.target.value })} />
                     </div>
+
                     <div className="form-group">
 
                     <div className="form-check form-check-inline">

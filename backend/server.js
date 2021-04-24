@@ -142,11 +142,11 @@ app.get('/getit/userpwd', (req, res) => {
 
 // 5. UPDATE user password
 app.put('/putit/userpwd', (req, res) => {
-  var username = req.param('username');
+  var userid = req.param('userid');
   var newpwd = req.param('newpwd');
-  pool.query('update users set password = ? where username = ?', [newpwd, username], function(err, result, fields) {
+  pool.query('update users set password = ? where userID = ?', [newpwd, userid], function(err, result, fields) {
     if (err) {
-      logger.error('Error while setting password for user ' + username);
+      logger.error('Error while setting password for user ' + userid);
     }
     else {
       res.end(JSON.stringify(result));
@@ -178,22 +178,20 @@ app.delete('/deleteit/username', (req, res) => {
       logger.error("Error while deleting user " + username);
     }
     else{
-      res.end(JSON.stringify(result[0]));
-      res.end(JSON.stringify(result[1]));
+      res.end(JSON.stringify(result));
     }
   });
 });
 
 // 8. DELETE a user by userID
-app.delete('/deleteit/userID', (req, res) => {
+app.delete('/deleteit/:userID', (req, res) => {
   var userID = req.param('userID');
   pool.query('delete from ratings where raterID = ?; delete from users where userID = ?; ', [userID, userID], function (err, result, fields) {
     if (err) {
       logger.error("Error while deleting user " + userID);
     }
     else{
-      res.end(JSON.stringify(result[0]));
-      res.end(JSON.stringify(result[1]));
+      res.end(JSON.stringify(result));
     }
   });
 });
@@ -264,11 +262,42 @@ app.get('/getit/avgrating', (req, res) => {
 });
 
 // 14. GET username by userID
-app.get('/getit/username/', (req, res) => {
+app.get('/getit/username/:userID', (req, res) => {
   var userID = req.param('userID');
   pool.query('select username from users where userID = ?', userID, function (err, result, fields) {
     if (err) {
       logger.error("Error while getting average rating for npo " + npoID);
+    }
+    else{
+      res.end(JSON.stringify(result));
+    }
+  });
+});
+
+// 15. DELETE npo by npoID
+app.delete('/deleteit/npos/:npoID', (req, res) => {
+  var npoID = req.param('npoID');
+  pool.query('delete from images where npoID = ?; delete from npos where npoID = ?', [npoID, npoID], function (err, result, fields) {
+    if (err) {
+      logger.error("Error while deleting npoID " + npoID);
+    }
+    else{
+      res.end(JSON.stringify(result));
+    }
+  });
+});
+
+// 16. POST a review
+app.post('/postit/review', (req, res) => {
+  var rating = req.param('rating');
+  var raterID = req.param('raterID');
+  var flagged = req.param('flagged');
+  var comment = req.param('comment');
+  var npoID = req.param('npoID');
+  var ratingDate = req.param('ratingDate');
+  pool.query('insert into ratings (rating, raterID, flagged, comment, npoID, ratingDate) values (?,?,?,?,?,?)', [rating, raterID, flagged, comment, npoID, ratingDate], function (err, result, fields) {
+    if (err) {
+      logger.error("Error while adding review ");
     }
     else{
       res.end(JSON.stringify(result));

@@ -2,12 +2,16 @@ import React from 'react'
 import { Rating } from './models/rating';
 import {NPORepository} from '../api/npoRepository'
 import {ReviewRepository} from '../api/reviewRepository'
+import {UserRepository} from '../api/userRepository'
+import {styles} from './card-theme.css';
 
 export class NPOProfile extends React.Component
 {
     npoRepo = new NPORepository();
 
     reviewRepo = new ReviewRepository();
+
+    userRepo = new UserRepository();
 
     state = {
         userName: '',
@@ -16,7 +20,8 @@ export class NPOProfile extends React.Component
         npo:[],
         gallery:[],
         reviews:[],
-        averageRating: 0
+        averageRating: 0,
+        users:[]
     };
 
     onSubmitClick() {
@@ -45,7 +50,17 @@ export class NPOProfile extends React.Component
              .then(reviews=>{
                  this.setState({reviews})
              });
+             this.userRepo.getUsers()
+             .then(users=>{
+                 this.setState({users})
+            });
         }
+    }
+
+    username(raterID){
+        const result = this.state.users.find(({userID})=> userID===raterID);
+        console.log(result.username);
+        return result.username;
     }
 
     calculateAverageRating(){
@@ -63,70 +78,91 @@ export class NPOProfile extends React.Component
     render (){
         return(
             <>
-            <div className="conatiner" stlye={{width:'100%'}}>
+            <div className="container">
               {this.state.npo.map(x=>               
-                <div class="card" style={{width: '100%'}}>
-                    <div class="card-header" style={{ color: 'white', background: '#425088' }}>
-                        <h1> {x.title}
-                            <span style={{float: 'right'}}> 
-                                Average Rating: <Rating value = {this.calculateAverageRating()}/>
-                            </span>
-                        </h1>
+                <div className="card">
+                    <div className="card-header">
+                        <div className='row'>
+                            <div className='col-6'>
+                                <h1>{x.title}</h1>
+                            </div>
+                            <div className='col-6'>
+                                <h1 className="float-right">
+                                    <button type='button' 
+                                    className="btn btn-success"> 
+                                        Home 
+                                    </button> 
+                                </h1>
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="card-body">
-                        <div class="row">
-                            <div className='card' style={{'border': 'none'}}>
-                                <div class="col-4">
-                                    <img src={x.logoURL}
-                                    alt="Company Logo" style={{ height: '20em', width: '20em' }}>
-                                    </img>
-                                </div>
+                    <div className="card-body">
+                        <div className="row">
+                            <div className="col-4">
+                                <img src={x.logoURL}
+                                alt="Company Logo"
+                                className='profileLogo'>
+                                </img>
                             </div>
-                            
-                            <div class='col-8' style={{float: 'left', overflow: 'auto'}}>
+
+                            <div className='col-8'>
                             <div className='card'>
-                            <div className='card-header' style={{ color: 'white', background: '#425088' }}>
-                                <h2>{x.location}</h2>
+                            <div className='card-header'>
+                                <h2> Location: {x.location}</h2>
                             </div>
                             <div className='card-body'>
                                 <br/>
-                                <p style={{'font-size': '1.05em'}}>
+                                <p>
                                     {x.description}
                                 </p>
                                 </div>
                             </div>
                         </div>
-                        </div>
+                    </div>
 
                         <br/>
 
-                        <div class="row">
-                            <div class='col-12'>
-                                <h2 style={{'text-align': 'center'}}> Image Gallery </h2>
+                        <div className='card'>
+                            <div className='card-header'>
+                                <h2> Image Gallery </h2>
+                            </div>
+                            <div className='card-body'>
                                 {this.state.gallery.map((x,i)=>
-                                <img key={i} src={x.imageURL}
-                                alt="Image" style={{padding: '0.5em',width: '20%'}}></img>
+                                    <img key={i} src={x.imageURL}
+                                    alt="Image" 
+                                    className='extraImages'>
+                                    </img>
                                 )}
                             </div>
                         </div>
 
-                        <div class="row">
-                            <div class='col-12'>
-                                <h2 style={{'text-align': 'center'}}> Ratings </h2>
+                        <div className='row'>
+                            <div className='col-6'>
+                                <h2>Ratings</h2>
+                            </div>
+                            <div className='col-6'>
+                                <h2 className='float-right'>
+                                    Average Rating: <Rating value = {this.calculateAverageRating()}/>
+                                </h2>
+                            </div>
+                        </div>
+
+                        <div className="row">
+                            <div className='col-12'>
                                 {this.state.reviews.map((x,i)=>
-                                    <div key={i} class="card" style={{width: '77em'}}>
-                                        <div class='card-header' style={{ color: 'white', background: '#425088' }}>
+                                    <div key={i} className="card">
+                                        <div className='card-header'>
                                             <Rating value = {x.rating}/>
                                         </div>
                                     
-                                        <div class='card-body'>
-                                            <div class='row'>
-                                                <div class='col-10' style={{ color:'grey' }}>{x.raterID}</div>
-                                                <div class='col-2'>{x.ratingDate.toString().substr(0,10)}</div>
+                                        <div className='card-body'>
+                                            <div className='row'>
+                                                <div className='col-10'>{this.username(x.raterID)}</div>
+                                                <div className='col-2'>{x.ratingDate.toString().substr(0,10)}</div>
                                             </div>
-                                            <div class='row'>
-                                                <div class='col-10'>{x.comment}</div>
+                                            <div className='row'>
+                                                <div className='col-10'>{x.comment}</div>
                                             </div>
                                         </div>
                                     </div>
@@ -136,32 +172,34 @@ export class NPOProfile extends React.Component
 
                         <br/>
 
-                        <div class="row">
-                            <div class="card" style={{width: '80em'}}>
-                                <div class="card-header" style={{ color: 'white', background: '#425088' }}>
+                        <div className='container'>
+                        <div className="row">
+                            <div className="card">
+                                <div className="card-header">
                                     Leave a review
                                 </div>
-                                <ul class="list-group list-group-flush">
-                                    <li class="list-group-item">
-                                        <div class="row">
-                                            <div class="col-8">
+                                <ul className="list-group list-group-flush">
+                                    <li className="list-group-item">
+                                        <div className="row">
+                                            <div className="col-8">
                                                 <label htmlFor="yourName">Your Name</label>
                                                 <br/>
                                                 <input type="text"
+                                                    className='form-control'
                                                     id="yourName"
                                                     name="yourName"
                                                     value={this.state.userName}
-                                                    onChange={ event => this.setState({ userName: event.target.value }) }
-                                                    style={{width: '43em', height: '2em'}}>
+                                                    onChange={ event => this.setState({ userName: event.target.value }) }>
                                                 </input>
                                             </div>
 
-                                            <div class="col-2">
+                                            <div className="col-2">
                                                 <label htmlFor="Rating" >Rating</label>
                                                 <br/>
-                                                <select id="Rating"
+                                                <select 
+                                                    className="form-control"
+                                                    id="Rating"
                                                     name="Rating"
-                                                    style={{width: '10em', height: '2em'}}
                                                     value={this.state.rating}
                                                     onChange={ event => this.setState({ rating: event.target.value }) }>
                                                     <option> </option>
@@ -173,26 +211,26 @@ export class NPOProfile extends React.Component
                                                 </select>
                                             </div>
 
-                                            <div class="col-2">
+                                            <div className="col-2">
                                                 <br/>
                                                 <Rating value = {this.state.rating}/>
                                             </div>
                                         </div>
-                                        <div class="row">
-                                            <div class="col-12">
-                                                <label htmlFor="Comment">Comment</label>
+                                        <div className="row">
+                                            <div className="col-12">
+                                                <label htmlFor="Comment"> Comment </label>
                                                 <br/>
                                                 <textarea id="Comment"
+                                                    className='form-control'
                                                     name="Comment"
-                                                    style={{width: '76em', height: '6em'}}
                                                     value={this.state.comment}
                                                     onChange={ event => this.setState({ comment: event.target.value }) }>
                                                 </textarea>
                                             </div>
                                         </div>
 
-                                        <div class="row">
-                                            <div class="col-12">
+                                        <div className="row">
+                                            <div className="col-12">
                                                 <button type="button" className="btn btn-success"
                                                     type="button">
                                                     Submit
@@ -202,6 +240,7 @@ export class NPOProfile extends React.Component
                                     </li>
                                 </ul>
                             </div>
+                        </div>
                         </div>
                     </div>
                 </div>

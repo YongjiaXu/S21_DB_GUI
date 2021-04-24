@@ -2,17 +2,24 @@ import React from 'react'
 import { Rating } from './models/rating';
 import { NPORepository } from '../api/npoRepository';
 import {ReviewRepository} from '../api/reviewRepository'
-import {Npo} from './models/npo';
+import {UserRepository} from '../api/userRepository'
+import {styles} from './card-theme.css';
 
 export class NPODashboard extends React.Component
 {
     npoRepo = new NPORepository();
     reviewRepo = new ReviewRepository();
+    userRepo = new UserRepository();
 
     state = {
         npo:[],
         gallery:[],
-        reviews:[]
+        reviews:[],
+        users:[],
+        description: '',
+        location: '',
+        logoURL: '',
+        imgURL: ''
     };
 
     componentDidMount() {
@@ -26,48 +33,137 @@ export class NPODashboard extends React.Component
              .then(gallery=>{
                  this.setState({gallery})
              });
+             this.userRepo.getUsers()
+             .then(users=>{
+                 this.setState({users})
+            });
              this.reviewRepo.getReviews(id)
              .then(reviews=>{
                  this.setState({reviews})
-             })
+             });
         }
-    }
+}
 
     calculateAverageRating(){
         let averageRate = 0;
         for(let i = 0; i < this.state.reviews.length; ++i)
         {
             averageRate += this.state.reviews[i].rating;
-            console.log(averageRate);
-            debugger;
         }
         averageRate /= this.state.reviews.length;
         return averageRate;
     }
 
+    username(raterID){
+        let result = this.state.users.find(({userID})=> userID===raterID);
+        return result.username;
+    }
+
+    changePassword(newPassword, confirmPassword)
+    {
+        if(newPassword !== confirmPassword)
+        {
+            alert("ERROR: Passwords don't match");
+        }
+        else
+        {
+
+        }
+    }
+
+    onChangeLocation()
+    {
+        console.log(+this.props.match.params.id);
+        console.log(this.state.location);
+        debugger;
+        this.npoRepo.updateLocation(
+            +this.props.match.params.id, this.state.location
+        );
+
+        this.setState({
+            location: '',
+        });
+        alert("Changes have been saved!");
+    }
+
+    onChangeDescription()
+    {
+        console.log(+this.props.match.params.id);
+        console.log(this.state.description);
+        debugger;
+
+        this.npoRepo.updateDescription(
+            +this.props.match.params.id, this.state.description
+        );
+
+        this.setState({
+            description: '',
+        });
+        alert("Changes have been saved!");
+    }
+
+    onChangeLogo()
+    {
+        console.log(+this.props.match.params.id);
+        console.log(this.state.logoURL);
+        debugger;
+
+        this.npoRepo.updateLogo(
+            +this.props.match.params.id, this.state.logoURL
+        );
+
+        this.setState({
+            logoURL: '',
+        });
+        alert("Changes have been saved!");
+    }
+
+    onAddImage()
+    {
+        
+    }
+
+    flag(id){
+        this.reviewRepo.flagToggle(id);
+    }
+
+    flagButton(status,id){
+        if(status===0){
+            return (<button type="button" className="btn btn-danger" onClick={()=>this.flag(id)}>Flag</button>)
+        }
+        else{
+            return (<button type="button" className="btn btn-success" onClick={()=>this.flag(id)}>Un-Flag</button>)
+        }
+    }
+
     render (){
         return(
             <>
-            <div className='container' style={{width:"100%"}}>
+            <div className='container'>
             {this.state.npo.map((x,i)=>
             <div key={i} className='container'>
-                <div className='card' style={{width:'100%'}}>
-                    <div className='card-header' style=
-                    {{color: 'white', background: '#425088'}}>
-                        <h1> NPO Dashboard for { x.title}
-                            <button type='button' 
-                            className="btn btn-success" 
-                            style={{float: 'right'}}> 
-                                Return 
-                            </button> 
-                        </h1>
+                <div className='card'>
+                    <div className='card-header'>
+                        <div className='row'>
+                            <div className='col-6'>
+                                <h1>{x.title}</h1>
+                            </div>
+                            <div className='col-6'>
+                                <h1 className="float-right">
+                                    <button type='button' 
+                                    className="btn btn-success"> 
+                                        Home 
+                                    </button> 
+                                </h1>
+                            </div>
+                        </div>
                     </div>
 
                     <div className='card-body'>
                         <div className='row'>
                             <div className='col-6'>
                                 <div className='card'>
-                                    <div className='card-header' style={{ color: 'white', background: '#425088' }}>
+                                    <div className='card-header'>
                                     <h2> Change Password </h2>
                                     </div>
                                     <div className='card-body'>
@@ -78,11 +174,11 @@ export class NPODashboard extends React.Component
                                     </p>
                                     <p>
                                         New Password: <br/>
-                                        <input id='newPass' type='text' style={{width: '15em', height: '2em'}}></input>
+                                        <input id='newPass' type='text' className='form-control'></input>
                                     </p>
                                     <p>
                                         Confirm New Password: <br/>
-                                        <input id='newPassConfirm' type='text' style={{width: '15em', height: '2em'}}></input>
+                                        <input id='newPassConfirm' type='text' className='form-control'></input>
                                     </p>
                                     <button type='button' className="btn btn-success">Submit</button>
                                     </div>
@@ -90,15 +186,23 @@ export class NPODashboard extends React.Component
                             </div>
                             <div className='col-6'>
                                 <div className='card'>
-                                <div className='card-header' style={{ color: 'white', background: '#425088' }}>
+                                <div className='card-header'>
                                 <h2> Change Logo </h2>
                                 </div>
                                 <div className='card-body'>
                                 <img src={x.logoURL}
                                 alt="Logo"
-                                style={{ height: '20em', width: '20em' }}></img>
+                                className='logo'></img>
                                 <br/>
-                                <input type='file'></input>
+                                Upload Image by URL:
+                                <input type='text' 
+                                className='form-control'
+                                value={this.state.logoURL}
+                                onChange={ event => this.setState({logoURL: event.target.value})}></input>
+                                <br/>
+                                <button type='button' 
+                                className="btn btn-success"
+                                onClick={ () => this.onChangeLogo() }> Save Changes </button>
                                 </div>
                                 </div>
                             </div>
@@ -109,78 +213,99 @@ export class NPODashboard extends React.Component
                         <div className='row'>
                             <div className='col-6'>
                                 <div className='card'>
-                                <div className='card-header' style={{ color: 'white', background: '#425088' }}>
+                                <div className='card-header'>
                                 <h2> Edit Description </h2>
                                 </div>
                                 <div className='card-body'>
                                 <p>
                                     New Description: <br/>
-                                    <textarea id='newDescription'
-                                    style={{width: '30em', height: '6em'}}>
-                                    </textarea>
+                                    <textarea className='form-control' 
+                                    id='newDescription' 
+                                    rows='7'
+                                    value={this.state.description}
+                                    onChange={ event=> this.setState( { description: event.target.value } ) }></textarea>
                                 </p>
-                                <button type='button' className="btn btn-success"> Save Changes </button>
+                                <button type='button' 
+                                className="btn btn-success"
+                                onClick={ () => this.onChangeDescription() }> Save Changes </button>
                                 </div>
                                 </div>
                             </div>
                             <div className='col-6'>
                             <div className='card'>
-                            <div className='card-header' style={{ color: 'white', background: '#425088' }}>
+                            <div className='card-header'>
                                 <h2> Change Location </h2>
                             </div>
                             <div className='card-body'>
                                 <p>
                                     New Location: <br/>
-                                    <input id='newLocation' type='text' style={{width: '15em', height: '2em'}}></input>
+                                    <input id='newLocation' 
+                                    type='text' 
+                                    className='form-control'
+                                    value={this.state.location}
+                                    onChange={ event => this.setState( {location: event.target.value} ) }></input>
                                 </p>
-                                <button type='button' className="btn btn-success"> Save Changes </button>
+                                <button type='button' 
+                                className="btn btn-success"
+                                onClick={() => this.onChangeLocation()}> Save Changes </button>
                                 </div>
                             </div>
                             </div>
                         </div>
 
                         <div className='card'>
-                        <div className='card-header' style={{ color: 'white', background: '#425088' }}>
-                        <h2> Add Images </h2> <br/>
+                        <div className='card-header'>
+                        <h2> Add Images </h2>
                         </div>
                         <div className='card-body'>
                         <p>
                             {this.state.gallery.map((x,i)=>
                             <img key={i} src={x.imageURL}
-                            alt="Image 1" style={{padding: '0.5em',width: '20%'}}></img>
+                            alt="Image"
+                            className='extraImages'>
+                            </img>
                             )}
                         </p>
                         <p>
-                            Add Image<br/>
-                            <input id='newImage' type='file'></input>
+                            Upload image by URL:
+                            <input id='newImage' 
+                            type='text' 
+                            className='form-control'
+                            onChange={event => this.setState({ imgURL: event.target.value })}></input>
                         </p>
-                        <button type='button' className="btn btn-success"> Save Changes </button>
+                        <button type='button' 
+                        className="btn btn-success"
+                        onClick={() => this.onAddImage()}> Save Changes </button>
                         </div>
                         </div>
 
 
 
-                        <div className='row' style={{float: 'middle'}}>
-                            <h2> 
-                                Ratings 
-                                <span> 
-                                    <Rating value = {this.calculateAverageRating()}/> 
-                                </span> 
-                            </h2>
+                        <div className='row'>
+                            <div className='col-6'>
+                                <h2>Ratings</h2>
+                            </div>
+                            <div className='col-6'>
+                                <h2 className='float-right'>
+                                    Average Rating: <Rating value = {this.calculateAverageRating()}/>
+                                </h2>
+                            </div>
+                        </div>
+                        <div className='row'>
                             {this.state.reviews.map((x,i)=>
-                            <div key={i} className="card" style={{width: '77em'}}>
-                                    <div className='card-header' style={{ color: 'white', background: '#425088' }}>
+                            <div key={i} className="card">
+                                    <div className='card-header'>
                                         <Rating value = {x.rating}/>
                                     </div>
                                     <div className='card-body'>
                                         <div className='row'>
-                                            <div className='col-10' style={{ color:'grey' }}>{x.raterID}</div>
+                                            <div className='col-10'>{this.username(x.raterID)}</div>
                                             <div className='col-2'>{x.ratingDate.toString().substring(0,10)}</div>
                                         </div>
                                         <div className='row'>
                                             <div className='col-10'>{x.comment}</div>
                                             <div className="col-2">
-                                                <button type="button" className="btn btn-danger">Flag</button>
+                                                {this.flagButton(x.flagged,x.ratingID)}
                                             </div>
                                         </div>
                                     </div>

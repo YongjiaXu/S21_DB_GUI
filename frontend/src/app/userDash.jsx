@@ -3,86 +3,108 @@ import { Npo } from './models/npo'
 import { Rating } from './models/rating'
 import { User } from './models/user';
 import {UserRepository} from '../api/userRepository'
-import {NPORepository} from '../api/npoRepository'
-import {Link} from 'react-router-dom'
+import {Link, Redirect} from 'react-router-dom'
+import {styles} from './card-theme.css';
 //import {PasswordUpdate} from './passwordUpdate';
-// Requires Bootstrap
 
 export class UserDash extends React.Component{
 
     userRepo = new UserRepository();
-    npoRepo = new NPORepository();
 
     state={
-        user: new User('Place Holder Name','',''),
+        pw:"",
+        pwConfirm:"",
+        user: [],
         npos:[]
     }
 
     componentDidMount() {
         let id = +this.props.match.params.id;
         if (id) {
-            this.userRepo.getUser(id)
-            .then(user => { 
-                this.setState({user})
-             });
+            this.userRepo.getUsername(id)
+            .then(name=>{
+                this.userRepo.getUser(name[0].username)
+                .then(user => {
+                    this.setState({user})
+                 });
+            })
+
+        }
+    }
+
+    deleteAccount(id){
+        this.userRepo.banUser(id);
+        
+    }
+
+    updatePW(pw,pwconfirm){
+        console.log(pw+" "+pwconfirm);
+        if(pw==pwconfirm){
+            let id=+this.props.match.params.id;
+            this.userRepo.changePW(id,pw);
+        }
+        else{
+            console.log("rofl")
         }
 
-        this.npoRepo.getNPOS()
-        .then(npos=>{
-            this.setState({npos})
-        });
     }
 
     render (){
         return <>
-            <div className="row">
-                <div className="col-9">
-                    <h1> {this.state.user.username}</h1>
+            <div className='container'>
+                {console.log(this.state.user)}
+                {this.state.user.map((x,i)=>
+            <div key={i} className='card' style={{width:'100%'}}>
+                <div className='card-header' style= {{color: 'white', background: '#425088'}}>
+                    <h1>{x.username} <button type='button' className="btn btn-success" style={{float: 'right'}}> 
+                        Return 
+                    </button> 
+                    </h1>
                 </div>
-
-                <div id="password"className="col-3">
-                    <div className="row">
-                        <div>
-                            <button type="button" className="btn btn-primary btn-block"> 
-                                Change Password?
-                            </button>
-                            <button type="button" className="btn btn-primary btn-block"> 
-                                Delete Account?
-                            </button>
+                <div className='card-body'>
+                    <div className='row'>
+                        <div className='col-6'>
+                            <div className='card'>
+                                <div className='card-header' style={{ color: 'white', background: '#425088' }}>
+                                    <h2> Change Password </h2>
+                                </div>
+                                <div className='card-body'>
+                                    <p>
+                                        **Password must contain at least one uppercase and
+                                        one lowercase letter, a number, a special symbol, other
+                                        generic disclaimer
+                                    </p>
+                                    <p>
+                                        New Password: <br/>
+                                        <input id='newPass' type='text' style={{width: '15em', height: '2em'}} onChange={event=>this.setState({pw:event.target.value})}></input>
+                                    </p>
+                                    <p>
+                                        Confirm New Password: <br/>
+                                        <input id='newPassConfirm' type='text' style={{width: '15em', height: '2em'}} onChange={event=>this.setState({pwConfirm:event.target.value})}></input>
+                                    </p>
+                                    <button type='button' className="btn btn-success" onClick={()=>this.updatePW(this.state.pw,this.state.pwConfirm)}>Submit</button>
+                                </div>
+                            </div>
+                            <br/>
+                        </div>
+                        <div className='col-6'>
+                            <div className='card'>
+                                <div className='card-header' style={{ color: 'white', background: '#425088' }}>
+                                    <h2> Delete Account? </h2>
+                                </div>
+                                <div className='card-body'>
+                                    <p>
+                                        Are you sure? No Looking Back<br/>
+                                        <Link to ={'/deleted'}type='button' className="btn btn-danger" onClick={()=> {if(window.confirm('Are you sure you wish to delete your account?')) this.deleteAccount(x.userID)}}> Delete Account </Link>
+                                    </p>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </div>    
             </div>
-
-            <div className="row">
-                <div className="col-6">
-                    <h1 id="listOfNonProfs"> Non-Profit Organinzations </h1>
-                    <br/>
-                    <div>
-                        {this.state.npos.map((x,i)=> <>
-                        <div key={i} className="container">
-                            <div id="npoCard" className="card">
-                                <div id="name"className="card-header">
-                                    {x.title} 
-                                    <div className="float-right">
-                                        <Rating value = {x.rating}/>
-                                    </div> 
-                                </div>
-                                <div className="card-body">
-                                    <div>
-                                        <div>"{x.description}"</div>
-                                    </div>
-                                </div>
-                                <Link to={'/NPOProfile/'+x.npoID} type="button" className="btn btn-danger btn-block"> 
-                                    View NPO Profile
-                                </Link>
-                            </div>
-                            </div>
-                        </>
-                        )}
-                    </div>
-                </div>
-            </div>
+                )}
+        </div>
         </>
     }
 }
