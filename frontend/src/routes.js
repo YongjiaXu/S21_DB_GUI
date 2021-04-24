@@ -11,11 +11,11 @@ import { DeletedAccount } from './app/deletedAccount';
 export const ROUTES = [
     
     {path: '/register', component: CreateAccount},
-    {path: '/NPODashboard/:id', component: NPODashboard},
-    {path: '/NPOProfile/:id', component: NPOProfile},
-    {path: '/UserDash/:id', component: UserDash},
-    {path: '/AdminDash', component: AdminDash},
-    {path: '/Home', component: Homepage},
+    {path: '/NPODashboard/:userID', component: NPODashboard},
+    {path: '/NPOProfile/:userType/:userID/:npoID', component: NPOProfile},
+    {path: '/UserDash/:userID', component: UserDash},
+    {path: '/AdminDash/:userID', component: AdminDash},
+    {path: '/Home/:userType/:userID', component: Homepage},
     {path: '/newUser', component: NewUser},
     {path: '/deleted', component: DeletedAccount},
     {path: '/', component: LoginPage}

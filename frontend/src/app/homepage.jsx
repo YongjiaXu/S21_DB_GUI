@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import {Link, Redirect} from "react-router-dom";
 import { NPORepository } from '../api/npoRepository';
-
+import {Header} from './header'
 import "./homepage.css";
 
 export const Homapage = props => {
 
     const [ NPOs, setNPOs ] = useState(undefined);
+    const [userID, setUserID] = useState('');
+    const [userType, setUserType] = useState('');
 
     const npoRepo = new NPORepository();
 
@@ -16,19 +18,36 @@ export const Homapage = props => {
                 setNPOs(x);
             });
         }
+        if(!userID){
+            let id = +props.match.params.userID;
+            setUserID(id);
+
+            let type = +props.match.params.userType;
+            setUserType(type);
+
+        }
     });
 
+    if(!userID||!userType||!NPOs){
+        return<>Loading...</>
+    }
+
     return <>
-        
+
+        <Header/>
         <div className="container">
 
             <div className="page-header" style={{ color: '#425088' }}>
                 <h4 style={{ color: '#425088' }}>Browse NPOs</h4>
+                {userType==1 && <Link to={'/UserDash/'+userID} className="btn btn-success">User Dashboard</Link>}
+                {userType==2 && <Link to={'/AdminDash/'+userID}className="btn btn-success">Admin Dashboard</Link>}
+                {userType==3 && <Link to={'/NPODashboard/'+userID}className="btn btn-success">NPO Dashboard</Link>}                
             </div>
+                
             
             <div className="card-deck">
                 {NPOs && NPOs.map((npo, i) =>
-                    <Link key={i} className="custom-card" to={"/NPOProfile/" + npo.npoID}  style={{ minWidth:'100%' }} >
+                    <Link key={i} className="custom-card" to={"/NPOProfile/" +userType+'/'+userID+'/'+npo.npoID}  style={{ minWidth:'100%' }} >
                         <div className="row g-0">
                             <div className="col-md-2">
                                 <img className="card-img-top" src={npo.logoURL} alt="" style={{ height: "12rem", width:"12rem" }} />

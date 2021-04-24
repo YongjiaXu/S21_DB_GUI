@@ -126,4 +126,14 @@ export class UserRepository {
         });
     }
 
+    getNPOID(userID){
+        return new Promise((resolve, reject) => {
+            axios.get(`${this.url}/getit/npoIDByUserID/?userID=${userID}`, this.config)
+            .then(x => resolve(x.data))
+            .catch(e => {
+                alert("User linked to NPO does not exist!.");
+                reject();
+            });
+        });
+    }
 }

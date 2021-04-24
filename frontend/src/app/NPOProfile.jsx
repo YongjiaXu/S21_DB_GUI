@@ -3,7 +3,9 @@ import { Rating } from './models/rating';
 import {NPORepository} from '../api/npoRepository'
 import {ReviewRepository} from '../api/reviewRepository'
 import {UserRepository} from '../api/userRepository'
+import {Link} from 'react-router-dom'
 import {styles} from './card-theme.css';
+import {Header} from './header'
 
 export class NPOProfile extends React.Component
 {
@@ -21,7 +23,9 @@ export class NPOProfile extends React.Component
         gallery:[],
         reviews:[],
         averageRating: 0,
-        users:[]
+        users:[],
+        usertype:0,
+        userID:0
     };
 
     onSubmitClick() {
@@ -35,7 +39,7 @@ export class NPOProfile extends React.Component
     }
 
     componentDidMount() {
-        let id = +this.props.match.params.id;
+        let id = +this.props.match.params.npoID;
         if (id) {
             this.npoRepo.getNPO(id)
             .then(npo => { 
@@ -45,7 +49,6 @@ export class NPOProfile extends React.Component
              .then(gallery=>{
                  this.setState({gallery})
              });
-
              this.reviewRepo.getReviews(id)
              .then(reviews=>{
                  this.setState({reviews})
@@ -54,6 +57,12 @@ export class NPOProfile extends React.Component
              .then(users=>{
                  this.setState({users})
             });
+        }
+        let userType = +this.props.match.params.userType;
+        let userID = +this.props.match.params.userID;
+        if(userType&&userID){
+            this.setState({userType: userType})
+            this.setState({userID: userID})
         }
     }
 
@@ -77,11 +86,12 @@ export class NPOProfile extends React.Component
 
     render() {
         
-        if (!this.state.users.length)
+        if (!this.state.users.length||this.state.userID===0||this.state.userType===0)
            return <>...</>
 
         return(
             <>
+            <header/>
             <div className="container">
               {this.state.npo.map((x,i)=>               
                 <div key={i} className="card">
@@ -92,10 +102,10 @@ export class NPOProfile extends React.Component
                             </div>
                             <div className='col-6'>
                                 <h1 className="float-right">
-                                    <button type='button' 
+                                    <Link to={"/Home/"+this.state.userType+"/"+this.state.userID}type='button' 
                                     className="btn btn-success"> 
                                         Home 
-                                    </button> 
+                                    </Link> 
                                 </h1>
                             </div>
                         </div>

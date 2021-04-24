@@ -2,24 +2,55 @@ import React from 'react';
 import {FlaggedReviewList} from './flaggedReviews';
 import {UserRepository} from '../api/userRepository';
 import {NpoApproval} from './npoApproval'
+import {Header} from './header'
 
 export class AdminDash extends React.Component{
 
     userRepo = new UserRepository();
 
-    changePW(pw, pwconfirm){
+    state={
+        userID: 0,
+        user: []
+    }
+
+    updatePW(pw,pwconfirm){
+        console.log(pw+" "+pwconfirm);
         if(pw==pwconfirm){
+            let id=+this.props.match.params.userID;
+            this.userRepo.changePW(id,pw)
+            .then(alert("Password Changed Sucessfully"))
+        }
+        else{
+            alert("Passwords do not match")
+        }
+
+    }
+
+    componentDidMount() {
+        let id = +this.props.match.params.userID;
+        if (id) {
+            this.userRepo.getUsername(id)
+            .then(name=>{
+                this.userRepo.getUser(name[0].username)
+                .then(user => {
+                    this.setState({user})
+                 });
+            })
 
         }
     }
 
     render(){
+        if(!this.state.user.length){
+            return<><h1>Loading...</h1></>
+        }
         return<>
+        <Header/>
         <div className='container'>
             <div className='card' style={{width:'100%'}}>
                     <div className='card-header' style=
                     {{color: 'white', background: '#425088'}}>
-                        <h1>Admin Dashboard</h1>
+                        <h1>Admin Dashboard for {this.state.user[0].username}</h1>
                     </div>
                     <div className='card-body'>
                         <div className='row'>

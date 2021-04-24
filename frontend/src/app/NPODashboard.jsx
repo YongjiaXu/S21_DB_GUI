@@ -4,6 +4,8 @@ import { NPORepository } from '../api/npoRepository';
 import {ReviewRepository} from '../api/reviewRepository'
 import {UserRepository} from '../api/userRepository'
 import {styles} from './card-theme.css';
+import {Header} from './header'
+import {Link} from 'react-router-dom'
 
 export class NPODashboard extends React.Component
 {
@@ -19,28 +21,34 @@ export class NPODashboard extends React.Component
         description: '',
         location: '',
         logoURL: '',
-        imgURL: ''
+        imgURL: '',
+        userID:0
     };
 
     componentDidMount() {
-        let id = +this.props.match.params.id;
-        if (id) {
-            this.npoRepo.getNPO(id)
-            .then(npo => { 
-                this.setState({npo})
-             });
-             this.npoRepo.getGallery(id)
-             .then(gallery=>{
-                 this.setState({gallery})
-             });
-             this.userRepo.getUsers()
-             .then(users=>{
-                 this.setState({users})
-            });
-             this.reviewRepo.getReviews(id)
-             .then(reviews=>{
-                 this.setState({reviews})
-             });
+        let userID = +this.props.match.params.userID;
+        if (userID) {
+            this.setState({userID:userID})
+            this.userRepo.getNPOID(userID)
+            .then(idReturn =>{
+                let id= idReturn[0].npoID;
+                this.npoRepo.getNPO(id)
+                .then(npo => { 
+                    this.setState({npo})
+                 });
+                 this.npoRepo.getGallery(id)
+                 .then(gallery=>{
+                     this.setState({gallery})
+                 });
+                 this.userRepo.getUsers()
+                 .then(users=>{
+                     this.setState({users})
+                });
+                 this.reviewRepo.getReviews(id)
+                 .then(reviews=>{
+                     this.setState({reviews})
+                 });
+            })
         }
 }
 
@@ -143,6 +151,7 @@ export class NPODashboard extends React.Component
         
         return(
             <>
+            <Header/>
             <div className='container'>
             {this.state.npo.map((x,i)=>
             <div key={i} className='container'>
@@ -154,10 +163,10 @@ export class NPODashboard extends React.Component
                             </div>
                             <div className='col-6'>
                                 <h1 className="float-right">
-                                    <button type='button' 
+                                    <Link to={'/Home/3/'+this.state.userID}type='button' 
                                     className="btn btn-success"> 
                                         Home 
-                                    </button> 
+                                    </Link> 
                                 </h1>
                             </div>
                         </div>

@@ -12,6 +12,7 @@ export class LoginPage extends React.Component {
         username: "",
         password: "",
         authenticated: null,
+        type: 0
     };
 
     login() {
@@ -26,6 +27,7 @@ export class LoginPage extends React.Component {
                         console.log('logged in');
                         this.setState({ authenticated: true });
                         this.setState({ id: user[0].userID });
+                        this.setState({type: user[0].user_type})
                     }
                     else {
                         console.log('login failed');
@@ -73,7 +75,7 @@ export class LoginPage extends React.Component {
                             onClick={() => this.login()}>Login</button>
                     </div>
                     
-                    {this.state.authenticated && <Redirect to={'/Home/'} />}
+                    {this.state.authenticated && this.state.type && <Redirect to={'/Home/'+this.state.type+'/'+this.state.id} />}
                     
                 </form>
             </div>
