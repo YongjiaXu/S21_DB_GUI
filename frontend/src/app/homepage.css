@@ -17,6 +17,10 @@ a.custom-card:hover {
   text-decoration: none;
 }
 
-.custom-card h5, p {
+.custom-card h5 {
+	color: #faf4f4;
+}
+
+.custom-card p {
 	color: #faf4f4;
 }

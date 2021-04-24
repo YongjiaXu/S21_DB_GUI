@@ -75,7 +75,11 @@ export class NPOProfile extends React.Component
         return averageRate;
     }
 
-    render (){
+    render() {
+        
+        if (!this.state.users.length)
+           return <>...</>
+
         return(
             <>
             <div className="container">
