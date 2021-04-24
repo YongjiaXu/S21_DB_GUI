@@ -24,8 +24,7 @@ export const Homapage = props => {
             <h4>Browse NPOs</h4>
             <div className="card-deck">
                 {NPOs && NPOs.map(npo =>
-                    <div className="card" style={{minWidth:"18rem"}}>
-                        <Link className="custom-card" to={"/NPOProfile/" + npo.npoID} >
+                        <Link className="custom-card" to={"/NPOProfile/" + npo.npoID} style={{maxWidth:'20rem'}}>
                         <img className="card-img-top mx-auto" src={npo.logoURL} alt="" style={{height:"18rem"}}/>
                         
                         <div className="card-body">
@@ -34,7 +33,6 @@ export const Homapage = props => {
                             
                         </div>
                         </Link>
-                    </div>
                 )}
             </div>
 
