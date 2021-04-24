@@ -15,6 +15,7 @@ export class NPODashboard extends React.Component
         npo:[],
         gallery:[],
         reviews:[],
+        users:[],
         description: '',
         location: '',
         logoURL: '',
