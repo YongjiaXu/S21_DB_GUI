@@ -77,18 +77,40 @@ app.post('/postit/register', (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
   const user_type = req.body.user_type;
+  // NPO ONLY INFO
+  const title = req.body.title;
+  const location = req.body.location;
+  const logoURL = req.body.logoURL;
+  const description = req.body.description;
   
   console.log('register check');
   console.log(username, password, user_type)
-  
-  pool.query('INSERT INTO users (username, password, user_type) VALUES (?,?,?)', [username, password, user_type], function (err, result, fields) {
-    if (err) {
-      logger.error("Error while inserting new user to users");
-    }
-    else{
-      res.end(JSON.stringify(result));
-    }
-  });
+  if (user_type == 1){
+    pool.query('INSERT INTO users (username, password, user_type) VALUES (?,?,?)', [username, password, user_type], function (err, result, fields) {
+      if (err) throw err;
+      else {
+        res.end(JSON.stringify(result));
+      }
+    });
+  }
+  else if (user_type == 3)
+  {
+    console.log("Add NPO");
+
+    pool.query('insert into npos (title, location, logoURL, description) values (?, ?, ?, ?)',
+      [title, location, logoURL, description], function (err, result, fields) {
+        if (err) throw err;
+        
+        console.log(result.insertId)
+
+
+        pool.query('INSERT INTO users (username, password, user_type, npoID) VALUES (?,?,?,?)', [username, password, user_type,result.insertId], (err, result, fields) => {          
+          if (err) throw err;
+
+          res.end(JSON.stringify(result));
+        });
+    });
+  }
 });
 
 // Bella
@@ -525,12 +547,15 @@ app.post('/npos/:npoID/images', async (req,res) => {
     }
   });
 });
+
+
 // PUT link user to npo by userID and npoID
 app.put('/users/:userID/:npoID', async (req,res) => {
   var userID = req.params.userID;
   var npoID = req.params.npoID;
   pool.query('update users set npoID = ? where userID = ?', [npoID,userID], function (err, result, fields) {
     if (err) {
+      console.log("Error linking user " + userID + " to npo " + npoID);
       logger.error("Error linking user " + userID + " to npo " + npoID);
     }
     else {

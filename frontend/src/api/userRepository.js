@@ -66,14 +66,18 @@ export class UserRepository {
     }
     
     
-    register(username,email, password, user_type) {
+    register(username,email, password, user_type,title,location, logo, description) {
         return new Promise((resolve, reject) => {
             axios.post(`${this.url}/postit/register`,
                 {
                     "username": username,
                     "email": email,
                     "password": password,
-                    "user_type":user_type,
+                    "user_type": user_type,
+                    "title": title,
+                    "location": location,
+                    "logoURL": logo,
+                    "description":description,
                 }
                 , this.config)
             .then(x => resolve(x.data))

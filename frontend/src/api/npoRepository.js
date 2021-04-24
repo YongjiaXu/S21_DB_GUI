@@ -48,7 +48,7 @@ export class NPORepository{
                     });
             }); 
         }
-
+    
         getGallery(npoID) {
             return new Promise((resolve, reject) => {
                 axios.get(`${this.url}/npos/${npoID}/images`, this.config)
