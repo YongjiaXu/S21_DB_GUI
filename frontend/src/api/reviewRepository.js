@@ -39,4 +39,14 @@ export class ReviewRepository{
             });
 
         }
+
+        deletePost(ratingID){
+            return new Promise((resolve, reject)=>{
+                axios.delete(
+                    `${this.url}/reviews/${ratingID}`,
+                )
+                .catch(error=>alert(error));
+            });
+        }
+
 }

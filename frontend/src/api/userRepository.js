@@ -111,4 +111,13 @@ export class UserRepository {
 
     }
 
+    banUser(userID){
+        return new Promise((resolve, reject)=>{
+            axios.delete(
+                `${this.url}/deleteit/${userID}`,
+            )
+            .catch(error=>alert(error));
+        });
+    }
+
 }

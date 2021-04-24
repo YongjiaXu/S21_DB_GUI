@@ -185,7 +185,7 @@ app.delete('/deleteit/username', (req, res) => {
 });
 
 // 8. DELETE a user by userID
-app.delete('/deleteit/userID', (req, res) => {
+app.delete('/deleteit/:userID', (req, res) => {
   var userID = req.param('userID');
   pool.query('delete from ratings where raterID = ?; delete from users where userID = ?; ', [userID, userID], function (err, result, fields) {
     if (err) {
@@ -264,7 +264,7 @@ app.get('/getit/avgrating', (req, res) => {
 });
 
 // 14. GET username by userID
-app.get('/getit/username/', (req, res) => {
+app.get('/getit/username/:userID', (req, res) => {
   var userID = req.param('userID');
   pool.query('select username from users where userID = ?', userID, function (err, result, fields) {
     if (err) {

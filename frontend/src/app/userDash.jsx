@@ -3,7 +3,6 @@ import { Npo } from './models/npo'
 import { Rating } from './models/rating'
 import { User } from './models/user';
 import {UserRepository} from '../api/userRepository'
-import {NPORepository} from '../api/npoRepository'
 import {Link} from 'react-router-dom'
 import {styles} from './card-theme.css';
 //import {PasswordUpdate} from './passwordUpdate';
@@ -11,34 +10,34 @@ import {styles} from './card-theme.css';
 export class UserDash extends React.Component{
 
     userRepo = new UserRepository();
-    npoRepo = new NPORepository();
 
     state={
-        user: new User('Place Holder Name','',''),
+        user: [],
         npos:[]
     }
 
     componentDidMount() {
         let id = +this.props.match.params.id;
         if (id) {
-            this.userRepo.getUser(id)
-            .then(user => { 
-                this.setState({user})
-             });
-        }
+            this.userRepo.getUsername(id)
+            .then(name=>{
+                this.userRepo.getUser(name[0].username)
+                .then(user => {
+                    this.setState({user})
+                 });
+            })
 
-        this.npoRepo.getNPOS()
-        .then(npos=>{
-            this.setState({npos})
-        });
+        }
     }
 
     render (){
         return <>
             <div className='container'>
-            <div className='card' style={{width:'100%'}}>
+                {console.log(this.state.user)}
+                {this.state.user.map((x,i)=>
+            <div key={i} className='card' style={{width:'100%'}}>
                 <div className='card-header' style= {{color: 'white', background: '#425088'}}>
-                    <h1>{this.state.user.username} <button type='button' className="btn btn-success" style={{float: 'right'}}> 
+                    <h1>{x.username} <button type='button' className="btn btn-success" style={{float: 'right'}}> 
                         Return 
                     </button> 
                     </h1>
@@ -77,7 +76,7 @@ export class UserDash extends React.Component{
                                 <div className='card-body'>
                                     <p>
                                         Are you sure? No Looking Back<br/>
-                                        <button type='button' className="btn btn-success"> Delete </button>
+                                        <button type='button' className="btn btn-danger"> Delete </button>
                                     </p>
                                 </div>
                             </div>
@@ -85,6 +84,7 @@ export class UserDash extends React.Component{
                     </div>
                 </div>    
             </div>
+                )}
         </div>
         </>
     }
