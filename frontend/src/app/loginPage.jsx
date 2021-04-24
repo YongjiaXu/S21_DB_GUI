@@ -12,8 +12,7 @@ export class LoginPage extends React.Component {
         username: "",
         password: "",
         authenticated: null,
-        npo: null,
-        type:0
+        user_type:0
     };
 
     login() {
@@ -81,7 +80,6 @@ export class LoginPage extends React.Component {
                     {this.state.authenticated && this.state.type==2 && <Redirect to={'/AdminDash/'} />}
                     {this.state.authenticated && this.state.type==3 && <Redirect to={'/NPODashboard/'+this.state.npo} />}
                     
-
                 </form>
             </div>
         </>

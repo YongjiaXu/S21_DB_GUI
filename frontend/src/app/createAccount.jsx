@@ -12,13 +12,16 @@ export class CreateAccount extends React.Component{
         email: "",
         password: "",
         password2: "",
+        user_type: 1,
         success: false
     };
 
     onRegister(username, email, password, password2) {
 
         if (this.state.username == ''
-            //|| this.state.email !== ''
+            || this.state.email == ''
+            || this.state.password == ''
+            || this.state.passwor2 == ''
             || this.state.password == '')
             alert('Please enter all fields');
         else if (this.state.password !== this.state.password2)
@@ -86,10 +89,29 @@ export class CreateAccount extends React.Component{
                             onChange={e => this.setState({ password2: e.target.value })} />
                     </div>
 
-                    <div>radio input</div>
+                    <div className="form-group">
 
-                    {this.state.radio=='2' && <npocreate/>}
-                            
+                    <div className="form-check form-check-inline">
+                            <input class="form-check-input"
+                                type="radio"
+                                name="flexRadioDefault"
+                                id="flexRadioDefault1"
+                                checked
+                                onChange={e => this.setState({ password2: e.target.value })} />
+                        <label class="form-check-label" for="flexRadioDefault1">Browser Account</label>
+                        </div>
+                    <div className="form-check form-check-inline">
+                            <input class="form-check-input"
+                                type="radio" 
+                                name="flexRadioDefault"
+                                id="flexRadioDefault2"
+                                value={this.state.password2}
+                                value={this.state.password2}
+                                onChange={e => this.setState({ password2: e.target.value })}/>
+                        <label class="form-check-label" for="flexRadioDefault2">NPO Account</label>
+                        </div>
+                    </div>
+   
                     <div className="form-group">
                         <button type="button"
                             className="btn btn-success btn-lg btn-block"
