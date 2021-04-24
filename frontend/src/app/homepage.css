@@ -1,8 +1,10 @@
 .custom-card{
     box-shadow: 0 6px 10px rgba(0,0,0,.08), 0 0 6px rgba(0,0,0,.05);
     transition: .3s transform cubic-bezier(.155,1.105,.295,1.12),.3s box-shadow,.3s -webkit-transform cubic-bezier(.155,1.105,.295,1.12);
-    margin: 1rem;
+    margin: 0.5rem;
     cursor: pointer;
+    background-color: #425088;
+    color: white;
 }
 
 .custom-card:hover{
@@ -13,4 +15,8 @@ a.custom-card,
 a.custom-card:hover {
   color: inherit;
   text-decoration: none;
+}
+
+.custom-card h5, p {
+	color: #faf4f4;
 }

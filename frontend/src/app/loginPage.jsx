@@ -12,7 +12,6 @@ export class LoginPage extends React.Component {
         username: "",
         password: "",
         authenticated: null,
-        user_type:0
     };
 
     login() {
@@ -27,8 +26,6 @@ export class LoginPage extends React.Component {
                         console.log('logged in');
                         this.setState({ authenticated: true });
                         this.setState({ id: user[0].userID });
-                        this.setState({ npo: user[0].npoID });
-                        this.setState({ type: user[0].user_type });         
                     }
                     else {
                         console.log('login failed');
