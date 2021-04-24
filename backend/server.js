@@ -178,8 +178,7 @@ app.delete('/deleteit/username', (req, res) => {
       logger.error("Error while deleting user " + username);
     }
     else{
-      res.end(JSON.stringify(result[0]));
-      res.end(JSON.stringify(result[1]));
+      res.end(JSON.stringify(result));
     }
   });
 });
@@ -192,8 +191,7 @@ app.delete('/deleteit/:userID', (req, res) => {
       logger.error("Error while deleting user " + userID);
     }
     else{
-      res.end(JSON.stringify(result[0]));
-      res.end(JSON.stringify(result[1]));
+      res.end(JSON.stringify(result));
     }
   });
 });
@@ -269,6 +267,19 @@ app.get('/getit/username/:userID', (req, res) => {
   pool.query('select username from users where userID = ?', userID, function (err, result, fields) {
     if (err) {
       logger.error("Error while getting average rating for npo " + npoID);
+    }
+    else{
+      res.end(JSON.stringify(result));
+    }
+  });
+});
+
+// 15. DELETE npo by npoID
+app.delete('/deleteit/npos/:npoID', (req, res) => {
+  var npoID = req.param('npoID');
+  pool.query('delete from images where npoID = ?; delete from npos where npoID = ?', [npoID, npoID], function (err, result, fields) {
+    if (err) {
+      logger.error("Error while deleting npoID " + npoID);
     }
     else{
       res.end(JSON.stringify(result));
