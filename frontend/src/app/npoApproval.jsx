@@ -48,7 +48,7 @@ export const NpoApproval = props =>{
             }
             {
                     <div>
-                        {npos.map((x,i)=> <>
+                        {npos.map((x,i)=>
                         <div key={i} className="container">
                             <div id="npoCard" className="card">
                                 <div id="name"className="card-header">
@@ -69,7 +69,6 @@ export const NpoApproval = props =>{
                             </div>
                             <br/>
                             </div>
-                        </>
                         )}
                     </div>
             }
