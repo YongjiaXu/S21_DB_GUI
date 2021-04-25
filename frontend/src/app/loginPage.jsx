@@ -76,7 +76,9 @@ export class LoginPage extends React.Component {
                         <Link className="d-flex justify-content-center" to={'/Home/-1/-1'}>Browse without logging in</Link>
                     </div>
                     
-                    {this.state.authenticated && this.state.type && <Redirect to={'/Home/'+this.state.type+'/'+this.state.id} />}
+                    {this.state.authenticated && this.state.type===1 && <Redirect to={'/UserDash/'+this.state.id} />}
+                    {this.state.authenticated && this.state.type===2 && <Redirect to={'/AdminDash/'+this.state.id} />}
+                    {this.state.authenticated && this.state.type===3 && <Redirect to={'/NPODashboard/'+this.state.id} />}
                     
                 </form>
             </div>
