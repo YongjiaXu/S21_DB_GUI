@@ -49,4 +49,19 @@ export class ReviewRepository{
             });
         }
 
+
+        postReview(raterID,rating,comment,npoID){
+            //hard coding date for now
+            let fulldate = new Date().toString();
+            let date = "2021-04-24";
+            let flag = 0;
+            console.log(date);
+            return new Promise((resolve, reject)=>{
+                axios.post(
+                    `${this.url}/postit/review?rating=${rating}&raterID=${raterID}&flagged=${flag}&comment=${comment}&npoID=${npoID}&ratingDate=${date}`, 
+                    this.config)
+                .catch(error=>alert(error));
+            });
+        }
+
 }

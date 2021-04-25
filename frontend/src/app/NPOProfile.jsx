@@ -17,7 +17,7 @@ export class NPOProfile extends React.Component
 
     state = {
         userName: '',
-        rating: '',
+        rating: 0,
         comment: '',
         npo:[],
         gallery:[],
@@ -29,13 +29,11 @@ export class NPOProfile extends React.Component
     };
 
     onSubmitClick() {
-        this.props.onReviewAdded(this.state);
-
-        this.setState({
-            userName: '',
-            rating: '',
-            comment: ''
-        });
+        this.reviewRepo.postReview(this.state.userID,this.state.rating,this.state.comment,+this.props.match.params.npoID)
+        .then(this.setState({
+            rating:0,
+            comment:''
+        }))
     }
 
     componentDidMount() {
@@ -201,17 +199,6 @@ export class NPOProfile extends React.Component
                                 <ul className="list-group list-group-flush">
                                     <li className="list-group-item">
                                         <div className="row">
-                                            <div className="col-8">
-                                                <label htmlFor="yourName">Your Name</label>
-                                                <br/>
-                                                <input type="text"
-                                                    className='form-control'
-                                                    id="yourName"
-                                                    name="yourName"
-                                                    value={this.state.userName}
-                                                    onChange={ event => this.setState({ userName: event.target.value }) }>
-                                                </input>
-                                            </div>
 
                                             <div className="col-2">
                                                 <label htmlFor="Rating" >Rating</label>
@@ -252,7 +239,7 @@ export class NPOProfile extends React.Component
                                         <div className="row">
                                             <div className="col-12">
                                                 <button type="button" className="btn btn-success"
-                                                    type="button">
+                                                    type="button" onClick={()=>this.onSubmitClick()}>
                                                     Submit
                                                 </button>
                                             </div>

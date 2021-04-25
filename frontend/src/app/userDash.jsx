@@ -59,7 +59,7 @@ export class UserDash extends React.Component{
                 <div className='card-header' style= {{color: 'white', background: '#425088'}}>
                     <h1>User Dashboard for {x.username} 
                     <Link to={"/Home/1/"+x.userID} type='button' className="btn btn-success" style={{float: 'right'}}> 
-                        Return 
+                        Home 
                     </Link> 
                     </h1>
                 </div>
