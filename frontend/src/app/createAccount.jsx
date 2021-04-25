@@ -23,9 +23,8 @@ export class CreateAccount extends React.Component{
         npo_description: ""
     };
 
-    onRegister(username, email, password, password2) {
+    onRegister() {
         
-        var npoID, userID;
         if (this.state.username === ''
             || this.state.password === ''
             || this.state.passwor2 === '')
@@ -39,8 +38,6 @@ export class CreateAccount extends React.Component{
             this.userRepository.register(this.state.username, this.state.password, this.state.user_type,
                 this.state.npo_title, this.state.npo_location, this.state.npo_logoUrl, this.state.npo_description)
                 .then(user => {
-                    userID = user.userID;
-                    console.log(userID);
                     this.setState({ success: true });
                 });
         }
@@ -158,7 +155,7 @@ export class CreateAccount extends React.Component{
                 <div className="form-group">
                     <button type="button"
                         className="btn btn-success btn-lg btn-block"
-                        onClick={() => this.onRegister(this.state.username, this.state.password, this.state.password2)}>Register</button>
+                        onClick={() => this.onRegister()}>Register</button>
                         
                     {this.state.success && <Redirect to={'/login/'} />}
 

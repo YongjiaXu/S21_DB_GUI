@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {Link, Redirect} from "react-router-dom";
+import {Link} from "react-router-dom";
 import { NPORepository } from '../api/npoRepository';
 import {Header} from './header'
 import "./homepage.css";
@@ -34,17 +34,17 @@ export const Homapage = props => {
 
     return <>
 
-        {userType == -1 && <br />}
+        {userType === -1 && <br />}
         {userType !== -1 && <Header />}
         <div className="container">
 
             <div className="page-header" style={{ color: '#425088' }}>
                 <h4 style={{ color: '#425088' }}>Non-profit Organizations</h4>
                 <div className="float-right" >
-                    {userType == 1 && <Link to={'/UserDash/' + userID} className="btn btn-success">User Dashboard</Link>}
-                    {userType == 2 && <Link to={'/AdminDash/' + userID} className="btn btn-success">Admin Dashboard</Link>}
-                    {userType == 3 && <Link to={'/NPODashboard/' + userID} className="btn btn-success">NPO Dashboard</Link>}
-                    {userType == -1 && <Link to={'/'} className="btn btn-success">Login</Link>}
+                    {userType === 1 && <Link to={'/UserDash/' + userID} className="btn btn-success">User Dashboard</Link>}
+                    {userType === 2 && <Link to={'/AdminDash/' + userID} className="btn btn-success">Admin Dashboard</Link>}
+                    {userType === 3 && <Link to={'/NPODashboard/' + userID} className="btn btn-success">NPO Dashboard</Link>}
+                    {userType === -1 && <Link to={'/'} className="btn btn-success">Login</Link>}
                 </div>
             </div>
 

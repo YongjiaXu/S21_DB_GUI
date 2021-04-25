@@ -60,8 +60,10 @@ app.post('/postit/login', (req, res) => {
   
   pool.query('SELECT * FROM users WHERE username = ?', username, function (err, result, fields) {
     if (err) throw err;
-
-    if (password == result[0].password)
+    
+    if (result.length == 0)
+      return res.status(400).send('Username can not be found');
+    else if (password == result[0].password)
       res.end(JSON.stringify(result));
     else
       return res
