@@ -1,7 +1,6 @@
 import React from 'react';
 import {Link, Redirect} from "react-router-dom";
 import {UserRepository} from '../api/userRepository';
-import { CreateAccount } from './createAccount';
 
 export class LoginPage extends React.Component {
     
@@ -16,7 +15,7 @@ export class LoginPage extends React.Component {
     };
 
     login() {
-        if (this.state.username == '' || this.state.password == '')
+        if (this.state.username === '' || this.state.password === '')
             alert('Please enter all fields!');
         else {
             this.userRepository.login(this.state.username, this.state.password)
@@ -33,8 +32,9 @@ export class LoginPage extends React.Component {
                         console.log('login failed');
                         this.setState({ authenticated: false });
                     }
-                }).catch({
-
+                }).catch(e => {
+                    console.log(e);
+                    window.location.reload(false);
                 });
         }
     }
