@@ -41,6 +41,7 @@ export const FlaggedReviewList = props =>{
         let u = flagged.splice(index,1);
         setFlagged(u);
         refresh();
+        refresh();
     }
 
     function removePost(id,index){
@@ -48,12 +49,14 @@ export const FlaggedReviewList = props =>{
         let u = flagged.splice(index,1);
         setFlagged(u);
         refresh();
+        refresh();
     };
 
     function ban(id,index){
         userRepository.banUser(id);
         let u = flagged.splice(index,1);
         setFlagged(u);
+        refresh();
         refresh();
     }
     function username(raterID){
