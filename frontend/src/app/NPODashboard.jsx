@@ -4,6 +4,8 @@ import { NPORepository } from '../api/npoRepository';
 import {ReviewRepository} from '../api/reviewRepository'
 import {UserRepository} from '../api/userRepository'
 import {styles} from './card-theme.css';
+import {Header} from './header'
+import {Link} from 'react-router-dom'
 
 export class NPODashboard extends React.Component
 {
@@ -20,35 +22,42 @@ export class NPODashboard extends React.Component
         location: '',
         logoURL: '',
         imgURL: '',
-        newPassword: '',
-        confirmPassword: ''
+        userID:0,
+        pw:"",
+        pwConfirm:""
     };
 
     componentDidMount() {
-        let id = +this.props.match.params.id;
-        if (id) {
-            this.npoRepo.getNPO(id)
-            .then(npo => { 
-                this.setState({npo})
-             });
-             this.npoRepo.getGallery(id)
-             .then(gallery=>{
-                 this.setState({gallery})
-             });
-             this.userRepo.getUsers()
-             .then(users=>{
-                 this.setState({users})
-            });
-             this.reviewRepo.getReviews(id)
-             .then(reviews=>{
-                 this.setState({reviews})
-             });
+        let userID = +this.props.match.params.userID;
+        if (userID) {
+            this.setState({userID:userID})
+            this.userRepo.getNPOID(userID)
+            .then(idReturn =>{
+                let id= idReturn[0].npoID;
+                this.npoRepo.getNPO(id)
+                .then(npo => { 
+                    this.setState({npo})
+                 });
+                 this.npoRepo.getGallery(id)
+                 .then(gallery=>{
+                     this.setState({gallery})
+                 });
+                 this.userRepo.getUsers()
+                 .then(users=>{
+                     this.setState({users})
+                });
+                 this.reviewRepo.getReviews(id)
+                 .then(reviews=>{
+                     this.setState({reviews})
+                 });
+            })
         }
 }
 
     calculateAverageRating(){
         let averageRate = 0;
-        for(let i = 0; i < this.state.reviews.length; ++i) {
+        for(let i = 0; i < this.state.reviews.length; ++i)
+        {
             averageRate += this.state.reviews[i].rating;
         }
         averageRate /= this.state.reviews.length;
@@ -60,23 +69,16 @@ export class NPODashboard extends React.Component
         return result.username;
     }
 
-    changePassword()
+    changePassword(newPassword, confirmPassword)
     {
-        if(this.state.newPassword != this.state.confirmPassword)
+        if(newPassword !== confirmPassword)
         {
             alert("ERROR: Passwords don't match");
         }
         else
         {
-            this.userRepo.changePW(
-                +this.props.match.params.id, this.state.newPassword
-            );
-        }
 
-        this.setState({
-            newPassword: '',
-            confirmPassword: ''
-        });
+        }
     }
 
     onChangeLocation()
@@ -89,7 +91,7 @@ export class NPODashboard extends React.Component
         );
 
         this.setState({
-            location: ''
+            location: '',
         });
         alert("Changes have been saved!");
     }
@@ -105,7 +107,7 @@ export class NPODashboard extends React.Component
         );
 
         this.setState({
-            description: ''
+            description: '',
         });
         alert("Changes have been saved!");
     }
@@ -121,27 +123,49 @@ export class NPODashboard extends React.Component
         );
 
         this.setState({
-            logoURL: ''
+            logoURL: '',
         });
         alert("Changes have been saved!");
     }
 
     onAddImage()
     {
-        debugger;
-        this.npoRepo.addImage(
-            +this.props.match.params.id, this.state.imgURL
-        );
-
-        this.setState({
-            imgURL: ''
-        });
-        alert("Changes have been saved!");
+        
     }
 
-    render (){
+    flag(id){
+        this.reviewRepo.flagToggle(id);
+    }
+
+    flagButton(status,id){
+        if(status===0){
+            return (<button type="button" className="btn btn-danger" onClick={()=>this.flag(id)}>Flag</button>)
+        }
+        else{
+            return (<button type="button" className="btn btn-success" onClick={()=>this.flag(id)}>Un-Flag</button>)
+        }
+    }
+
+    updatePW(pw,pwconfirm){
+        console.log(pw+" "+pwconfirm);
+        if(pw===pwconfirm){
+            let id=+this.props.match.params.userID;
+            this.userRepo.changePW(id,pw);
+        }
+        else{
+            console.log("rofl")
+        }
+
+    }
+
+    render() {
+        
+        if (!this.state.users.length)
+            return <>...</>
+        
         return(
             <>
+            <Header/>
             <div className='container'>
             {this.state.npo.map((x,i)=>
             <div key={i} className='container'>
@@ -153,10 +177,10 @@ export class NPODashboard extends React.Component
                             </div>
                             <div className='col-6'>
                                 <h1 className="float-right">
-                                    <button type='button' 
+                                    <Link to={'/Home/3/'+this.state.userID}type='button' 
                                     className="btn btn-success"> 
                                         Home 
-                                    </button> 
+                                    </Link> 
                                 </h1>
                             </div>
                         </div>
@@ -165,11 +189,11 @@ export class NPODashboard extends React.Component
                     <div className='card-body'>
                         <div className='row'>
                             <div className='col-6'>
-                                <div className='card'>
-                                    <div className='card-header'>
+                            <div className='card'>
+                                <div className='card-header' style={{ color: 'white', background: '#425088' }}>
                                     <h2> Change Password </h2>
-                                    </div>
-                                    <div className='card-body'>
+                                </div>
+                                <div className='card-body'>
                                     <p>
                                         **Password must contain at least one uppercase and
                                         one lowercase letter, a number, a special symbol, other
@@ -177,25 +201,15 @@ export class NPODashboard extends React.Component
                                     </p>
                                     <p>
                                         New Password: <br/>
-                                        <input id='newPass' 
-                                        type='password' 
-                                        className='form-control'
-                                        value={this.state.newPassword}
-                                        onChange={ event => this.setState({newPassword: event.target.value})}></input>
+                                        <input id='newPass' type='text' style={{width: '15em', height: '2em'}} onChange={event=>this.setState({pw:event.target.value})}></input>
                                     </p>
                                     <p>
                                         Confirm New Password: <br/>
-                                        <input id='newPassConfirm' 
-                                        type='password' 
-                                        className='form-control'
-                                        value={this.state.confirmPassword}
-                                        onChange={ event => this.setState({confirmPassword: event.target.value})}></input>
+                                        <input id='newPassConfirm' type='text' style={{width: '15em', height: '2em'}} onChange={event=>this.setState({pwConfirm:event.target.value})}></input>
                                     </p>
-                                    <button type='button' 
-                                    className="btn btn-success"
-                                    onClick={() => this.changePassword()}>Submit</button>
-                                    </div>
+                                    <button type='button' className="btn btn-success" onClick={()=>this.updatePW(this.state.pw,this.state.pwConfirm)}>Submit</button>
                                 </div>
+                            </div>
                             </div>
                             <div className='col-6'>
                                 <div className='card'>
@@ -284,7 +298,6 @@ export class NPODashboard extends React.Component
                             <input id='newImage' 
                             type='text' 
                             className='form-control'
-                            value={this.state.imgURL}
                             onChange={event => this.setState({ imgURL: event.target.value })}></input>
                         </p>
                         <button type='button' 
@@ -319,7 +332,7 @@ export class NPODashboard extends React.Component
                                         <div className='row'>
                                             <div className='col-10'>{x.comment}</div>
                                             <div className="col-2">
-                                                <button type="button" className="btn btn-danger">Flag</button>
+                                                {this.flagButton(x.flagged,x.ratingID)}
                                             </div>
                                         </div>
                                     </div>

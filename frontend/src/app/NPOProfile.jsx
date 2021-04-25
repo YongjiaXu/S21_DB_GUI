@@ -2,7 +2,10 @@ import React from 'react'
 import { Rating } from './models/rating';
 import {NPORepository} from '../api/npoRepository'
 import {ReviewRepository} from '../api/reviewRepository'
+import {UserRepository} from '../api/userRepository'
+import {Link,Redirect} from 'react-router-dom'
 import {styles} from './card-theme.css';
+import {Header} from './header'
 
 export class NPOProfile extends React.Component
 {
@@ -10,22 +13,36 @@ export class NPOProfile extends React.Component
 
     reviewRepo = new ReviewRepository();
 
+    userRepo = new UserRepository();
+
     state = {
         userName: '',
-        rating: '',
+        rating: 0,
         comment: '',
         npo:[],
         gallery:[],
         reviews:[],
-        averageRating: 0
+        averageRating: 0,
+        users:[],
+        usertype:0,
+        userID:0
     };
 
-    submitReview(){
-        
+    onSubmitClick() {
+        if(this.state.userType!==-1){
+            this.reviewRepo.postReview(this.state.userID,this.state.rating,this.state.comment,+this.props.match.params.npoID)
+            .then(this.setState({
+                rating:0,
+                comment:''
+            }))
+        }
+        else{
+            alert("Please Login to post a Review")
+        }
     }
 
     componentDidMount() {
-        let id = +this.props.match.params.id;
+        let id = +this.props.match.params.npoID;
         if (id) {
             this.npoRepo.getNPO(id)
             .then(npo => { 
@@ -35,12 +52,27 @@ export class NPOProfile extends React.Component
              .then(gallery=>{
                  this.setState({gallery})
              });
-
              this.reviewRepo.getReviews(id)
              .then(reviews=>{
                  this.setState({reviews})
              });
+             this.userRepo.getUsers()
+             .then(users=>{
+                 this.setState({users})
+            });
         }
+        let userType = +this.props.match.params.userType;
+        let userID = +this.props.match.params.userID;
+        if(userType&&userID){
+            this.setState({userType: userType})
+            this.setState({userID: userID})
+        }
+    }
+
+    username(raterID){
+        const result = this.state.users.find(({userID})=> userID===raterID);
+        console.log(result.username);
+        return result.username;
     }
 
     calculateAverageRating(){
@@ -55,12 +87,23 @@ export class NPOProfile extends React.Component
         return averageRate;
     }
 
-    render (){
+    deleteNPO(){
+        this.npoRepo.deny(+this.props.match.params.npoID)
+        return(<Redirect to={'/Home/'+this.state.userType+'/'+this.state.userID}/>)
+    }
+
+    render() {
+        
+        if (!this.state.users.length||this.state.userID===0||this.state.userType===0)
+           return <>...</>
+
         return(
             <>
+            {this.state.userType==-1 && <br/>}
+            {this.state.userType!==-1 && <Header/>}
             <div className="container">
-              {this.state.npo.map(x=>               
-                <div className="card">
+              {this.state.npo.map((x,i)=>               
+                <div key={i} className="card">
                     <div className="card-header">
                         <div className='row'>
                             <div className='col-6'>
@@ -68,10 +111,11 @@ export class NPOProfile extends React.Component
                             </div>
                             <div className='col-6'>
                                 <h1 className="float-right">
-                                    <button type='button' 
+                                    <Link to={"/Home/"+this.state.userType+"/"+this.state.userID}type='button' 
                                     className="btn btn-success"> 
                                         Home 
-                                    </button> 
+                                    </Link>
+                                    {this.state.userType===2 && <button type="button" className="btn btn-danger" onClick={()=> {if(window.confirm('Denying will delete the NPO, are you sure?')) this.deleteNPO()}}>!Delete NPO!</button>}
                                 </h1>
                             </div>
                         </div>
@@ -138,7 +182,7 @@ export class NPOProfile extends React.Component
                                     
                                         <div className='card-body'>
                                             <div className='row'>
-                                                <div className='col-10'>{x.raterID}</div>
+                                                <div className='col-10'>{this.username(x.raterID)}</div>
                                                 <div className='col-2'>{x.ratingDate.toString().substr(0,10)}</div>
                                             </div>
                                             <div className='row'>
@@ -151,7 +195,7 @@ export class NPOProfile extends React.Component
                         </div>
 
                         <br/>
-
+                                 
                         <div className='container'>
                         <div className="row">
                             <div className="card">
@@ -161,17 +205,6 @@ export class NPOProfile extends React.Component
                                 <ul className="list-group list-group-flush">
                                     <li className="list-group-item">
                                         <div className="row">
-                                            <div className="col-8">
-                                                <label htmlFor="yourName">Your Name</label>
-                                                <br/>
-                                                <input type="text"
-                                                    className='form-control'
-                                                    id="yourName"
-                                                    name="yourName"
-                                                    value={this.state.userName}
-                                                    onChange={ event => this.setState({ userName: event.target.value }) }>
-                                                </input>
-                                            </div>
 
                                             <div className="col-2">
                                                 <label htmlFor="Rating" >Rating</label>
@@ -211,10 +244,8 @@ export class NPOProfile extends React.Component
 
                                         <div className="row">
                                             <div className="col-12">
-                                                <button type="button" 
-                                                className="btn btn-success"
-                                                type="button"
-                                                onClick={ () => this.submitReview() }>
+                                                <button type="button" className="btn btn-success"
+                                                    type="button" onClick={()=>this.onSubmitClick()}>
                                                     Submit
                                                 </button>
                                             </div>

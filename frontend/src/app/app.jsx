@@ -11,7 +11,6 @@ function App() {
   return (
     <>
       <Router>
-      <Header/>
         <Switch>
           {ROUTES.map((route,index)=><Route key={index} {...route} />)}
         </Switch>

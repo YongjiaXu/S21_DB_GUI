@@ -5,6 +5,7 @@ import { User } from './models/user';
 import {UserRepository} from '../api/userRepository'
 import {Link, Redirect} from 'react-router-dom'
 import {styles} from './card-theme.css';
+import {Header} from './header'
 //import {PasswordUpdate} from './passwordUpdate';
 
 export class UserDash extends React.Component{
@@ -19,7 +20,7 @@ export class UserDash extends React.Component{
     }
 
     componentDidMount() {
-        let id = +this.props.match.params.id;
+        let id = +this.props.match.params.userID;
         if (id) {
             this.userRepo.getUsername(id)
             .then(name=>{
@@ -39,8 +40,8 @@ export class UserDash extends React.Component{
 
     updatePW(pw,pwconfirm){
         console.log(pw+" "+pwconfirm);
-        if(pw==pwconfirm){
-            let id=+this.props.match.params.id;
+        if(pw===pwconfirm){
+            let id=+this.props.match.params.userID;
             this.userRepo.changePW(id,pw);
         }
         else{
@@ -51,14 +52,15 @@ export class UserDash extends React.Component{
 
     render (){
         return <>
+        <Header/>
             <div className='container'>
-                {console.log(this.state.user)}
                 {this.state.user.map((x,i)=>
             <div key={i} className='card' style={{width:'100%'}}>
                 <div className='card-header' style= {{color: 'white', background: '#425088'}}>
-                    <h1>{x.username} <button type='button' className="btn btn-success" style={{float: 'right'}}> 
-                        Return 
-                    </button> 
+                    <h1>User Dashboard for {x.username} 
+                    <Link to={"/Home/1/"+x.userID} type='button' className="btn btn-success" style={{float: 'right'}}> 
+                        Home 
+                    </Link> 
                     </h1>
                 </div>
                 <div className='card-body'>

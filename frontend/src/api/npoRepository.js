@@ -26,6 +26,17 @@ export class NPORepository{
                     });
             }); 
         }
+    
+        getApprovedNPOS(){
+            return new Promise((resolve, reject) => {
+                axios.get(`${this.url}/npos/approved`, this.config)
+                    .then(x => resolve(x.data))
+                    .catch(error => {
+                        alert(error);
+                        reject(error);
+                    });
+            }); 
+        }
 
         getNANPOS(){
             return new Promise((resolve, reject) => {
@@ -37,7 +48,7 @@ export class NPORepository{
                     });
             }); 
         }
-
+    
         getGallery(npoID) {
             return new Promise((resolve, reject) => {
                 axios.get(`${this.url}/npos/${npoID}/images`, this.config)

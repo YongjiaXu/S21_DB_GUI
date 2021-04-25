@@ -66,14 +66,18 @@ export class UserRepository {
     }
     
     
-    register(username,email, password, user_type) {
+    register(username,email, password, user_type,title,location, logo, description) {
         return new Promise((resolve, reject) => {
             axios.post(`${this.url}/postit/register`,
                 {
                     "username": username,
                     "email": email,
                     "password": password,
-                    "user_type":user_type,
+                    "user_type": user_type,
+                    "title": title,
+                    "location": location,
+                    "logoURL": logo,
+                    "description":description,
                 }
                 , this.config)
             .then(x => resolve(x.data))
@@ -104,9 +108,7 @@ export class UserRepository {
     changePW(userID,pw){
         return new Promise((resolve, reject)=>{
             axios.put(
-                `${this.url}/putit/userpwd`,
-                {"userid":userID,
-                 "newpwd": pw},
+                `${this.url}/putit/userpwd?userid=${userID}&newpwd=${pw}`,
             )
             .catch(error=>alert(error));
         });
@@ -122,4 +124,14 @@ export class UserRepository {
         });
     }
 
+    getNPOID(userID){
+        return new Promise((resolve, reject) => {
+            axios.get(`${this.url}/getit/npoIDByUserID/?userID=${userID}`, this.config)
+            .then(x => resolve(x.data))
+            .catch(e => {
+                alert("User linked to NPO does not exist!.");
+                reject();
+            });
+        });
+    }
 }
