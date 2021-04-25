@@ -29,11 +29,16 @@ export class NPOProfile extends React.Component
     };
 
     onSubmitClick() {
-        this.reviewRepo.postReview(this.state.userID,this.state.rating,this.state.comment,+this.props.match.params.npoID)
-        .then(this.setState({
-            rating:0,
-            comment:''
-        }))
+        if(this.state.userType!==-1){
+            this.reviewRepo.postReview(this.state.userID,this.state.rating,this.state.comment,+this.props.match.params.npoID)
+            .then(this.setState({
+                rating:0,
+                comment:''
+            }))
+        }
+        else{
+            alert("Please Login to post a Review")
+        }
     }
 
     componentDidMount() {
@@ -94,7 +99,8 @@ export class NPOProfile extends React.Component
 
         return(
             <>
-            <Header/>
+            {this.state.userType==-1 && <br/>}
+            {this.state.userType!==-1 && <Header/>}
             <div className="container">
               {this.state.npo.map((x,i)=>               
                 <div key={i} className="card">
@@ -189,7 +195,7 @@ export class NPOProfile extends React.Component
                         </div>
 
                         <br/>
-
+                                 
                         <div className='container'>
                         <div className="row">
                             <div className="card">

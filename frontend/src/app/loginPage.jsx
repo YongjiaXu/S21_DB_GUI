@@ -73,6 +73,7 @@ export class LoginPage extends React.Component {
                         <button type="button"
                             className="btn btn-success btn-lg btn-block"
                             onClick={() => this.login()}>Login</button>
+                        <Link className="d-flex justify-content-center" to={'/Home/-1/-1'}>Browse without logging in</Link>
                     </div>
                     
                     {this.state.authenticated && this.state.type && <Redirect to={'/Home/'+this.state.type+'/'+this.state.id} />}
