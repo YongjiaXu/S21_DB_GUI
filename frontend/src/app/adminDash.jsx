@@ -13,7 +13,7 @@ export class AdminDash extends React.Component{
         pw:"",
         pwConfirm:"",
         userID: 0,
-        user: []
+        user: [],
     }
 
     componentDidMount() {
