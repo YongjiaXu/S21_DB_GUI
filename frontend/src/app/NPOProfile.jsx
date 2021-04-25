@@ -81,7 +81,6 @@ export class NPOProfile extends React.Component
         {
             averageRate += this.state.reviews[i].rating;
             console.log(averageRate);
-            debugger;
         }
         averageRate /= this.state.reviews.length;
         return averageRate;
