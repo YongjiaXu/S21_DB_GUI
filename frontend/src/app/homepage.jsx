@@ -34,25 +34,28 @@ export const Homapage = props => {
 
     return <>
 
-        {userType==-1 && <br/>}
-        {userType!==-1 && <Header/>}
+        {userType == -1 && <br />}
+        {userType !== -1 && <Header />}
         <div className="container">
 
             <div className="page-header" style={{ color: '#425088' }}>
-                <h4 style={{ color: '#425088' }}>Browse NPOs</h4>
-                {userType==1 && <Link to={'/UserDash/'+userID} className="btn btn-success">User Dashboard</Link>}
-                {userType==2 && <Link to={'/AdminDash/'+userID}className="btn btn-success">Admin Dashboard</Link>}
-                {userType==3 && <Link to={'/NPODashboard/'+userID}className="btn btn-success">NPO Dashboard</Link>}
-                {userType==-1 && <Link to={'/'}className="btn btn-success">Login</Link>}                
+                <h4 style={{ color: '#425088' }}>Non-profit Organizations</h4>
+                <div className="float-right" >
+                    {userType == 1 && <Link to={'/UserDash/' + userID} className="btn btn-success">User Dashboard</Link>}
+                    {userType == 2 && <Link to={'/AdminDash/' + userID} className="btn btn-success">Admin Dashboard</Link>}
+                    {userType == 3 && <Link to={'/NPODashboard/' + userID} className="btn btn-success">NPO Dashboard</Link>}
+                    {userType == -1 && <Link to={'/'} className="btn btn-success">Login</Link>}
+                </div>
             </div>
-                
-            
+
+            <div className="clearfix"></div>
+
             <div className="card-deck">
                 {NPOs && NPOs.map((npo, i) =>
-                    <Link key={i} className="card custom-card" to={"/NPOProfile/" +userType+'/'+userID+'/'+npo.npoID}  style={{ minWidth:'100%' }} >
+                    <Link key={i} className="card custom-card" to={"/NPOProfile/" + userType + '/' + userID + '/' + npo.npoID} style={{ minWidth: '100%' }} >
                         <div className="row g-0">
                             <div className="col-md-3">
-                                <img className="card-img-top" src={npo.logoURL} alt="" style={{ height: '12rem', width:'100%' }} />
+                                <img className="card-img-top" src={npo.logoURL} alt="" style={{ height: '12rem', width: '100%' }} />
                             </div>
                             <div className="col-md-8">
                                 <div className="card-body">
@@ -69,7 +72,7 @@ export const Homapage = props => {
 
         </div>
     
-    </>;
+    </>
 
 }
 
