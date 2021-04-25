@@ -78,11 +78,11 @@ export class UserDash extends React.Component{
                                     </p>
                                     <p>
                                         New Password: <br/>
-                                        <input id='newPass' type='text' style={{width: '15em', height: '2em'}} onChange={event=>this.setState({pw:event.target.value})}></input>
+                                        <input id='newPass' type='text' style={{width: '100%', height: '2em'}} onChange={event=>this.setState({pw:event.target.value})}></input>
                                     </p>
                                     <p>
                                         Confirm New Password: <br/>
-                                        <input id='newPassConfirm' type='text' style={{width: '15em', height: '2em'}} onChange={event=>this.setState({pwConfirm:event.target.value})}></input>
+                                        <input id='newPassConfirm' type='text' style={{width: '100%', height: '2em'}} onChange={event=>this.setState({pwConfirm:event.target.value})}></input>
                                     </p>
                                     <button type='button' className="btn btn-success" onClick={()=>this.updatePW(this.state.pw,this.state.pwConfirm)}>Submit</button>
                                 </div>
