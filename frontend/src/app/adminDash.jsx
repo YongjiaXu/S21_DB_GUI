@@ -3,6 +3,7 @@ import {FlaggedReviewList} from './flaggedReviews';
 import {UserRepository} from '../api/userRepository';
 import {NpoApproval} from './npoApproval'
 import {Header} from './header'
+import {Link, Redirect} from 'react-router-dom'
 
 export class AdminDash extends React.Component{
 
@@ -52,7 +53,11 @@ export class AdminDash extends React.Component{
             <div className='card' style={{width:'100%'}}>
                     <div className='card-header' style=
                     {{color: 'white', background: '#425088'}}>
-                        <h1>Admin Dashboard for {this.state.user[0].username}</h1>
+                        <h1>Admin Dashboard for {this.state.user[0].username}
+                            <Link to={"/Home/2/"+this.state.user[0].userID} type='button' className="btn btn-success" style={{float: 'right'}}> 
+                                Home 
+                            </Link> 
+                        </h1>
                     </div>
                     <div className='card-body'>
                         <div className='row'>
