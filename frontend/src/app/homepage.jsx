@@ -49,13 +49,14 @@ export const Homapage = props => {
             
             <div className="card-deck">
                 {NPOs && NPOs.map((npo, i) =>
-                    <Link key={i} className="custom-card" to={"/NPOProfile/" +userType+'/'+userID+'/'+npo.npoID}  style={{ minWidth:'100%' }} >
+                    <Link key={i} className="card custom-card" to={"/NPOProfile/" +userType+'/'+userID+'/'+npo.npoID}  style={{ minWidth:'100%' }} >
                         <div className="row g-0">
-                            <div className="col-md-2">
-                                <img className="card-img-top" src={npo.logoURL} alt="" style={{ height: "12rem", width:"12rem" }} />
+                            <div className="col-md-3">
+                                <img className="card-img-top" src={npo.logoURL} alt="" style={{ height: '12rem', width:'100%' }} />
                             </div>
                             <div className="col-md-8">
                                 <div className="card-body">
+                                    
                                     <h5 className="card-title">{npo.title}</h5>
                                     <p className="card-text">{npo.description}</p>
                             

@@ -5,10 +5,13 @@
     cursor: pointer;
     background-color: #425088;
     color: white;
+    flex: 1 1 auto;
+    display: flex;
+    border:none;
 }
 
 .custom-card:hover{
-    transform: scale(1.05);
+    transform: scale(1.01);
 }
 
 a.custom-card,
