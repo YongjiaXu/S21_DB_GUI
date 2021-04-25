@@ -66,7 +66,7 @@ app.post('/postit/login', (req, res) => {
     else
       return res
       .status(400)
-      .json({ passwordincorrect: "Password incorrect" });
+      .send("Password incorrect");
   });
 });
 
