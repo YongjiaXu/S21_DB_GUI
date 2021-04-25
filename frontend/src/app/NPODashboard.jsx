@@ -83,11 +83,8 @@ export class NPODashboard extends React.Component
 
     onChangeLocation()
     {
-        console.log(+this.props.match.params.id);
-        console.log(this.state.location);
-        debugger;
         this.npoRepo.updateLocation(
-            +this.props.match.params.id, this.state.location
+            this.state.npo.npoID, this.state.location
         );
 
         this.setState({
@@ -98,12 +95,8 @@ export class NPODashboard extends React.Component
 
     onChangeDescription()
     {
-        console.log(+this.props.match.params.id);
-        console.log(this.state.description);
-        debugger;
-
         this.npoRepo.updateDescription(
-            +this.props.match.params.id, this.state.description
+            this.state.npo.npoID, this.state.description
         );
 
         this.setState({
@@ -114,12 +107,8 @@ export class NPODashboard extends React.Component
 
     onChangeLogo()
     {
-        console.log(+this.props.match.params.id);
-        console.log(this.state.logoURL);
-        debugger;
-
         this.npoRepo.updateLogo(
-            +this.props.match.params.id, this.state.logoURL
+            this.state.npo.npoID, this.state.logoURL
         );
 
         this.setState({
