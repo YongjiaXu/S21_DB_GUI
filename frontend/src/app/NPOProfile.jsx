@@ -259,6 +259,7 @@ export class NPOProfile extends React.Component
                 </div>
               )}
               </div>
+              <br/>
             </>
         )
     }

@@ -5,7 +5,8 @@ export class Header extends React.Component{
     render(){
         return <>
             <div className="card text-white bg-dark mb-3 rounded-0">
-                <div className="card-header text-right"><Link to={'/'}> Log Out </Link></div>
+                <div className="card-header text-right"><h2 className="text-center">Clarity of Charity</h2><Link to={'/'}> Log Out </Link></div>
+                
             </div>
         </>
     }
