@@ -59,7 +59,7 @@ export const NpoApproval = props =>{
                                         <div>"{x.description}"</div>
                                     </div>
                                     <div className="d-flex justify-content-center">
-                                    <Link to={'/NPOProfile/'+x.npoID} className="btn btn-warning" style={{width:'30%'}}> 
+                                    <Link to={'/NPOProfile/'+this.match.params.userID+'/'+x.npoID} className="btn btn-warning" style={{width:'30%'}}> 
                                     Profile
                                     </Link>
                                     <button className="btn btn-danger mx-2"style={{width:'30%'}} onClick={()=> {if(window.confirm('Denying will delete the NPO, are you sure?')) denyNPO(x.npoID)}}>Deny</button>
