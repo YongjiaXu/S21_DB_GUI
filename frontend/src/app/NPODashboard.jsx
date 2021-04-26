@@ -124,6 +124,7 @@ export class NPODashboard extends React.Component
 
     flag(id){
         this.reviewRepo.flagToggle(id);
+        window.location.reload();
     }
 
     flagButton(status,id){
@@ -183,11 +184,6 @@ export class NPODashboard extends React.Component
                                     <h2> Change Password </h2>
                                 </div>
                                 <div className='card-body'>
-                                    <p>
-                                        **Password must contain at least one uppercase and
-                                        one lowercase letter, a number, a special symbol, other
-                                        generic disclaimer
-                                    </p>
                                     <p>
                                         New Password: <br/>
                                         <input id='newPass' type='text' style={{width: '100%', height: '2em'}} onChange={event=>this.setState({pw:event.target.value})}></input>
