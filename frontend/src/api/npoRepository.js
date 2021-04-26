@@ -1,8 +1,8 @@
 import axios from 'axios';
 
 export class NPORepository{
-    url = 'http://localhost:8000';
-
+    //url = 'http://localhost:8000';
+    url = 'http//3.21.114.143:8000';
     config = {};
 
         // get all the flagged reviews
