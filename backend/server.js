@@ -308,7 +308,7 @@ app.get('/getit/username/:userID', (req, res) => {
 // 15. DELETE npo by npoID
 app.delete('/deleteit/npos/:npoID', (req, res) => {
   var npoID = req.param('npoID');
-  pool.query('delete from images where npoID = ?; delete from npos where npoID = ?', [npoID, npoID], function (err, result, fields) {
+  pool.query('delete from images where npoID = ?; delete from users where npoID = ?; delete from npos where npoID = ?', [npoID, npoID, npoID], function (err, result, fields) {
     if (err) {
       logger.error("Error while deleting npoID " + npoID);
     }
