@@ -29,13 +29,14 @@ export const NpoApproval = props =>{
         setNpos(n);
         refresh();
         refresh();
-        //window.location.reload();
+        refresh();
     }
 
     function denyNPO(id,index){
         npoRepository.deny(id);
         let n = npos.splice(index,1);
         setNpos(n);
+        refresh();
         refresh();
         refresh();
         //window.location.reload();
