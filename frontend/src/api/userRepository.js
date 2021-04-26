@@ -2,7 +2,7 @@ import axios from "axios";
 
 export class UserRepository {
     //url = 'http://localhost:8000';
-    url = 'http//3.21.114.143:8000'; // switch to cloud once pulled
+    url = 'http://3.143.234.231:8000'; // switch to cloud once pulled
     config = {};
 
     // get all the users
