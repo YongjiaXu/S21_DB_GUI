@@ -314,6 +314,7 @@ app.delete('/deleteit/npos/:npoID', (req, res) => {
     }
     else{
       res.end(JSON.stringify(result));
+      console.log(npoID);
     }
   });
 });

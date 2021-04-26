@@ -84,7 +84,7 @@ export class AdminDash extends React.Component{
                                     <h2> NPOs Needing Approval </h2>
                                     </div>
                                     <div className='card-body'>
-                                    <NpoApproval />
+                                    <NpoApproval id={+this.props.match.params.userID}/>
                                     </div>
                                 </div>
                             </div>

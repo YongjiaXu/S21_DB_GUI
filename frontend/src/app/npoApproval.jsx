@@ -28,6 +28,8 @@ export const NpoApproval = props =>{
         let n = npos.splice(index,1);
         setNpos(n);
         refresh();
+        refresh();
+        //window.location.reload();
     }
 
     function denyNPO(id,index){
@@ -35,6 +37,8 @@ export const NpoApproval = props =>{
         let n = npos.splice(index,1);
         setNpos(n);
         refresh();
+        refresh();
+        //window.location.reload();
     }
 
     if(!npos){
@@ -59,10 +63,10 @@ export const NpoApproval = props =>{
                                         <div>"{x.description}"</div>
                                     </div>
                                     <div className="d-flex justify-content-center">
-                                    <Link to={'/NPOProfile/'+this.match.params.userID+'/'+x.npoID} className="btn btn-warning" style={{width:'30%'}}> 
+                                    <Link to={'/NPOProfile/2/'+props.id+'/'+x.npoID} className="btn btn-warning" style={{width:'30%'}}> 
                                     Profile
                                     </Link>
-                                    <button className="btn btn-danger mx-2"style={{width:'30%'}} onClick={()=> {if(window.confirm('Denying will delete the NPO, are you sure?')) denyNPO(x.npoID)}}>Deny</button>
+                                    <button className="btn btn-danger mx-2"style={{width:'30%'}} onClick={()=> denyNPO(x.npoID)}>Deny</button>
                                     <button className="btn btn-success"style={{width:'30%'}} onClick={()=>approve(x.npoID,i)}>Approve</button>
                                     </div>
                                 </div>
