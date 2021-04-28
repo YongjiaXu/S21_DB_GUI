@@ -68,7 +68,7 @@ export const Homapage = props => {
                     </Link>
                 )}
             </div>
-
+            <br>
         </div>
     
     </>
