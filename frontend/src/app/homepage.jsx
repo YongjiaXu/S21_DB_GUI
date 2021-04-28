@@ -33,9 +33,8 @@ export const Homapage = props => {
     }
 
     return <>
-
-        {userType === -1 && <br />}
-        {userType !== -1 && <Header />}
+        
+        <Header loggedIn={ userType } />
         <div className="container">
 
             <div className="page-header" style={{ color: '#425088' }}>

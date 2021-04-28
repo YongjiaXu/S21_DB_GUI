@@ -1,6 +1,7 @@
 import React from 'react';
 import {Link, Redirect} from "react-router-dom";
 import {UserRepository} from '../api/userRepository';
+import { Header } from './header';
 
 export class LoginPage extends React.Component {
     
@@ -41,9 +42,11 @@ export class LoginPage extends React.Component {
 
     render () {
         return <>
+            
+            <Header loggedIn={ -1 } />
+
             <div className="signup-form">
                 <form>
-                    <h1 style={{color:"white", textAlign:"center"}}>Clarity of Charity</h1>
                     <h2>Login</h2>
                     
                     <div className="text-center" style={{ marginBottom: '.5rem' }}>Don't have an account? <Link to='/register'>Sign Up</Link> </div>
