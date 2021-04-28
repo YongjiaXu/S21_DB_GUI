@@ -84,7 +84,7 @@ export class NPODashboard extends React.Component
     onChangeLocation()
     {
         this.npoRepo.updateLocation(
-            this.state.npo.npoID, this.state.location
+            this.state.npo[0].npoID, this.state.location
         );
 
         this.setState({
@@ -96,7 +96,7 @@ export class NPODashboard extends React.Component
     onChangeDescription()
     {
         this.npoRepo.updateDescription(
-            this.state.npo.npoID, this.state.description
+            this.state.npo[0].npoID, this.state.description
         );
 
         this.setState({
