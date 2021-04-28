@@ -16,30 +16,15 @@ export const NpoApproval = props =>{
             })
         }
     });
-
-    const refresh = useCallback(()=>{
-        npoRepository.getNANPOS().then(x=>{           
-            setNpos(x);
-        });
-    },[npos])
-
+    
     function approve(id,index){
         npoRepository.approve(id);
-        let n = npos.splice(index,1);
-        setNpos(n);
-        refresh();
-        refresh();
-        refresh();
+        setTimeout(() => window.location.reload(), 500);
     }
 
     function denyNPO(id,index){
         npoRepository.deny(id);
-        let n = npos.splice(index,1);
-        setNpos(n);
-        refresh();
-        refresh();
-        refresh();
-        //window.location.reload();
+        setTimeout(() => window.location.reload(), 500);
     }
 
     if(!npos){

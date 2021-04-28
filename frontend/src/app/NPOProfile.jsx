@@ -35,7 +35,8 @@ export class NPOProfile extends React.Component
                 rating:0,
                 comment:''
             }))
-            window.location.reload();
+            alert("Review Posted")
+            setTimeout(() => window.location.reload(), 500);
         }
         else{
             alert("Please Login to post a Review")

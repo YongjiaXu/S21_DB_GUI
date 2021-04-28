@@ -37,7 +37,6 @@ export class ReviewRepository{
                 )
                 .catch(error=>alert(error));
             });
-
         }
 
         deletePost(ratingID){

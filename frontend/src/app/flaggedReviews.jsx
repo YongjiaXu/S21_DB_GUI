@@ -30,34 +30,19 @@ export const FlaggedReviewList = props =>{
             }
     });
 
-    const refresh = useCallback(()=>{
-        reviewRepository.getFlagged().then(x=>{           
-            setFlagged(x);
-        });
-    },[flagged])
-
     function unflag(id,index){
         reviewRepository.flagToggle(id);
-        let u = flagged.splice(index,1);
-        setFlagged(u);
-        refresh();
-        refresh();
+        setTimeout(() => window.location.reload(), 500);
     }
 
     function removePost(id,index){
         reviewRepository.deletePost(id);
-        let u = flagged.splice(index,1);
-        setFlagged(u);
-        refresh();
-        refresh();
+        setTimeout(() => window.location.reload(), 500);
     };
 
     function ban(id,index){
         userRepository.banUser(id);
-        let u = flagged.splice(index,1);
-        setFlagged(u);
-        refresh();
-        refresh();
+        setTimeout(() => window.location.reload(), 500);
     }
     function username(raterID){
         const result = users.find(({userID})=> userID===raterID);

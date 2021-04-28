@@ -36,9 +36,11 @@ export class AdminDash extends React.Component{
             let id=+this.props.match.params.userID;
             this.userRepo.changePW(id,pw)
             .then(this.setState({pw:""}))
+            alert("Password has been changed")
+            setTimeout(() => window.location.reload(), 500);
         }
         else{
-            console.log("rofl")
+            alert("Passwords do no match.")
         }
 
     }

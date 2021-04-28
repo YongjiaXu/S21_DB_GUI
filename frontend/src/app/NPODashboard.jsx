@@ -24,7 +24,8 @@ export class NPODashboard extends React.Component
         imgURL: '',
         userID:0,
         pw:"",
-        pwConfirm:""
+        pwConfirm:"",
+        x: null
     };
 
     componentDidMount() {
@@ -91,6 +92,7 @@ export class NPODashboard extends React.Component
             location: '',
         });
         alert("Changes have been saved!");
+        setTimeout(() => window.location.reload(), 500);
     }
 
     onChangeDescription()
@@ -103,6 +105,7 @@ export class NPODashboard extends React.Component
             description: '',
         });
         alert("Changes have been saved!");
+        setTimeout(() => window.location.reload(), 500);
     }
 
     onChangeLogo()
@@ -115,6 +118,7 @@ export class NPODashboard extends React.Component
             logoURL: '',
         });
         alert("Changes have been saved!");
+        setTimeout(() => window.location.reload(), 500);
     }
 
     onAddImage()
@@ -127,11 +131,13 @@ export class NPODashboard extends React.Component
             imgURL: ''
         });
         alert("Changes have been saved!");
+        setTimeout(() => window.location.reload(), 500);
     }
 
     flag(id){
-        this.reviewRepo.flagToggle(id);
-        window.location.reload();
+        this.reviewRepo.flagToggle(id)
+        setTimeout(() => window.location.reload(), 500);
+        
     }
 
     flagButton(status,id){
@@ -148,11 +154,12 @@ export class NPODashboard extends React.Component
         if(pw===pwconfirm){
             let id=+this.props.match.params.userID;
             this.userRepo.changePW(id,pw);
+            alert("Password has been changed!")
+            setTimeout(() => window.location.reload(), 500);
         }
         else{
-            console.log("rofl")
+            alert("Passwords do not match")
         }
-
     }
 
     render() {
