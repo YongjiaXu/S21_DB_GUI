@@ -22,6 +22,7 @@ export class NPODashboard extends React.Component
         location: '',
         logoURL: '',
         imgURL: '',
+        selectedFile: null,
         userID:0,
         pw:"",
         pwConfirm:""
@@ -83,9 +84,6 @@ export class NPODashboard extends React.Component
 
     onChangeLocation()
     {
-        console.log(+this.props.match.params.id);
-        console.log(this.state.location);
-        debugger;
         this.npoRepo.updateLocation(
             +this.props.match.params.id, this.state.location
         );
@@ -98,10 +96,6 @@ export class NPODashboard extends React.Component
 
     onChangeDescription()
     {
-        console.log(+this.props.match.params.id);
-        console.log(this.state.description);
-        debugger;
-
         this.npoRepo.updateDescription(
             +this.props.match.params.id, this.state.description
         );
@@ -112,25 +106,34 @@ export class NPODashboard extends React.Component
         alert("Changes have been saved!");
     }
 
+    fileUpload=( event ) => {
+        debugger;
+        this.setState({ selectedFile: event.target.files[0] });
+     }
+
     onChangeLogo()
     {
-        console.log(+this.props.match.params.id);
-        console.log(this.state.logoURL);
-        debugger;
+        this.state.logoURL = this.state.selectedFile.getAsDataURL();
 
         this.npoRepo.updateLogo(
             +this.props.match.params.id, this.state.logoURL
         );
 
         this.setState({
-            logoURL: '',
+            logoURL: ''
         });
         alert("Changes have been saved!");
     }
 
     onAddImage()
     {
-        
+        this.npoRepo.addImage(
+            +this.props.match.params.id, this.state.imgURL
+        );
+        this.setState({
+            imgURL: ''
+        });
+        alert("Changes have been saved!");
     }
 
     flag(id){
@@ -147,13 +150,12 @@ export class NPODashboard extends React.Component
     }
 
     updatePW(pw,pwconfirm){
-        console.log(pw+" "+pwconfirm);
         if(pw===pwconfirm){
             let id=+this.props.match.params.userID;
             this.userRepo.changePW(id,pw);
         }
         else{
-            console.log("rofl")
+            alert("ERROR: Passwords don't match.");
         }
 
     }
@@ -190,7 +192,7 @@ export class NPODashboard extends React.Component
                         <div className='row'>
                             <div className='col-6'>
                             <div className='card'>
-                                <div className='card-header' style={{ color: 'white', background: '#425088' }}>
+                                <div className='card-header'>
                                     <h2> Change Password </h2>
                                 </div>
                                 <div className='card-body'>
@@ -201,11 +203,11 @@ export class NPODashboard extends React.Component
                                     </p>
                                     <p>
                                         New Password: <br/>
-                                        <input id='newPass' type='text' style={{width: '15em', height: '2em'}} onChange={event=>this.setState({pw:event.target.value})}></input>
+                                        <input id='newPass' type='text' className='form-control' onChange={event=>this.setState({pw:event.target.value})}></input>
                                     </p>
                                     <p>
                                         Confirm New Password: <br/>
-                                        <input id='newPassConfirm' type='text' style={{width: '15em', height: '2em'}} onChange={event=>this.setState({pwConfirm:event.target.value})}></input>
+                                        <input id='newPassConfirm' type='text' className='form-control' onChange={event=>this.setState({pwConfirm:event.target.value})}></input>
                                     </p>
                                     <button type='button' className="btn btn-success" onClick={()=>this.updatePW(this.state.pw,this.state.pwConfirm)}>Submit</button>
                                 </div>
@@ -221,15 +223,15 @@ export class NPODashboard extends React.Component
                                 alt="Logo"
                                 className='logo'></img>
                                 <br/>
-                                Upload Image by URL:
-                                <input type='text' 
+                                Upload Image:
+                                <input type='file'
                                 className='form-control'
                                 value={this.state.logoURL}
-                                onChange={ event => this.setState({logoURL: event.target.value})}></input>
+                                onChange={ this.fileUpload }></input>
                                 <br/>
                                 <button type='button' 
                                 className="btn btn-success"
-                                onClick={ () => this.onChangeLogo() }> Save Changes </button>
+                                onClick={ this.onChangeLogo }> Save Changes </button>
                                 </div>
                                 </div>
                             </div>
@@ -294,9 +296,9 @@ export class NPODashboard extends React.Component
                             )}
                         </p>
                         <p>
-                            Upload image by URL:
+                            Upload image:
                             <input id='newImage' 
-                            type='text' 
+                            type='file' 
                             className='form-control'
                             onChange={event => this.setState({ imgURL: event.target.value })}></input>
                         </p>
