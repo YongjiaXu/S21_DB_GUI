@@ -52,23 +52,23 @@ app.listen(config.port, config.host, (e) => {
 app.post('/postit/login', (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
+
+  if (username == null || password == null)
+  return res.status(400).send('Please enter all fields!');
   
   console.log('login check');
   
-  pool.query('SELECT * FROM users WHERE username = ? AND password = ?', [username, password], function (err, result, fields) {
-    if (err) {
-      console.log(username, password, result[0].password)
-      if (password !== result.password) {
-        return res
-        .status(400)
-        .send('Wrong Password!');
-      }
-      return res.status(400).send('Error while getting user.');
-    }
-    else {
-      console.log(username, password, result[0].password)
+  pool.query('SELECT * FROM users WHERE username = ?', username, function (err, result, fields) {
+    if (err) throw err;
+    
+    if (result.length == 0)
+      return res.status(400).send('Username can not be found');
+    else if (password == result[0].password)
       res.end(JSON.stringify(result));
-    }
+    else
+      return res
+      .status(400)
+      .send("Password incorrect");
   });
 });
 
@@ -85,32 +85,37 @@ app.post('/postit/register', (req, res) => {
   
   console.log('register check');
   console.log(username, password, user_type)
-  if (user_type == 1){
-    pool.query('INSERT INTO users (username, password, user_type) VALUES (?,?,?)', [username, password, user_type], function (err, result, fields) {
-      if (err) throw err;
-      else {
-        res.end(JSON.stringify(result));
-      }
-    });
-  }
-  else if (user_type == 3)
-  {
-    console.log("Add NPO");
+  pool.query('SELECT * FROM users WHERE username = ?', username, function (err, result, fields) {
+    console.log(result)
+    if (result.length > 0) 
+      return res.status(400).send('An account exists with this username');
 
-    pool.query('insert into npos (title, location, logoURL, description) values (?, ?, ?, ?)',
-      [title, location, logoURL, description], function (err, result, fields) {
+    if (user_type == 1) {
+      pool.query('INSERT INTO users (username, password, user_type) VALUES (?,?,?)', [username, password, user_type], function (err, result, fields) {
         if (err) throw err;
-        
-        console.log(result.insertId)
-
-
-        pool.query('INSERT INTO users (username, password, user_type, npoID) VALUES (?,?,?,?)', [username, password, user_type,result.insertId], (err, result, fields) => {          
-          if (err) throw err;
-
+        else {
           res.end(JSON.stringify(result));
+        }
+      });
+    }
+    else if (user_type == 3) {
+      console.log("Add NPO");
+
+      pool.query('insert into npos (title, location, logoURL, description) values (?, ?, ?, ?)',
+        [title, location, logoURL, description], function (err, result, fields) {
+          if (err) throw err;
+        
+          console.log(result.insertId)
+
+
+          pool.query('INSERT INTO users (username, password, user_type, npoID) VALUES (?,?,?,?)', [username, password, user_type, result.insertId], (err, result, fields) => {
+            if (err) throw err;
+
+            res.end(JSON.stringify(result));
+          });
         });
-    });
-  }
+    }
+  });
 });
 
 // Bella
@@ -303,12 +308,13 @@ app.get('/getit/username/:userID', (req, res) => {
 // 15. DELETE npo by npoID
 app.delete('/deleteit/npos/:npoID', (req, res) => {
   var npoID = req.param('npoID');
-  pool.query('delete from images where npoID = ?; delete from npos where npoID = ?', [npoID, npoID], function (err, result, fields) {
+  pool.query('delete from images where npoID = ?; delete from users where npoID = ?; delete from npos where npoID = ?', [npoID, npoID, npoID], function (err, result, fields) {
     if (err) {
       logger.error("Error while deleting npoID " + npoID);
     }
     else{
       res.end(JSON.stringify(result));
+      console.log(npoID);
     }
   });
 });

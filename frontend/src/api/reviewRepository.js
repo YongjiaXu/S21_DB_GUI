@@ -1,8 +1,8 @@
 import axios from 'axios';
 
 export class ReviewRepository{
-    url = 'http://localhost:8000';
-
+    //url = 'http://localhost:8000';
+    url = 'http://3.143.234.231:8000';
     config = {};
 
         // get all the flagged reviews

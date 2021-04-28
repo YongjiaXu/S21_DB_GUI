@@ -1,7 +1,7 @@
 import React from 'react';
 import {Link, Redirect} from "react-router-dom";
 import {UserRepository} from '../api/userRepository';
-import { CreateAccount } from './createAccount';
+import { Header } from './header';
 
 export class LoginPage extends React.Component {
     
@@ -16,7 +16,7 @@ export class LoginPage extends React.Component {
     };
 
     login() {
-        if (this.state.username == '' || this.state.password == '')
+        if (this.state.username === '' || this.state.password === '')
             alert('Please enter all fields!');
         else {
             this.userRepository.login(this.state.username, this.state.password)
@@ -33,14 +33,18 @@ export class LoginPage extends React.Component {
                         console.log('login failed');
                         this.setState({ authenticated: false });
                     }
-                }).catch({
-
+                }).catch(e => {
+                    console.log(e);
+                    window.location.reload(false);
                 });
         }
     }
 
     render () {
         return <>
+            
+            <Header loggedIn={ -1 } />
+
             <div className="signup-form">
                 <form>
                     <h2>Login</h2>
@@ -76,7 +80,9 @@ export class LoginPage extends React.Component {
                         <Link className="d-flex justify-content-center" to={'/Home/-1/-1'}>Browse without logging in</Link>
                     </div>
                     
-                    {this.state.authenticated && this.state.type && <Redirect to={'/Home/'+this.state.type+'/'+this.state.id} />}
+                    {this.state.authenticated && this.state.type===1 && <Redirect to={'/UserDash/'+this.state.id} />}
+                    {this.state.authenticated && this.state.type===2 && <Redirect to={'/AdminDash/'+this.state.id} />}
+                    {this.state.authenticated && this.state.type===3 && <Redirect to={'/NPODashboard/'+this.state.id} />}
                     
                 </form>
             </div>

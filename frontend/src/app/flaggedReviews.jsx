@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import {ReviewRepository} from '../api/reviewRepository';
 import {UserRepository} from '../api/userRepository';
 import {NPORepository} from '../api/npoRepository';
+import {useCallback} from 'react'
 
 export const FlaggedReviewList = props =>{
 
@@ -20,15 +21,44 @@ export const FlaggedReviewList = props =>{
             reviewRepository.getFlagged().then(x=>{           
                 setFlagged(x);
             });
-            userRepository.getUsers().then(v=>{
-                setUsers(v);
-            });
-            npoRepository.getNPOS().then(z=>{
-                setNpos(z);
-            })
-        }
+                userRepository.getUsers().then(v=>{
+                    setUsers(v);
+                });
+                npoRepository.getNPOS().then(z=>{
+                    setNpos(z);
+                })
+            }
     });
 
+    const refresh = useCallback(()=>{
+        reviewRepository.getFlagged().then(x=>{           
+            setFlagged(x);
+        });
+    },[flagged])
+
+    function unflag(id,index){
+        reviewRepository.flagToggle(id);
+        let u = flagged.splice(index,1);
+        setFlagged(u);
+        refresh();
+        refresh();
+    }
+
+    function removePost(id,index){
+        reviewRepository.deletePost(id);
+        let u = flagged.splice(index,1);
+        setFlagged(u);
+        refresh();
+        refresh();
+    };
+
+    function ban(id,index){
+        userRepository.banUser(id);
+        let u = flagged.splice(index,1);
+        setFlagged(u);
+        refresh();
+        refresh();
+    }
     function username(raterID){
         const result = users.find(({userID})=> userID===raterID);
         return result.username;
@@ -38,20 +68,6 @@ export const FlaggedReviewList = props =>{
         const result = npos.find(({npoID})=> npoID===id);
         return result.title;
     }
-
-
-    function removePost(id){
-        reviewRepository.deletePost(id)  
-    };
-
-    function unflag(id){
-        reviewRepository.flagToggle(id);
-    }
-
-    function ban(id){
-        userRepository.banUser(id);
-    }
-
 
     if(!flagged||!users||!npos){
         return<>
@@ -71,9 +87,9 @@ export const FlaggedReviewList = props =>{
                         <p className="float-right text-secondary card-text">{x.date}</p>
                         <p className="card-text">"{x.comment}"</p>
                         <div className="d-flex justify-content-center"> 
-                        <button className="btn btn-warning" onClick={()=>removePost(x.ratingID)} style={{width:'30%'}}>Delete Post</button>
-                        <button className="btn btn-danger mx-2" style={{width:'30%'}} onClick={()=>ban(x.raterID)}>Ban User</button>
-                        <button className="btn btn-success" onClick={()=>unflag(x.ratingID)} style={{width:'30%'}}>Keep Post</button>
+                        <button className="btn btn-warning" onClick={()=>removePost(x.ratingID,i)} style={{width:'30%'}}>Delete Post</button>
+                        <button className="btn btn-danger mx-2" style={{width:'30%'}} onClick={()=>ban(x.raterID,i)}>Ban User</button>
+                        <button className="btn btn-success" onClick={()=>unflag(x.ratingID,i)} style={{width:'30%'}}>Keep Post</button>
                         </div>
                     </div>
                     </div>

@@ -1,8 +1,8 @@
 import axios from 'axios';
 
 export class NPORepository{
-    url = 'http://localhost:8000';
-
+    //url = 'http://localhost:8000';
+    url = 'http://3.143.234.231:8000';
     config = {};
 
         // get all the flagged reviews
@@ -109,25 +109,13 @@ export class NPORepository{
         
         updateLogo(npoID, logoURL)
         {
+            console.log(npoID);
+            console.log(logoURL);
+            debugger;
             return new Promise((resolve, reject) => {
                 axios.put(`${this.url}/npos/${npoID}/updateLogo`,
                 {
                     "logoURL": logoURL
-                },this.config)
-                    .then(x => resolve(x.data))
-                    .catch(error => {
-                        alert(error);
-                        reject(error);
-                    });
-            });
-        }
-
-        addImage(npoID, imageURL)
-        {
-            return new Promise((resolve, reject) => {
-                axios.post(`${this.url}/npos/${npoID}/images`,
-                {
-                    "imageURL": imageURL
                 },this.config)
                     .then(x => resolve(x.data))
                     .catch(error => {

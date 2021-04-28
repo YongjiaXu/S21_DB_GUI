@@ -35,6 +35,7 @@ export class NPOProfile extends React.Component
                 rating:0,
                 comment:''
             }))
+            window.location.reload();
         }
         else{
             alert("Please Login to post a Review")
@@ -81,7 +82,6 @@ export class NPOProfile extends React.Component
         {
             averageRate += this.state.reviews[i].rating;
             console.log(averageRate);
-            debugger;
         }
         averageRate /= this.state.reviews.length;
         return averageRate;
@@ -259,6 +259,7 @@ export class NPOProfile extends React.Component
                 </div>
               )}
               </div>
+              <br/>
             </>
         )
     }

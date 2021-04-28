@@ -1,8 +1,8 @@
 import axios from "axios";
 
 export class UserRepository {
-    url = 'http://localhost:8000';
-    // url = 'http//3.21.114.143:8000'; // switch to cloud once pulled
+    //url = 'http://localhost:8000';
+    url = 'http://3.143.234.231:8000'; // switch to cloud once pulled
     config = {};
 
     // get all the users
@@ -59,19 +59,19 @@ export class UserRepository {
                     resolve(x.data);
                 })
                 .catch(e => {
-                alert("can't find user");
+                    console.log(e.response.data)
+                    alert(e.response.data);
                 reject();
             });
         });
     }
     
     
-    register(username,email, password, user_type,title,location, logo, description) {
+    register(username, password, user_type,title,location, logo, description) {
         return new Promise((resolve, reject) => {
             axios.post(`${this.url}/postit/register`,
                 {
                     "username": username,
-                    "email": email,
                     "password": password,
                     "user_type": user_type,
                     "title": title,
@@ -81,27 +81,11 @@ export class UserRepository {
                 }
                 , this.config)
             .then(x => resolve(x.data))
-            .catch(e => {
-                alert("Register Failed.");
+                .catch(e => {
+                console.log(e.response.data)
+                alert(e.response.data);
                 reject();
             });
-        });
-    }
-
-    // post new npo
-    createNPO(title, location, logoURL, description) {
-        return new Promise((resolve, reject) => {
-            axios.post(
-                `${this.url}/npos`,
-                {
-                    "title": title,
-                    "location": location,
-                    "logoURL": logoURL,
-                    "description": description,
-                },
-            )
-            .then(response => resolve(response.data))
-            .catch(error => alert(error));
         });
     }
 

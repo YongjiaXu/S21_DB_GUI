@@ -3,6 +3,7 @@ import {FlaggedReviewList} from './flaggedReviews';
 import {UserRepository} from '../api/userRepository';
 import {NpoApproval} from './npoApproval'
 import {Header} from './header'
+import {Link, Redirect} from 'react-router-dom'
 
 export class AdminDash extends React.Component{
 
@@ -12,7 +13,7 @@ export class AdminDash extends React.Component{
         pw:"",
         pwConfirm:"",
         userID: 0,
-        user: []
+        user: [],
     }
 
     componentDidMount() {
@@ -52,7 +53,11 @@ export class AdminDash extends React.Component{
             <div className='card' style={{width:'100%'}}>
                     <div className='card-header' style=
                     {{color: 'white', background: '#425088'}}>
-                        <h1>Admin Dashboard for {this.state.user[0].username}</h1>
+                        <h1>Admin Dashboard for {this.state.user[0].username}
+                            <Link to={"/Home/2/"+this.state.user[0].userID} type='button' className="btn btn-success" style={{float: 'right'}}> 
+                                Home 
+                            </Link> 
+                        </h1>
                     </div>
                     <div className='card-body'>
                         <div className='row'>
@@ -62,11 +67,6 @@ export class AdminDash extends React.Component{
                                     <h2> Change Password </h2>
                                 </div>
                                 <div className='card-body'>
-                                    <p>
-                                        **Password must contain at least one uppercase and
-                                        one lowercase letter, a number, a special symbol, other
-                                        generic disclaimer
-                                    </p>
                                     <p>
                                         New Password: <br/>
                                         <input id='newPass' type='text' style={{width: '15em', height: '2em'}} onChange={event=>this.setState({pw:event.target.value})}></input>
@@ -84,7 +84,7 @@ export class AdminDash extends React.Component{
                                     <h2> NPOs Needing Approval </h2>
                                     </div>
                                     <div className='card-body'>
-                                    <NpoApproval />
+                                    <NpoApproval id={+this.props.match.params.userID}/>
                                     </div>
                                 </div>
                             </div>
