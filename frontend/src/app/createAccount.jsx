@@ -2,6 +2,7 @@ import React from 'react';
 import {Link, Redirect} from "react-router-dom";
 import { NPORepository } from '../api/npoRepository';
 import { UserRepository } from '../api/userRepository';
+import { Header } from './header';
 import "./login-signup.css";
 
 export class CreateAccount extends React.Component{
@@ -97,7 +98,9 @@ export class CreateAccount extends React.Component{
     }
 
     render(){
-    return <>
+        return <>
+        
+        <Header loggedIn={ -1 } />
         
         <div className="signup-form">
             <form>
