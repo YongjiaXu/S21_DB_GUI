@@ -108,7 +108,7 @@ export class NPODashboard extends React.Component
     onChangeLogo()
     {
         this.npoRepo.updateLogo(
-            this.state.npo.npoID, this.state.logoURL
+            this.state.npo[0].npoID, this.state.logoURL
         );
 
         this.setState({
@@ -119,7 +119,14 @@ export class NPODashboard extends React.Component
 
     onAddImage()
     {
-        
+        this.npoRepo.addImage(
+            this.state.npo[0].npoID, this.state.imgURL
+        );
+
+        this.setState({
+            imgURL: ''
+        });
+        alert("Changes have been saved!");
     }
 
     flag(id){

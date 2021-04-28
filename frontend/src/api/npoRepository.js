@@ -106,12 +106,24 @@ export class NPORepository{
             });
         }
 
+        addImage(npoID, imageURL)
+        {
+            return new Promise((resolve, reject) => {
+                axios.post(`${this.url}/npos/${npoID}/images`,
+                {
+                    "imageURL": imageURL
+                },this.config)
+                    .then(x => resolve(x.data))
+                    .catch(error => {
+                        alert(error);
+                        reject(error);
+                    });
+            });
+        }
+
         
         updateLogo(npoID, logoURL)
         {
-            console.log(npoID);
-            console.log(logoURL);
-            debugger;
             return new Promise((resolve, reject) => {
                 axios.put(`${this.url}/npos/${npoID}/updateLogo`,
                 {
